@@ -5,7 +5,7 @@ import SideNav from "./sideNav";
 const SideBarLayout = () => {
   return (
     <>
-      <div className="side-nav-container flex flex-col w-60 h-dvh bg-slate-400">
+      <div className="side-nav-container flex flex-col w-60 h-dvh bg-slate-300">
       <div className="logo">
         <img
           className="object-contain justify-center p-0 ml-4 my-2 h-20 w-50"
