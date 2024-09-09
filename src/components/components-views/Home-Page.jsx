@@ -6,7 +6,7 @@ const HomePage = () => {
           <p>HOME</p>
         </div>
         <div className="content p-4 items-center">
-          <div className="search-card flex flex-between flex-wrap justify-between" action="">
+          <div className=" flex flex-between flex-wrap justify-between">
             <button className="bg-gray-400 hover:bg-gray-500 mr-2 mb-2 px-2 py-2 rounded-md block text-sm font-medium text-gray-900 dark:text-white">
             <div className="items-center px-2">
               <i className="text-xl fa-solid fa-house"></i>

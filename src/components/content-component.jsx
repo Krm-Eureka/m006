@@ -1,4 +1,4 @@
-import HomePage from "./HomePage";
+import HomePage from "./components-views/Home-Page";
 const ContentLayout = () => {
   return (
     <>
