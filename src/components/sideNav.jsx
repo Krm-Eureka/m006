@@ -4,7 +4,7 @@ const SideNav = (props) => {
 
   return (
     <>
-      <div className=" nav flex items-center  py-2 px-8 w-full cursor-pointer hover:bg-slate-700 hover:text-white">
+      <div className=" nav flex items-center  py-2 px-2 w-full cursor-pointer hover:bg-slate-700 hover:text-white">
         <i className={props.i}></i>
         <p className="px-2">{props.title}</p>
       </div>

@@ -17,8 +17,8 @@ const SideBarLayout = () => {
 
       <SideNav title="Home" i="fa-solid fa-house"/>
       <SideNav title="Tracibility Status" i="fa-solid fa-square-poll-vertical"/>
-      <SideNav title="AcousticManualRun" i="fa-solid fa-file-contract"/>
-      <SideNav title="AcousticTestReport"i="fa-solid fa-file-audio"/>
+      <SideNav title="Acoustic ManualRun" i="fa-solid fa-file-contract"/>
+      <SideNav title="AcousticTest Report"i="fa-solid fa-file-audio"/>
       <SideNav title="Tracibility Report" i="fa-solid fa-folder-tree"/>
       <SideNav title="Master Setting" i="fa-solid fa-gears"/>
       </div>
