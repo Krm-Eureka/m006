@@ -14,7 +14,8 @@ const AcousticManualRun = () => {
               <input
                 id="Serial_Code"
                 type="text"
-                className="rounded-md w-80 h-8 mx-2"
+                className="rounded-md w-80 h-8 mx-2 p-2"
+                placeholder="Serial_Code"
               />
               <button className="mx-2 mt-4 py-2 px-4 font-semibold bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
                 RUN
