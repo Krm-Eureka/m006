@@ -1,4 +1,4 @@
-import HomePage from "./components-views/Home-Page";
+// import HomePage from "./components-views/Home-Page";
 import MasterSetting from "./components-views/MasterSetting";
 const ContentLayout = () => {
   return (
@@ -10,7 +10,7 @@ const ContentLayout = () => {
           </h4>
         </div>
 
-        <HomePage />
+        {/* <HomePage /> */}
         <MasterSetting/>
       </div>
     </>
