@@ -1,4 +1,5 @@
 import AcousticAutoRun from "./pages/AcousticAutoRun-page";
+import AcousticManualRun from "./pages/AcousticManualRun-Page";
 import HomePage from "./pages/Home-Page";
 // import MasterSetting from "./pages/MasterSetting";
 // import TracibilityReport from "./pages/TracibilityReport-Page"
@@ -18,6 +19,7 @@ const ContentLayout = () => {
         <TracibilityReport/>
         <TracibilityStatus/> */}
         <AcousticAutoRun/>
+        <AcousticManualRun/>
       </div>
     </>
   );
