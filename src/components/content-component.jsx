@@ -1,6 +1,6 @@
-import AcousticAutoRun from "./pages/AcousticAutoRun-page";
-import AcousticManualRun from "./pages/AcousticManualRun-Page";
-import HomePage from "./pages/Home-Page";
+// import AcousticAutoRun from "./pages/AcousticAutoRun-page";
+// import AcousticManualRun from "./pages/AcousticManualRun-Page";
+// import HomePage from "./pages/Home-Page";
 import LoginPage from "./pages/Login-Page";
 // import MasterSetting from "./pages/MasterSetting";
 // import TracibilityReport from "./pages/TracibilityReport-Page"
@@ -15,12 +15,12 @@ const ContentLayout = () => {
           </h4>
         </div>
         <LoginPage />
-        <HomePage />
+        {/* <HomePage /> */}
         {/* <MasterSetting/>
         <TracibilityReport/>
         <TracibilityStatus/> */}
-        <AcousticAutoRun />
-        <AcousticManualRun />
+        {/* <AcousticAutoRun />
+        <AcousticManualRun /> */}
       </div>
     </>
   );
