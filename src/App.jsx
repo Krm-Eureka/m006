@@ -11,7 +11,7 @@ function App() {
   const bgr = 1;
   return (
     <>
-    <div className="container w-lg h-fit">
+    {/* <div className="container w-lg h-fit"> */}
     {/* <header className=" flex w-screen h-fit p-2 bg-gray-200 justify-between ">
           <HeaderLayout />
         </header> */}
@@ -19,11 +19,11 @@ function App() {
         <main className="items-start w-lg h-fit">
           <div className="body-layout flex flex-row">
           {/* <SideBarLayout/> */}
-            {bgr === 1 ? <SideBarLayout /> : <div></div>}
+            {bgr === 0 ? <SideBarLayout /> : <div></div>}
             <ContentLayout />
           </div>
         </main>
-      </div>
+      {/* </div> */}
     </>
   );
 }

@@ -3,7 +3,7 @@ const TracibilityStatus = () => {
     <>
       <div className="content">
         {/* <div className="flex flex-between flex-wrap justify-start"> */}
-        <div className="card-content bg-gray-200 ml-4 my-4 rounded-md w-full h-fit">
+        <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>Show Process Current of EOLTStation</p>
           </div>
@@ -56,7 +56,7 @@ const TracibilityStatus = () => {
           </div>
         </div>
         {/* </div> */}
-        <div className="card-content bg-gray-200 ml-4 my-2 rounded-md w-full h-fit">
+        <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>Show Data Run Sumary</p>
           </div>
