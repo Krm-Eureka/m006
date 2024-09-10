@@ -36,7 +36,7 @@ const AcousticAutoRun = () => {
             <div className="  justify-start">
               <div className="box bg-slate-300 p-4 mr-2 rounded-lg w-40">
                 <i className="fa-solid fa-border-all mr-4 "></i>
-                <span>Total</span>
+                <span>Total Status</span>
               </div>
             </div>
           </div>

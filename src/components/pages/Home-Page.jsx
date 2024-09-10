@@ -46,7 +46,7 @@ const HomePage = () => {
             <button className="bg-gray-400 hover:bg-gray-500 mr-2 mb-2 px-2 py-2 rounded-md block text-sm font-medium text-gray-900 hover:text-white ">
               <div className="items-center px-2">
                 <i className="text-xl fa-solid fa-gears"></i>
-                <span className="ml-2">Master Setting</span>
+                <span className="ml-2">Setting</span>
               </div>
             </button>
           </div>

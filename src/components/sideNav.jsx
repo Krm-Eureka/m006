@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 const SideNav = (props) => {
-  console.log(props);
+  // console.log(props);
 
   return (
     <>

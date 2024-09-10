@@ -18,9 +18,9 @@ const LoginPage = () => {
           </a>
           <div className="w-full bg-gray-200 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h3 className="text-md text-center  font-bold leading-tight tracking-tight text-gray-900 md:text-md dark:text-white">
+              <h3 className="text-md text-center text-3xl  font-semibold leading-tight tracking-tight text-gray-900 md:text-md dark:text-white">
                 {/* Stellantis OMNI Microphone Assemblyline System */}
-                Tracibility System
+                EOLT Tracibility System
               </h3>
               <form className="space-y-4 md:space-y-6" action="#">
                 <div>

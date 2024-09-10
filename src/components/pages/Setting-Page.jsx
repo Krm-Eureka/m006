@@ -51,7 +51,7 @@ const MasterSetting = () => {
           </div>
         </div>
         <div className="flex flex-between flex-wrap justify-start">
-          <div className="card-content bg-gray-200 ml-2 mr-0.5 my-4 rounded-md w-100 h-fit">
+          <div className="card-content bg-gray-200 ml-2 mr-0.5 my-2 rounded-md w-100 h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>CURRENT SETTING</p>
             </div>
@@ -63,7 +63,7 @@ const MasterSetting = () => {
                   </label>
                   <input
                     type="text"
-                    id="Min_Limit"
+                    id="Min_Limit_crr"
                     // value={}
                     className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Min Limit"
@@ -76,7 +76,7 @@ const MasterSetting = () => {
                   </label>
                   <input
                     type="text"
-                    id="Max_Limit"
+                    id="Max_Limit_crr"
                     // value={}
                     className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Max Limit"
@@ -86,7 +86,7 @@ const MasterSetting = () => {
               </div>
             </div>
           </div>
-          <div className="card-content bg-gray-200 ml-2 mr-0.5 my-4 rounded-md w-100 h-fit">
+          <div className="card-content bg-gray-200 ml-2 mr-0.5 my-2 rounded-md w-100 h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>SENSITIVITY</p>
             </div>
@@ -98,7 +98,7 @@ const MasterSetting = () => {
                   </label>
                   <input
                     type="text"
-                    id="Min_Limit"
+                    id="Min_Limit_sen"
                     // value={}
                     className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Min Limit"
@@ -111,7 +111,7 @@ const MasterSetting = () => {
                   </label>
                   <input
                     type="text"
-                    id="Max_Limit"
+                    id="Max_Limit_sen"
                     // value={}
                     className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Max Limit"
@@ -121,7 +121,7 @@ const MasterSetting = () => {
               </div>
             </div>
           </div>
-          <div className="card-content bg-gray-200 ml-2 mr-0.5 my-4 rounded-md w-100 h-fit">
+          <div className="card-content bg-gray-200 ml-2 mr-0.5 my-2 rounded-md w-100 h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>THD</p>
             </div>
@@ -133,7 +133,7 @@ const MasterSetting = () => {
                   </label>
                   <input
                     type="text"
-                    id="Min_Limit"
+                    id="Min_Limit_thd"
                     // value={}
                     className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Min Limit"
@@ -146,7 +146,7 @@ const MasterSetting = () => {
                   </label>
                   <input
                     type="text"
-                    id="Max_Limit"
+                    id="Max_Limit_thd"
                     // value={}
                     className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Max Limit"
@@ -159,7 +159,7 @@ const MasterSetting = () => {
         </div>
       </div>
       <div>
-        <button className="mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-bold py-2 px-4 border border-green-700 rounded">
+        <button className="mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg">
           UpdateData
         </button>
       </div>

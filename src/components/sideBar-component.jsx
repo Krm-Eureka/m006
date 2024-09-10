@@ -24,7 +24,8 @@ const SideBarLayout = () => {
         <SideNav title="Acoustic ManualRun" i="fa-solid fa-file-contract" />
         <SideNav title="AcousticTest Report" i="fa-solid fa-file-audio" />
         <SideNav title="Tracibility Report" i="fa-solid fa-folder-tree" />
-        <SideNav title="Master Setting" i="fa-solid fa-gears" />
+        <SideNav title="Setting" i="fa-solid fa-gears" />
+        <SideNav title="Logout" i="fa-solid fa-right-from-bracket" />
       </div>
     </>
   );
