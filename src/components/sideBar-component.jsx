@@ -5,10 +5,10 @@ import SideNav from "./sideNav";
 const SideBarLayout = () => {
   return (
     <>
-      <div className="side-nav-container flex flex-col w-60 h-dvh bg-slate-300">
+      <div className="sticky side-nav-container flex flex-col w-48 h-dvh bg-slate-300">
       <div className="logo">
         <img
-          className="object-contain justify-center p-0 ml-4 my-2 h-20 w-50"
+          className="object-contain justify-center p-0  my-2 h-20 w-50"
           src={ValeoLogo} alt="Valeo_Logo_VCDA-M006"
         />
         {/* <span>VCDA-M006</span> */}

@@ -1,5 +1,6 @@
 // import HomePage from "./components-views/Home-Page";
-import MasterSetting from "./components-views/MasterSetting";
+// import MasterSetting from "./components-views/MasterSetting";
+import TracibilityReport from "./components-views/TracibilityReport-Page"
 const ContentLayout = () => {
   return (
     <>
@@ -11,7 +12,8 @@ const ContentLayout = () => {
         </div>
 
         {/* <HomePage /> */}
-        <MasterSetting/>
+        {/* <MasterSetting/> */}
+        <TracibilityReport/>
       </div>
     </>
   );
