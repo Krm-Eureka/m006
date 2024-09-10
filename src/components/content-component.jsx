@@ -1,6 +1,7 @@
-// import HomePage from "./components-views/Home-Page";
-// import MasterSetting from "./components-views/MasterSetting";
+import HomePage from "./components-views/Home-Page";
+import MasterSetting from "./components-views/MasterSetting";
 import TracibilityReport from "./components-views/TracibilityReport-Page"
+import TracibilityStatus from "./components-views/TracibilityStatus-Page";
 const ContentLayout = () => {
   return (
     <>
@@ -11,9 +12,10 @@ const ContentLayout = () => {
           </h4>
         </div>
 
-        {/* <HomePage /> */}
-        {/* <MasterSetting/> */}
+        <HomePage />
+        <MasterSetting/>
         <TracibilityReport/>
+        <TracibilityStatus/>
       </div>
     </>
   );
