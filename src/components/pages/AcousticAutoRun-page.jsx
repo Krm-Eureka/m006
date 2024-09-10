@@ -5,7 +5,7 @@ const AcousticAutoRun = () => {
         <div className="card-content bg-gray-200 ml-4 my-4 rounded-md w-full h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-              Show Process Current of EOLTStation {">>>"} SerialNumber?!!!!!!!!!
+              Show Process Current of Auto EOLTStation {">>>"} SerialNumber?!!!!!!!!!
             </p>
           </div>
           <div className="content flex flex-between p-4 items-center">
