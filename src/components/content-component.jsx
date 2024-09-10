@@ -1,7 +1,8 @@
-import HomePage from "./components-views/Home-Page";
-import MasterSetting from "./components-views/MasterSetting";
-import TracibilityReport from "./components-views/TracibilityReport-Page"
-import TracibilityStatus from "./components-views/TracibilityStatus-Page";
+import AcousticAutoRun from "./pages/AcousticAutoRun-page";
+import HomePage from "./pages/Home-Page";
+// import MasterSetting from "./pages/MasterSetting";
+// import TracibilityReport from "./pages/TracibilityReport-Page"
+// import TracibilityStatus from "./pages/TracibilityStatus-Page";
 const ContentLayout = () => {
   return (
     <>
@@ -13,9 +14,10 @@ const ContentLayout = () => {
         </div>
 
         <HomePage />
-        <MasterSetting/>
+        {/* <MasterSetting/>
         <TracibilityReport/>
-        <TracibilityStatus/>
+        <TracibilityStatus/> */}
+        <AcousticAutoRun/>
       </div>
     </>
   );
