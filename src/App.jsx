@@ -18,7 +18,7 @@ import AcousticManualRun from "./components/pages/AcousticManualRun-Page";
 function App() {
   return (
     <>
-   
+ {/* how to create structure routes for admin, user and public   */}
 
       <Router>
         <Routes>

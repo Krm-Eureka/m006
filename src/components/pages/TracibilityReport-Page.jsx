@@ -270,14 +270,14 @@ const TracibilityReport = () => {
 
   return (
     <>
-      <HeaderLayout />
+      <HeaderLayout page="Tracibility Report" />
       <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">
           <p>Show Process Current of EOLTStation</p>
         </div>
         <div className="flex flex-wrap mx-4 py-2 items-center justify-center">
           <div className="mx-2 mb-2">
-            <label className="block  text-sm font-medium text-gray-700  dark:text-white">
+            <label className="block text-sm font-medium text-gray-700 dark:text-white">
               DeviceID / SerialCode
             </label>
             <input

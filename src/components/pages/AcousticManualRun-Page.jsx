@@ -31,7 +31,7 @@ const smrData = [
 const AcousticManualRun = () => {
   return (
     <>
-      <HeaderLayout />
+      <HeaderLayout page="Acoustic Manual Run" />
       <div className="content h-screen">
         <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">

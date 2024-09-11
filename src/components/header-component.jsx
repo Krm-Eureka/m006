@@ -1,10 +1,12 @@
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 
-const HeaderLayout = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const HeaderLayout = (props) => {
+  const [isOpen, setIsOpen] = useState(true);
 
+  const PAGE = props.page;
   // Toggle sidebar function
   const toggleNav = () => {
     setIsOpen(!isOpen);
@@ -24,7 +26,7 @@ const HeaderLayout = () => {
             <i className="fa-solid fa-bars"></i>
           </button>
           <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium">
-            Stellantis OMNI Microphone Assemblyline
+            Stellantis OMNI Microphone Assemblyline | {PAGE}
           </h4>
         </div>
         <div
@@ -43,42 +45,46 @@ const HeaderLayout = () => {
                 <span className="ml-2">HOME</span>
               </div>
             </button> */}
-              <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              <Link
+                to="/Console/Content_TRCStatus"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-square-poll-vertical"></i>
                   <span className="ml-2">Tracibility Status</span>
                 </div>
-              </button>
-              <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              </Link>
+              <Link to="/Console/Content_ACT-AutoRun"
+              className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-circle-play"></i>
                   <span className="ml-2">AcousticAutoRun</span>
                 </div>
-              </button>
-              <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              </Link >
+              <Link to="/Console/Content_ACT-ManualRun" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-file-contract"></i>
                   <span className="ml-2">AcousticManualRun</span>
                 </div>
-              </button>
-              <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              </Link>
+              <Link to="/Console/Content_ACT-TestReport" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-file-audio"></i>
                   <span className="ml-2">AcousticTestReport</span>
                 </div>
-              </button>
-              <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              </Link>
+              <Link to="/Console/Content_TRCReport" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-folder-tree"></i>
                   <span className="ml-2">Tracibility Report</span>
                 </div>
-              </button>
-              <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              </Link>
+              <Link to="/Console/Content_Setting" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-gears"></i>
                   <span className="ml-2">Setting</span>
                 </div>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -86,7 +92,7 @@ const HeaderLayout = () => {
     </>
   );
 };
-// HeaderLayout.propTypes = {
-//   isOpen: PropTypes.bool.isRequired,
-// };
+HeaderLayout.propTypes = {
+  page: PropTypes.string.isRequired,
+};
 export default HeaderLayout;

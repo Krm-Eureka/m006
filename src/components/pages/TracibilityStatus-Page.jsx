@@ -31,7 +31,7 @@ const smrData = [
 const TracibilityStatus = () => {
   return (
     <>
-    <HeaderLayout/>
+    <HeaderLayout page="Tracibility Status"/>
       <div className="content">
         {/* <div className="flex flex-between flex-wrap justify-start"> */}
         <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
