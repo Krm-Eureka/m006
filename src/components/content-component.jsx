@@ -12,7 +12,7 @@ import TracibilityStatus from "./pages/TracibilityStatus-Page";
 
 const ContentLayout = () => {
   // State to control sidebar visibility
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Toggle sidebar function
   const toggleSidebar = () => {
@@ -21,38 +21,41 @@ const ContentLayout = () => {
 
   return (
     <>
-   <div className="flex h-screen">
-      
-      <div className={`bg-white flex-1 px-4 py-4 md:px-8 md:py-6 transition-all duration-300 w-screen h-screen overflow-x-auto`} >
-        <div className="flex items-center">
-          {/* {!isSidebarOpen && ( */}
-            <div className="logo">
-              <img
-                className="object-contain justify-center p-0 my-2 h-20 w-50"
-                src={ValeoLogo}
-                alt="Valeo_Logo_VCDA-M006"
-              />
+      <div className="flex h-screen">
+        <div
+          className={`bg-white flex-1 px-4 py-4 md:px-2 md:py-2 md:w-1000px transition-all duration-300 w-screen h-screen overflow-x-auto`}
+        >
+          <div className="flex flex-col">
+            <div className="flex items-center">
+              {/* {!isSidebarOpen && ( */}
+              <div className="logo">
+                <img
+                  className="object-contain justify-center p-0 my-2 h-20 w-50"
+                  src={ValeoLogo}
+                  alt="Valeo_Logo_VCDA-M006"
+                />
+              </div>
+              {/* )} */}
+              <button className="text-gray-800 p-4" onClick={toggleSidebar}>
+                <i className="fa-solid fa-bars"></i>
+              </button>
+              <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium">
+                Stellantis OMNI Microphone Assemblyline
+              </h4>
             </div>
-          {/* )} */}
-          <button className="text-gray-800 p-4" onClick={toggleSidebar}>
-            <i className="fa-solid fa-bars"></i>
-          </button>
-          <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium">
-            Stellantis OMNI Microphone Assemblyline
-          </h4>
-        </div>
+            <HomePage isOpen={isSidebarOpen} />
+          </div>
 
-        {/* Render your content here */}
-        {/* <ErrorPage/> */}
-        {/* <LoginPage /> */}
-        <HomePage isOpen={isSidebarOpen}/>
-        {/* <Setting /> */}
-        <TracibilityReport />
-        {/* <TracibilityStatus />
-        <AcousticAutoRun />
-        <AcousticManualRun /> */}
+          {/* Render your content here */}
+          {/* <ErrorPage/> */}
+          {/* <LoginPage /> */}
+          {/* <Setting /> */}
+          {/* <TracibilityReport /> */}
+          {/* <TracibilityStatus />
+        <AcousticAutoRun /> */}
+          <AcousticManualRun />
+        </div>
       </div>
-    </div>
     </>
   );
 };

@@ -124,10 +124,13 @@ const TracibilityReport = () => {
 
   return (
     <>
-      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 p-4 rounded-md w-90% h-fit">
+      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+      <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+            <p>Show Process Current of EOLTStation</p>
+          </div>
         <div className="search flex items-center">
           <div className="mx-2 mb-2">
-            <label className="block mb-2 text-sm font-medium text-red-700 dark:text-white">
+            <label className="block mb-2 text-sm font-medium text-gray-700 pt-2 dark:text-white">
               DeviceID / SerialCode
             </label>
             <input
@@ -145,7 +148,7 @@ const TracibilityReport = () => {
           </button>
         </div>
 
-        <div className="table ">
+        <div className="table">
           <Paper
             sx={{
               width: "100%",
@@ -155,20 +158,21 @@ const TracibilityReport = () => {
                 maxWidth: "35%",
               },
               "@media (min-width:800px)": {
-                maxWidth: "39%",
+                maxWidth: "40%",
+                margin:2
               },
               "@media (min-width:1000px)": {
                 minWidth: "40%",
-                maxWidth: "50%",
+                maxWidth: "70%",
               },
               "@media (min-width:1200px)": {
-                minWidth: "51%",
-                maxWidth: "68%",
+                minWidth: "71%",
+                maxWidth: "86%",
               },
-              "@media (min-width:1500px)": {
-                minWidth: "69%",
-                maxWidth: "76%",
-              },
+              // "@media (min-width:1500px)": {
+              //   minWidth: "81%",
+              //   maxWidth: "76%",
+              // },
               "@media (min-width:1900px)": {
                 minWidth: "87%",
                 maxWidth: "98.5%",
