@@ -283,15 +283,15 @@ const TraceabilityReport = () => {
             <input
               type="text"
               id="DeviceID_SerialCode"
-              className="w-60 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="sm:min-w-20 md:min-w-60 lg:min-w-80 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="DeviceID / SerialCode"
             />
           </div>
-          <div className="justify-items-center">
-            <button className="mx-2  py-1 px-2 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
+          <div className="justify-items-center mx-2 mt-3">
+            <button className="mx-2 my-1 py-1 px-2 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
               EXPORT
             </button>
-            <button className="mx-2  py-1 px-2 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
+            <button className="mx-2 my-1 py-1 px-2 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
               CLEAR
             </button>
           </div>
@@ -326,6 +326,16 @@ const TraceabilityReport = () => {
             },
           }}
         >
+          {" "}
+          <TablePagination
+            rowsPerPageOptions={[ 5, 10, 20, 50]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow className="">
@@ -353,15 +363,6 @@ const TraceabilityReport = () => {
                 ))}
             </TableBody>
           </Table>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 20, 50]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
         </TableContainer>
       </div>
     </>

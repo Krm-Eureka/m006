@@ -1,15 +1,35 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 
 const HeaderLayout = (props) => {
   const [isOpen, setIsOpen] = useState(true);
-
+  const timeoutRef = useRef(null);
   const PAGE = props.page;
   // Toggle sidebar function
+  // const toggleNav = () => {
+  //   setIsOpen(!isOpen);
+  //   setInterval(4000)
+  // };
   const toggleNav = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prevIsOpen) => {
+      if (!prevIsOpen) {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => {
+          setIsOpen(false);
+        }, 5000);
+      } else {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      }
+
+      // Return the opposite of the current state to toggle it
+      return !prevIsOpen;
+    });
   };
   return (
     <>
@@ -54,32 +74,46 @@ const HeaderLayout = (props) => {
                   <span className="ml-2">Traceability Status</span>
                 </div>
               </Link>
-              <Link to="/Console/Content_ACT-AutoRun"
-              className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              <Link
+                to="/Console/Content_ACT-AutoRun"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-circle-play"></i>
                   <span className="ml-2">AcousticAutoRun</span>
                 </div>
-              </Link >
-              <Link to="/Console/Content_ACT-ManualRun" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              </Link>
+              <Link
+                to="/Console/Content_ACT-ManualRun"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-file-contract"></i>
                   <span className="ml-2">AcousticManualRun</span>
                 </div>
               </Link>
-              <Link to="/Console/Content_ACT-TestReport" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              <Link
+                to="/Console/Content_ACT-TestReport"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-file-audio"></i>
                   <span className="ml-2">AcousticTestReport</span>
                 </div>
               </Link>
-              <Link to="/Console/Content_TRCReport" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              <Link
+                to="/Console/Content_TRCReport"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-folder-tree"></i>
                   <span className="ml-2">Traceability Report</span>
                 </div>
               </Link>
-              <Link to="/Console/Content_Setting" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
+              <Link
+                to="/Console/Content_Setting"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-gears"></i>
                   <span className="ml-2">Setting</span>
