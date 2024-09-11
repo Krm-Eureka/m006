@@ -20,7 +20,7 @@ const LoginPage = () => {
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h3 className="text-md text-center text-3xl  font-semibold leading-tight tracking-tight text-gray-900 md:text-md dark:text-white">
                 {/* Stellantis OMNI Microphone Assemblyline System */}
-                EOLT Tracibility System
+                EOLT Traceability System
               </h3>
               <form className="space-y-4 md:space-y-6" action="#">
                 <div>

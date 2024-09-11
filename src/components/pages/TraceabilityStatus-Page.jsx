@@ -28,10 +28,10 @@ const smrData = [
   createSmrData("Frequency", "-", "-", "-", "-"),
 ];
 
-const TracibilityStatus = () => {
+const TraceabilityStatus = () => {
   return (
     <>
-    <HeaderLayout page="Tracibility Status"/>
+    <HeaderLayout page="Traceability Status"/>
       <div className="content">
         {/* <div className="flex flex-between flex-wrap justify-start"> */}
         <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
@@ -95,7 +95,7 @@ const TracibilityStatus = () => {
         <div className="flex mx-2">
           <div className=" text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
-              <p>Show Data Run Sumary</p>
+              <p>Show Data Run Summary</p>
             </div>
             <div className="content flex flex-between p-4 items-center">
               <div className=" flex flex-between flex-wrap justify-start">
@@ -223,4 +223,4 @@ const TracibilityStatus = () => {
   );
 };
 
-export default TracibilityStatus;
+export default TraceabilityStatus;

@@ -44,10 +44,10 @@ const columns = [
   { id: "THDResult", label: "THD Result" },
   { id: "THDJud", label: "THD Judgment" },
   { id: "Name4", label: "Name 4" },
-  { id: "Maesurement4", label: "Measurement 4" },
+  { id: "Measurement4", label: "Measurement 4" },
   { id: "Status4", label: "Status 4" },
   { id: "Flag", label: "Flag" },
-  { id: "CraeteDate", label: "Create Date" },
+  { id: "CreateDate", label: "Create Date" },
 ];
 
 function createData(
@@ -66,10 +66,10 @@ function createData(
   THDResult,
   THDJud,
   Name4,
-  Maesurement4,
+  Measurement4,
   Status4,
   Flag,
-  CraeteDate
+  CreateDate
 ) {
   return {
     id,
@@ -87,10 +87,10 @@ function createData(
     THDResult,
     THDJud,
     Name4,
-    Maesurement4,
+    Measurement4,
     Status4,
     Flag,
-    CraeteDate,
+    CreateDate,
   };
 }
 
@@ -255,7 +255,7 @@ const rows = [
 //   },
 // });
 
-const TracibilityReport = () => {
+const TraceabilityReport = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -270,7 +270,7 @@ const TracibilityReport = () => {
 
   return (
     <>
-      <HeaderLayout page="Tracibility Report" />
+      <HeaderLayout page="Traceability Report" />
       <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">
           <p>Show Process Current of EOLTStation</p>
@@ -368,4 +368,4 @@ const TracibilityReport = () => {
   );
 };
 
-export default TracibilityReport;
+export default TraceabilityReport;

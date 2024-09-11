@@ -51,7 +51,7 @@ const HeaderLayout = (props) => {
               >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-square-poll-vertical"></i>
-                  <span className="ml-2">Tracibility Status</span>
+                  <span className="ml-2">Traceability Status</span>
                 </div>
               </Link>
               <Link to="/Console/Content_ACT-AutoRun"
@@ -76,7 +76,7 @@ const HeaderLayout = (props) => {
               <Link to="/Console/Content_TRCReport" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-folder-tree"></i>
-                  <span className="ml-2">Tracibility Report</span>
+                  <span className="ml-2">Traceability Report</span>
                 </div>
               </Link>
               <Link to="/Console/Content_Setting" className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white ">
