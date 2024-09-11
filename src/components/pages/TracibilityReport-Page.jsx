@@ -1,33 +1,52 @@
 import * as React from "react";
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
-import { styled } from "@mui/material/styles";
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 const columns = [
-  { id: "Device", label: "Device", width: "15%" },
-  { id: "Date", label: "Date", width: "15%" },
-  { id: "TotalStatus", label: "Total Status", width: "15%" },
-  { id: "Current", label: "Current", width: "10%" },
-  { id: "CurrentJud", label: "Current Judgment", width: "10%" },
-  { id: "Sensitivity", label: "Sensitivity", width: "10%" },
-  { id: "SensitivityJud", label: "Sensitivity Judgment", width: "10%" },
-  { id: "THD", label: "THD", width: "10%" },
-  { id: "THDName", label: "THD Name", width: "15%" },
-  { id: "THDMin", label: "THD Min", width: "10%" },
-  { id: "THDMax", label: "THD Max", width: "10%" },
-  { id: "THDResult", label: "THD Result", width: "15%" },
-  { id: "THDJud", label: "THD Judgment", width: "15%" },
-  { id: "Name4", label: "Name 4", width: "15%" },
-  { id: "Maesurement4", label: "Measurement 4", width: "15%" },
-  { id: "Status4", label: "Status 4", width: "10%" },
-  { id: "Flag", label: "Flag", width: "10%" },
-  { id: "CraeteDate", label: "Create Date", width: "15%" },
+  { id: "Device", label: "Device" },
+  { id: "Date", label: "Date" },
+  { id: "TotalStatus", label: "Total Status" },
+  { id: "Current", label: "Current" },
+  { id: "CurrentJud", label: "Current Judgment" },
+  { id: "Sensitivity", label: "Sensitivity" },
+  { id: "SensitivityJud", label: "Sensitivity Judgment" },
+  { id: "THD", label: "THD" },
+  { id: "THDName", label: "THD Name" },
+  { id: "THDMin", label: "THD Min" },
+  { id: "THDMax", label: "THD Max" },
+  { id: "THDResult", label: "THD Result" },
+  { id: "THDJud", label: "THD Judgment" },
+  { id: "Name4", label: "Name 4" },
+  { id: "Maesurement4", label: "Measurement 4" },
+  { id: "Status4", label: "Status 4" },
+  { id: "Flag", label: "Flag" },
+  { id: "CraeteDate", label: "Create Date" },
 ];
 
 function createData(
@@ -96,18 +115,144 @@ const rows = [
     "Flag A",
     "2024-09-01"
   ),
+  createData(
+    2,
+    "Device A",
+    "2024-09-10",
+    "Status 1",
+    10,
+    "Good",
+    0.5,
+    "High",
+    2.0,
+    "THD 1",
+    0.1,
+    5.0,
+    "Pass",
+    "Judged",
+    "Name 4",
+    "Measurement 4",
+    "Status 4",
+    "Flag A",
+    "2024-09-01"
+  ),
+  createData(
+    3,
+    "Device A",
+    "2024-09-10",
+    "Status 1",
+    10,
+    "Good",
+    0.5,
+    "High",
+    2.0,
+    "THD 1",
+    0.1,
+    5.0,
+    "Pass",
+    "Judged",
+    "Name 4",
+    "Measurement 4",
+    "Status 4",
+    "Flag A",
+    "2024-09-01"
+  ),
+  createData(
+    4,
+    "Device A",
+    "2024-09-10",
+    "Status 1",
+    10,
+    "Good",
+    0.5,
+    "High",
+    2.0,
+    "THD 1",
+    0.1,
+    5.0,
+    "Pass",
+    "Judged",
+    "Name 4",
+    "Measurement 4",
+    "Status 4",
+    "Flag A",
+    "2024-09-01"
+  ),
+  createData(
+    5,
+    "Device A",
+    "2024-09-10",
+    "Status 1",
+    10,
+    "Good",
+    0.5,
+    "High",
+    2.0,
+    "THD 1",
+    0.1,
+    5.0,
+    "Pass",
+    "Judged",
+    "Name 4",
+    "Measurement 4",
+    "Status 4",
+    "Flag A",
+    "2024-09-01"
+  ),
+  createData(
+    6,
+    "Device A",
+    "2024-09-10",
+    "Status 1",
+    10,
+    "Good",
+    0.5,
+    "High",
+    2.0,
+    "THD 1",
+    0.1,
+    5.0,
+    "Pass",
+    "Judged",
+    "Name 4",
+    "Measurement 4",
+    "Status 4",
+    "Flag A",
+    "2024-09-01"
+  ),
+  createData(
+    7,
+    "Device A",
+    "2024-09-10",
+    "Status 1",
+    10,
+    "Good",
+    0.5,
+    "High",
+    2.0,
+    "THD 1",
+    0.1,
+    5.0,
+    "Pass",
+    "Judged",
+    "Name 4",
+    "Measurement 4",
+    "Status 4",
+    "Flag A",
+    "2024-09-01"
+  ),
   // Add more data rows here as needed
 ];
 
-const ResponsiveTableContainer = styled(TableContainer)({
-  overflowX: "scroll",
-  "@media (max-width: 600px)": {
-    fontSize: "0.75rem",
-  },
-  "@media (min-width: 300px) and (max-width: 500px)": {
-    fontSize: "0.85rem",
-  },
-});
+// const ResponsiveTableContainer = styled(TableContainer)({
+//   overflowX: "auto",
+//   "@media (max-width: 600px)": {
+//     fontSize: "0.75rem",
+//   },
+//   "@media (min-width: 300px) and (max-width: 500px)": {
+//     fontSize: "0.85rem",
+//   },
+// });
 
 const TracibilityReport = () => {
   const [page, setPage] = React.useState(0);
@@ -125,10 +270,10 @@ const TracibilityReport = () => {
   return (
     <>
       <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-      <div className="title bg-green-500 p-2 rounded-t-md font-bold">
-            <p>Show Process Current of EOLTStation</p>
-          </div>
-        <div className="search flex items-center">
+        <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+          <p>Show Process Current of EOLTStation</p>
+        </div>
+        <div className="search flex flex-wrap py-2 items-center">
           <div className="mx-2 mb-2">
             <label className="block mb-2 text-sm font-medium text-gray-700 pt-2 dark:text-white">
               DeviceID / SerialCode
@@ -140,98 +285,80 @@ const TracibilityReport = () => {
               placeholder="DeviceID / SerialCode"
             />
           </div>
-          <button className="mx-2 mt-4 py-2 px-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
+          <button className="mx-2 mt-2 py-2 px-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
             EXPORT
           </button>
-          <button className="mx-2 mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
+          <button className="mx-2 mt-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
             CLEAR
           </button>
         </div>
-
-        <div className="table">
-          <Paper
-            sx={{
-              width: "100%",
-              overflow: "scroll ",
-
-              "@media (min-width:750px)": {
-                maxWidth: "35%",
-              },
-              "@media (min-width:800px)": {
-                maxWidth: "40%",
-                margin:2
-              },
-              "@media (min-width:1000px)": {
-                minWidth: "40%",
-                maxWidth: "70%",
-              },
-              "@media (min-width:1200px)": {
-                minWidth: "71%",
-                maxWidth: "86%",
-              },
-              // "@media (min-width:1500px)": {
-              //   minWidth: "81%",
-              //   maxWidth: "76%",
-              // },
-              "@media (min-width:1900px)": {
-                minWidth: "87%",
-                maxWidth: "98.5%",
-              },
-            }}
-          >
-            <ResponsiveTableContainer>
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        align="left"
-                        style={{ width: column.width }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.id}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell
-                              key={column.id}
-                              align="left"
-                              style={{ width: column.width }}
-                            >
-                              {value}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </ResponsiveTableContainer>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Paper>
-        </div>
+        <TableContainer
+          component={Paper}
+          sx={{
+            maxWidth: "98%",
+            marginX: 1.5,
+            "@media (min-width:750px)": {
+              maxWidth: "35%",
+            },
+            "@media (min-width:800px)": {
+              maxWidth: "96%",
+              margin: 2,
+            },
+            "@media (min-width:1000px)": {
+              // minWidth: "40%",
+              maxWidth: "97%",
+            },
+            "@media (min-width:1200px)": {
+              // minWidth: "71%",
+              maxWidth: "70%",
+            },
+            // "@media (min-width:1500px)": {
+            //   minWidth: "81%",
+            //   maxWidth: "76%",
+            // },
+            "@media (min-width:1900px)": {
+              // minWidth: "87%",
+              maxWidth: "98.5%",
+            },
+          }}
+        >
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow className="">
+                {columns.map((column) => (
+                  <StyledTableCell key={column.id}>
+                    {column.label}
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <StyledTableRow key={row.id}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <StyledTableCell key={column.id} align="left">
+                          {value}
+                        </StyledTableCell>
+                      );
+                    })}
+                  </StyledTableRow>
+                ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20, 50]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </TableContainer>
       </div>
     </>
   );

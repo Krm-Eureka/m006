@@ -5,13 +5,13 @@ const LoginPage = () => {
     <>
       {/* <div className="content items-center justify-center"> */}
       {/* <section className="bg-gray-50 dark:bg-gray-900"> */}
-        <div className="flex flex-col items-center justify-center  mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center justify-center  mx-10 md:h-screen lg:py-0">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <img
-              className="w-40 h-20 "
+              className="w-40 h-20 pt-4"
               src={ValeoLogo}
               alt="Valeo_Logo_VCDA-M006"
             />

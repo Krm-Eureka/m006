@@ -1,4 +1,5 @@
-import { useState } from "react";
+// import { useState } from "react";
+import PropTypes from "prop-types";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 import SideNav from "./sideNav";
 
@@ -33,5 +34,7 @@ const SideBarLayout = ({ isOpen }) => {
     </>
   );
 };
-
+SideBarLayout.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+};
 export default SideBarLayout;
