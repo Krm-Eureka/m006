@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import HeaderLayout from "../Header-Component";
 
 function createLstStatus(SerialCode, Result) {
   return { SerialCode, Result };
@@ -30,6 +31,7 @@ const smrData = [
 const TracibilityStatus = () => {
   return (
     <>
+    <HeaderLayout/>
       <div className="content">
         {/* <div className="flex flex-between flex-wrap justify-start"> */}
         <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">

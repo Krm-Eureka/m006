@@ -1,6 +1,10 @@
+import HeaderLayout from "../Header-Component";
+
+
 const MasterSetting = () => {
   return (
     <>
+    <HeaderLayout/>
       <div className=" flex flex-wrap bg-gray-300 m-4 p-2 rounded-md w-90% h-fit">
         <div className="card-content bg-gray-200 m-2 rounded-md w-fit h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">

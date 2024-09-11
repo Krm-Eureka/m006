@@ -8,6 +8,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import HeaderLayout from "../Header-Component";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -269,13 +270,14 @@ const TracibilityReport = () => {
 
   return (
     <>
+      <HeaderLayout />
       <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">
           <p>Show Process Current of EOLTStation</p>
         </div>
-        <div className="search flex flex-wrap py-2 items-center">
+        <div className="flex flex-wrap mx-4 py-2 items-center justify-center">
           <div className="mx-2 mb-2">
-            <label className="block mb-2 text-sm font-medium text-gray-700 pt-2 dark:text-white">
+            <label className="block  text-sm font-medium text-gray-700  dark:text-white">
               DeviceID / SerialCode
             </label>
             <input
@@ -285,12 +287,14 @@ const TracibilityReport = () => {
               placeholder="DeviceID / SerialCode"
             />
           </div>
-          <button className="mx-2 mt-2 py-2 px-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
-            EXPORT
-          </button>
-          <button className="mx-2 mt-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
-            CLEAR
-          </button>
+          <div className="justify-items-center">
+            <button className="mx-2  py-1 px-2 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
+              EXPORT
+            </button>
+            <button className="mx-2  py-1 px-2 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
+              CLEAR
+            </button>
+          </div>
         </div>
         <TableContainer
           component={Paper}

@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import HeaderLayout from "../Header-Component";
 
 function createLstStatus(SerialCode, Result) {
   return { SerialCode, Result };
@@ -30,8 +31,9 @@ const smrData = [
 const AcousticManualRun = () => {
   return (
     <>
-      <div className="content">
-      <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+      <HeaderLayout />
+      <div className="content h-screen">
+        <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>Show Process Current of Manual EOLTStation {">>>"}</p>
           </div>
@@ -50,61 +52,63 @@ const AcousticManualRun = () => {
                 RUN
               </button>
             </form>
-            <div className="content flex flex-between p-4 items-center">
-            <div className=" flex flex-between flex-wrap justify-start">
-              <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
-                <i className="fa-solid fa-microphone mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>AcousticTest</p>
-                  <p>PASS</p>
+            <div className="content flex flex-between flex-wrap p-4 items-center">
+              <div className=" flex flex-between flex-wrap justify-start">
+                <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
+                  <i className="fa-solid fa-microphone mr-4 text-3xl justify-center mt-2"></i>
+                  <div className="flex flex-col text-center align-middle">
+                    <p>AcousticTest</p>
+                    <p>PASS</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className=" justify-start">
-              <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
-                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>Current</p>
-                  <p>PASS</p>
+              <div className=" justify-start">
+                <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
+                  <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
+                  <div className="flex flex-col text-center align-middle">
+                    <p>Current</p>
+                    <p>PASS</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className=" justify-start">
-              <div className={`box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black`}>
-                <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>LaserMark</p>
-                  <p>PASS</p>
-                  {/* {status == "PASS" ? (
+              <div className=" justify-start">
+                <div
+                  className={`box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black`}
+                >
+                  <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
+                  <div className="flex flex-col text-center align-middle">
+                    <p>LaserMark</p>
+                    <p>PASS</p>
+                    {/* {status == "PASS" ? (
                     <p className="text-green-700 font-semibold">PASS</p>
                   ) : (
                     <p className="text-red-700 font-semibold">FAIL</p>
                   )} */}
+                  </div>
+                </div>
+              </div>
+              <div className="  justify-start">
+                <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
+                  <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
+                  <div className="flex flex-col text-center align-middle">
+                    <p>QRCode</p>
+                    <p>PASS</p>
+                  </div>
+                </div>
+              </div>
+              <div className="  justify-start">
+                <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
+                  <i className="fa-solid fa-border-all mr-4 text-3xl justify-center mt-2"></i>
+                  <div className="flex flex-col text-center align-middle">
+                    <p>Total Status</p>
+                    <p>PASS</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="  justify-start">
-              <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
-                <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>QRCode</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-            <div className="  justify-start">
-              <div className="box flex bg-gray-400 p-4 mr-2 rounded-lg w-40 text-black">
-                <i className="fa-solid fa-border-all mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>Total Status</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-          </div>
           </div>
         </div>
-        <div className="flex flex-row mx-2">
+        <div className="flex mx-2">
           <div className=" text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>Show Data Run Sumary</p>
@@ -228,8 +232,8 @@ const AcousticManualRun = () => {
                 </TableContainer>
               </div>
             </div>
-            </div>
-            </div>
+          </div>
+        </div>
       </div>
     </>
   );
