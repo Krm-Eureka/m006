@@ -9,6 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-Component";
+import Swal from "sweetalert2";
+import * as XLSX from "xlsx";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -223,7 +225,7 @@ const rows = [
   ),
   createData(
     7,
-    "Device A",
+    "Device B",
     "2024-09-10",
     "Status 1",
     10,
@@ -257,8 +259,35 @@ const rows = [
 
 const TraceabilityReport = () => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  // Filter the rows based on the search term
+  // Filter rows based on search term
+  const filteredRows = rows.filter((row) =>
+    Object.values(row).some((value) =>
+      String(value).toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  // Export filtered data to Excel
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredRows);
+    const workbook = XLSX.utils.book_new();
+    console.log(workbook);
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
+    XLSX.writeFile(workbook, "traceability_report.xlsx");
+  };
+  const exportAllToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredRows); // Convert filtered rows to Excel format
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
+    XLSX.writeFile(workbook, "traceability_report.xlsx");
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -277,60 +306,43 @@ const TraceabilityReport = () => {
         </div>
         <div className="flex flex-wrap mx-4 py-2 items-center justify-center">
           <div className="mx-2 mb-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-white">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
               DeviceID / SerialCode
             </label>
             <input
               type="text"
               id="DeviceID_SerialCode"
-              className="sm:min-w-20 md:min-w-60 lg:min-w-80 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              value={searchTerm} // Bind the input value to searchTerm state
+              onChange={handleSearchChange} // Handle input changes
+              className="sm:min-w-20 md:min-w-60 lg:min-w-80 p-2.5 m-4 rounded-md w-80 h-10 mx-2 bg-gray-50 dark:text-gray-900 dark:border-gray-600 dark:placeholder-gray-400"
               placeholder="DeviceID / SerialCode"
             />
           </div>
           <div className="justify-items-center mx-2 mt-3">
-            <button className="mx-2 my-1 py-1 px-2 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn">
+            <button
+              disabled={!searchTerm}
+              onClick={exportToExcel}
+              className={`mx-2 my-1 py-1 px-2 ${!searchTerm ? "hidden" : ""} bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn`}
+            >
               EXPORT
             </button>
-            <button className="mx-2 my-1 py-1 px-2 bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
+            <button
+            disabled={searchTerm}
+              onClick={exportToExcel}
+              className={`mx-2 my-1 py-1 px-2 ${searchTerm ? "hidden" : ""} bg-yellow-500 hover:bg-yellow-600 text-gray-900 hover:text-white h-fit w-fit border border-yellow-500 rounded-btn`}
+            >
+              EXPORT ALL
+            </button>
+            <button className={`mx-2 my-1 py-1 px-2 ${!searchTerm ? "hidden" : ""} bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border border-red-500 rounded-btn`}>
               CLEAR
             </button>
           </div>
         </div>
-        <TableContainer
-          component={Paper}
-          sx={{
-            maxWidth: "98%",
-            marginX: 1.5,
-            "@media (min-width:750px)": {
-              maxWidth: "35%",
-            },
-            "@media (min-width:800px)": {
-              maxWidth: "96%",
-              margin: 2,
-            },
-            "@media (min-width:1000px)": {
-              // minWidth: "40%",
-              maxWidth: "97%",
-            },
-            "@media (min-width:1200px)": {
-              // minWidth: "71%",
-              maxWidth: "70%",
-            },
-            // "@media (min-width:1500px)": {
-            //   minWidth: "81%",
-            //   maxWidth: "76%",
-            // },
-            "@media (min-width:1900px)": {
-              // minWidth: "87%",
-              maxWidth: "98.5%",
-            },
-          }}
-        >
-          {" "}
+        <TableContainer component={Paper}>
           <TablePagination
-            rowsPerPageOptions={[ 5, 10, 20, 50]}
+            rowsPerPageOptions={[5, 10, 20, 50]}
             component="div"
-            count={rows.length}
+            count={filteredRows.length} // Use the length of the filtered rows
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -338,7 +350,7 @@ const TraceabilityReport = () => {
           />
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
-              <TableRow className="">
+              <TableRow>
                 {columns.map((column) => (
                   <StyledTableCell key={column.id}>
                     {column.label}
@@ -347,7 +359,7 @@ const TraceabilityReport = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {filteredRows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <StyledTableRow key={row.id}>

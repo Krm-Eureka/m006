@@ -42,10 +42,10 @@ const HeaderLayout = (props) => {
               alt="Valeo_Logo_VCDA-M006"
             />
           </div>
-          <button className="text-gray-800 p-4" onClick={toggleNav}>
+          <button className="text-gray-800 p-4 dark:text-white" onClick={toggleNav}>
             <i className="fa-solid fa-bars"></i>
           </button>
-          <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium">
+          <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-white">
             Stellantis OMNI Microphone Assemblyline | {PAGE}
           </h4>
         </div>
