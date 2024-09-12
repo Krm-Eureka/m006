@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import ValeoLogo from "../../assets/Valeo_Logo.png";
 
 const LoginPage = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -13,20 +24,46 @@ const LoginPage = () => {
       (userName === "123" && password === "123") ||
       (userName === "321" && password === "321")
     ) {
-      Swal.fire("Login Successful", "Welcome!", "success").then(() => {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "กำลังเข้าสู่ระบบ",
+      }).then(() => {
         // Redirect or take some action on success
         console.log("Logged in!");
       });
     } else {
-      Swal.fire("Login Failed", "Invalid username or password", "error");
+      Toast.fire({
+        icon: "error",
+        title: "กำลังเข้าสู่ระบบ",
+      }).then(() => {
+        // Redirect or take some action on success
+        console.log("Log in Fail!");
+      });
     }
   };
- 
 
   return (
     <div className="flex flex-col items-center justify-center mx-10 md:h-screen lg:py-0">
-      <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-        <img className="w-40 h-20 pt-4" src={ValeoLogo} alt="Valeo_Logo_VCDA-M006" />
+      <a
+        href="#"
+        className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+      >
+        <img
+          className="w-40 h-20 pt-4"
+          src={ValeoLogo}
+          alt="Valeo_Logo_VCDA-M006"
+        />
       </a>
       <div className="w-full bg-gray-200 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -35,7 +72,10 @@ const LoginPage = () => {
           </h3>
           <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
             <div>
-              <label htmlFor="userName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label
+                htmlFor="userName"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
                 UserName
               </label>
               <input
@@ -50,7 +90,10 @@ const LoginPage = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
                 Password
               </label>
               <input
@@ -75,7 +118,10 @@ const LoginPage = () => {
                   />
                 </div>
                 <div className="ml-3 text-sm">
-                  <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">
+                  <label
+                    htmlFor="remember"
+                    className="text-gray-500 dark:text-gray-300"
+                  >
                     Remember me
                   </label>
                 </div>
