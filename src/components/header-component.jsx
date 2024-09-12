@@ -59,12 +59,6 @@ const HeaderLayout = (props) => {
           </div>
           <div className="content p-1 items-center">
             <div className=" flex flex-between flex-wrap justify-start">
-              {/* <button className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white">
-              <div className="items-center px-2">
-                <i className="text-xl fa-solid fa-house"></i>
-                <span className="ml-2">HOME</span>
-              </div>
-            </button> */}
               <Link
                 to="/Console/Content_TRCStatus"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
