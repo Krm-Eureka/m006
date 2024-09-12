@@ -9,7 +9,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-Component";
-import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -277,17 +276,16 @@ const TraceabilityReport = () => {
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(filteredRows);
     const workbook = XLSX.utils.book_new();
-    console.log(workbook);
-
+    // console.log(workbook)
     XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
     XLSX.writeFile(workbook, "traceability_report.xlsx");
   };
-  const exportAllToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredRows); // Convert filtered rows to Excel format
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
-    XLSX.writeFile(workbook, "traceability_report.xlsx");
-  };
+  // const exportAllToExcel = () => {
+  //   const worksheet = XLSX.utils.json_to_sheet(filteredRows); // Convert filtered rows to Excel format
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
+  //   XLSX.writeFile(workbook, "traceability_report.xlsx");
+  // };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -322,18 +320,26 @@ const TraceabilityReport = () => {
             <button
               disabled={!searchTerm}
               onClick={exportToExcel}
-              className={`mx-2 my-1 py-1 px-2 ${!searchTerm ? "hidden" : ""} bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn`}
+              className={`mx-2 my-1 py-1 px-2 ${
+                !searchTerm ? "hidden" : ""
+              } bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn`}
             >
               EXPORT
             </button>
             <button
-            disabled={searchTerm}
+              disabled={searchTerm}
               onClick={exportToExcel}
-              className={`mx-2 my-1 py-1 px-2 ${searchTerm ? "hidden" : ""} bg-yellow-500 hover:bg-yellow-600 text-gray-900 hover:text-white h-fit w-fit border border-yellow-500 rounded-btn`}
+              className={`mx-2 my-1 py-1 px-2 ${
+                searchTerm ? "hidden" : ""
+              } bg-yellow-500 hover:bg-yellow-600 text-gray-900 hover:text-white h-fit w-fit border border-yellow-500 rounded-btn`}
             >
               EXPORT ALL
             </button>
-            <button className={`mx-2 my-1 py-1 px-2 ${!searchTerm ? "hidden" : ""} bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border border-red-500 rounded-btn`}>
+            <button
+              className={`mx-2 my-1 py-1 px-2 ${
+                !searchTerm ? "hidden" : ""
+              } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border border-red-500 rounded-btn`}
+            >
               CLEAR
             </button>
           </div>
