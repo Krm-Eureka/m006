@@ -33,7 +33,7 @@ const HeaderLayout = (props) => {
   };
   return (
     <>
-      <div className="flex flex-col sticky">
+      <div className="flex flex-col fixed">
         <div className="flex items-center">
           <div className="logo">
             <img
