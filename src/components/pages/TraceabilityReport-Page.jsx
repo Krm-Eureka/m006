@@ -322,7 +322,7 @@ const TraceabilityReport = () => {
               onClick={exportToExcel}
               className={`mx-2 my-1 py-1 px-2 ${
                 !searchTerm ? "hidden" : ""
-              } bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border border-green-500 rounded-btn`}
+              } bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border  rounded-btn`}
             >
               EXPORT
             </button>
@@ -331,14 +331,14 @@ const TraceabilityReport = () => {
               onClick={exportToExcel}
               className={`mx-2 my-1 py-1 px-2 ${
                 searchTerm ? "hidden" : ""
-              } bg-yellow-500 hover:bg-yellow-600 text-gray-900 hover:text-white h-fit w-fit border border-yellow-500 rounded-btn`}
+              } bg-blue-500 hover:bg-blue-600 text-gray-900 hover:text-white h-fit w-fit border  rounded-btn`}
             >
               EXPORT ALL
             </button>
             <button
               className={`mx-2 my-1 py-1 px-2 ${
                 !searchTerm ? "hidden" : ""
-              } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border border-red-500 rounded-btn`}
+              } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border  rounded-btn`}
             >
               CLEAR
             </button>
