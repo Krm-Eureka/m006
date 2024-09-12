@@ -27,6 +27,11 @@ const smrData = [
   createSmrData("THD", "-", "-", "-", "-"),
   createSmrData("Frequency", "-", "-", "-", "-"),
 ];
+const test = {
+  pass: "PASS",
+  fail: "FAIL",
+  err: "Exception",
+};
 const AcousticAutoRun = () => {
   return (
     <>
@@ -36,7 +41,7 @@ const AcousticAutoRun = () => {
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
               Show Process Current of Auto EOLTStation {">>>"}{" "}
-              EOLT-A-810527029726
+              <span className="text-red-600 font-bold">DB_Device_ID</span>
             </p>
           </div>
           <div className="content flex flex-wrap flex-between p-4 items-center">
@@ -50,8 +55,17 @@ const AcousticAutoRun = () => {
               </div>
             </div>
             <div className="m-2 justify-start">
-              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
+            <div
+                className={`box flex bg-gray-400 ${
+                  test.err === "PASS"
+                    ? "bg-green-500 text-white font-semibold"
+                    : test.err === "FAIL"
+                    ? "bg-red-500 text-white font-semibold"
+                    : test.err === "Exception"
+                    ? "bg-yellow-400 text-white font-semibold"
+                    : {}
+                } p-4  rounded-lg w-40 text-black`}
+              >                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
                 <div className="flex flex-col text-center align-middle">
                   <p>Current</p>
                   <p>PASS</p>
@@ -59,7 +73,17 @@ const AcousticAutoRun = () => {
               </div>
             </div>
             <div className="m-2 justify-start">
-              <div className={`box flex bg-gray-400 p-4  rounded-lg w-40 text-black`}>
+            <div
+                className={`box flex bg-gray-400 ${
+                  test.fail === "PASS"
+                    ? "bg-green-500 text-white font-semibold"
+                    : test.fail === "FAIL"
+                    ? "bg-red-500 text-white font-semibold"
+                    : test.fail === "FAIL"
+                    ? "bg-yellow-400 text-white font-semibold"
+                    : {}
+                } p-4  rounded-lg w-40 text-black`}
+              >
                 <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
                 <div className="flex flex-col text-center align-middle">
                   <p>LaserMark</p>
@@ -73,7 +97,17 @@ const AcousticAutoRun = () => {
               </div>
             </div>
             <div className=" m-2 justify-start">
-              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
+              <div
+                className={`box flex bg-gray-400 ${
+                  test.pass === "PASS"
+                    ? "bg-green-500 text-white font-semibold"
+                    : test.fail === "FAIL"
+                    ? "bg-red-500"
+                    : test.err === "FAIL"
+                    ? "bg-yellow-400"
+                    : {}
+                } p-4  rounded-lg w-40 text-black`}
+              >
                 <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
                 <div className="flex flex-col text-center align-middle">
                   <p>QRCode</p>
