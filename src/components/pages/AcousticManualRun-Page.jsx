@@ -27,82 +27,100 @@ const smrData = [
   createSmrData("THD", "-", "-", "-", "-"),
   createSmrData("Frequency", "-", "-", "-", "-"),
 ];
-
+const test = {
+  pass: "PASS",
+  fail: "FAIL",
+  err: "Exception",
+};
 const AcousticManualRun = () => {
   return (
     <>
-      <HeaderLayout page="Acoustic Manual Run" />
+      <HeaderLayout page="Acoustic Auto Run" />
       <div className="content h-screen">
         <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
-            <p>Show Process Current of Manual EOLTStation {">>>"}</p>
+            <p>
+              Show Process Current of Auto EOLTStation {">>>"}{" "}
+              <span className="text-red-600 font-bold">DB_Device_ID</span>
+            </p>
           </div>
-          <div className="p-4">
-            <form action="">
-              <label htmlFor="Serial_Code" className="font-bold text-gray-800">
-                Serial Code :{" "}
-              </label>
-              <input
-                id="Serial_Code"
-                type="text"
-                className="rounded-md w-80 h-10 mx-2 p-2 bg-gray-50 dark:text-white dark:border-gray-600 dark:placeholder-gray-400"
-                placeholder="Serial_Code"
-              />
-              <button className="mx-2 mt-4 py-2 px-4 font-semibold bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border border-blue-500 rounded-btn">
-                RUN
-              </button>
-            </form>
-            <div className="content flex flex-wrap flex-between p-4 items-center">
-              <div className="m-2 flex flex-wrap justify-start">
-                <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                  <i className="fa-solid fa-microphone mr-4 text-3xl justify-center mt-2"></i>
-                  <div className="flex flex-col text-center align-middle">
-                    <p>AcousticTest</p>
-                    <p>PASS</p>
-                  </div>
+          <div className="content flex flex-wrap flex-between p-4 items-center">
+            <div className="m-2 flex flex-wrap justify-start">
+              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
+                <i className="fa-solid fa-microphone mr-4 text-3xl justify-center mt-2"></i>
+                <div className="flex flex-col text-center align-middle">
+                  <p>AcousticTest</p>
+                  <p>PASS</p>
                 </div>
               </div>
-              <div className="m-2 justify-start">
-                <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                  <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
-                  <div className="flex flex-col text-center align-middle">
-                    <p>Current</p>
-                    <p>PASS</p>
-                  </div>
+            </div>
+            <div className="m-2 justify-start">
+            <div
+                className={`box flex bg-gray-400 ${
+                  test.err === "PASS"
+                    ? "bg-green-500 text-white font-semibold"
+                    : test.err === "FAIL"
+                    ? "bg-red-500 text-white font-semibold"
+                    : test.err === "Exception"
+                    ? "bg-yellow-400 text-white font-semibold"
+                    : {}
+                } p-4  rounded-lg w-40 text-black`}
+              >                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
+                <div className="flex flex-col text-center align-middle">
+                  <p>Current</p>
+                  <p>PASS</p>
                 </div>
               </div>
-              <div className="m-2 justify-start">
-                <div
-                  className={`box flex bg-gray-400 p-4  rounded-lg w-40 text-black`}
-                >
-                  <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
-                  <div className="flex flex-col text-center align-middle">
-                    <p>LaserMark</p>
-                    <p>PASS</p>
-                    {/* {status == "PASS" ? (
+            </div>
+            <div className="m-2 justify-start">
+            <div
+                className={`box flex bg-gray-400 ${
+                  test.fail === "PASS"
+                    ? "bg-green-500 text-white font-semibold"
+                    : test.fail === "FAIL"
+                    ? "bg-red-500 text-white font-semibold"
+                    : test.fail === "FAIL"
+                    ? "bg-yellow-400 text-white font-semibold"
+                    : {}
+                } p-4  rounded-lg w-40 text-black`}
+              >
+                <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
+                <div className="flex flex-col text-center align-middle">
+                  <p>LaserMark</p>
+                  <p>PASS</p>
+                  {/* {status == "PASS" ? (
                     <p className="text-green-700 font-semibold">PASS</p>
                   ) : (
                     <p className="text-red-700 font-semibold">FAIL</p>
                   )} */}
-                  </div>
                 </div>
               </div>
-              <div className=" m-2 justify-start">
-                <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                  <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
-                  <div className="flex flex-col text-center align-middle">
-                    <p>QRCode</p>
-                    <p>PASS</p>
-                  </div>
+            </div>
+            <div className=" m-2 justify-start">
+              <div
+                className={`box flex bg-gray-400 ${
+                  test.pass === "PASS"
+                    ? "bg-green-500 text-white font-semibold"
+                    : test.fail === "FAIL"
+                    ? "bg-red-500"
+                    : test.err === "FAIL"
+                    ? "bg-yellow-400"
+                    : {}
+                } p-4  rounded-lg w-40 text-black`}
+              >
+                <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
+                <div className="flex flex-col text-center align-middle">
+                  <p>QRCode</p>
+                  <p>PASS</p>
                 </div>
               </div>
-              <div className=" m-2 justify-start">
-                <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                  <i className="fa-solid fa-border-all mr-4 text-3xl justify-center mt-2"></i>
-                  <div className="flex flex-col text-center align-middle">
-                    <p>Total Status</p>
-                    <p>PASS</p>
-                  </div>
+            </div>
+            <div className=" m-2 justify-start">
+              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
+                <i className="fa-solid fa-border-all mr-4 text-3xl justify-center mt-2"></i>
+                <div className="flex flex-col text-center align-middle">
+                  <p>Total Status</p>
+                  <p>PASS</p>
                 </div>
               </div>
             </div>
