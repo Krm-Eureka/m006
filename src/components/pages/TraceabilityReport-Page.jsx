@@ -13,8 +13,8 @@ import * as XLSX from "xlsx";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -33,22 +33,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const columns = [
   { id: "Device", label: "Device" },
   { id: "Date", label: "Date" },
-  { id: "TotalStatus", label: "Total Status" },
+  { id: "TotalStatus", label: "TotalStatus" },
   { id: "Current", label: "Current" },
-  { id: "CurrentJud", label: "Current Judgment" },
+  { id: "CurrentJud", label: "CurrentJudgment" },
   { id: "Sensitivity", label: "Sensitivity" },
-  { id: "SensitivityJud", label: "Sensitivity Judgment" },
+  { id: "SensitivityJud", label: "SensitivityJudgment" },
   { id: "THD", label: "THD" },
-  { id: "THDName", label: "THD Name" },
-  { id: "THDMin", label: "THD Min" },
-  { id: "THDMax", label: "THD Max" },
-  { id: "THDResult", label: "THD Result" },
-  { id: "THDJud", label: "THD Judgment" },
-  { id: "Name4", label: "Name 4" },
-  { id: "Measurement4", label: "Measurement 4" },
-  { id: "Status4", label: "Status 4" },
+  { id: "THDName", label: "THDName" },
+  { id: "THDMin", label: "THDMin" },
+  { id: "THDMax", label: "THDMax" },
+  { id: "THDResult", label: "THDResult" },
+  { id: "THDJud", label: "THDJudgment" },
+  { id: "Name4", label: "Name" },
+  { id: "Measurement4", label: "Measurement" },
+  { id: "Status4", label: "Status" },
   { id: "Flag", label: "Flag" },
-  { id: "CreateDate", label: "Create Date" },
+  { id: "CreateDate", label: "CreateDate" },
 ];
 
 function createData(
@@ -298,11 +298,11 @@ const TraceabilityReport = () => {
   return (
     <>
       <HeaderLayout page="Traceability Report" />
-      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit over">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">
           <p>Show Process Current of EOLTStation</p>
         </div>
-        <div className="flex flex-wrap mx-4 py-2 items-center justify-center">
+        <div className="flex flex-wrap mx-4 py-2 h-fit items-center justify-center">
           <div className="mx-2 mb-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
               DeviceID / SerialCode
@@ -310,9 +310,9 @@ const TraceabilityReport = () => {
             <input
               type="text"
               id="DeviceID_SerialCode"
-              value={searchTerm} // Bind the input value to searchTerm state
-              onChange={handleSearchChange} // Handle input changes
-              className="sm:min-w-20 md:min-w-60 lg:min-w-80 p-2.5 m-4 rounded-md w-80 h-10 mx-2 bg-gray-50 dark:text-gray-900 dark:border-gray-600 dark:placeholder-gray-400"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="sm:min-w-20 md:min-w-60 lg:min-w-80 p-2.5 m-2 rounded-md w-80 h-10 mx-2 bg-gray-50 dark:text-gray-900 dark:border-gray-600 dark:placeholder-gray-400"
               placeholder="DeviceID / SerialCode"
             />
           </div>
@@ -344,17 +344,23 @@ const TraceabilityReport = () => {
             </button>
           </div>
         </div>
-        <TableContainer component={Paper}>
-          <TablePagination
+        <div className="px-8">
+        <TablePagination
             rowsPerPageOptions={[5, 10, 20, 50]}
             component="div"
-            count={filteredRows.length} // Use the length of the filtered rows
+            count={filteredRows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableContainer component={Paper} sx={{
+                maxHeight: 600,
+                overflowY: "scroll",
+                overflowX: "scroll",
+              }}>
+          
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
@@ -382,6 +388,7 @@ const TraceabilityReport = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        </div>
       </div>
     </>
   );

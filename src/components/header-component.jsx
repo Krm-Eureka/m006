@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 
 const HeaderLayout = (props) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef(null);
   const PAGE = props.page;
   // Toggle sidebar function
@@ -20,7 +20,7 @@ const HeaderLayout = (props) => {
         }
         timeoutRef.current = setTimeout(() => {
           setIsOpen(false);
-        }, 5000);
+        }, 3000);
       } else {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
@@ -33,7 +33,7 @@ const HeaderLayout = (props) => {
   };
   return (
     <>
-      <div className="flex flex-col fixed">
+      <div className="z-50 flex flex-col top-0 sticky bg-white shadow-md max-w-screen">
         <div className="flex items-center">
           <div className="logo">
             <img
