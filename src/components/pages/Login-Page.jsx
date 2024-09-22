@@ -38,7 +38,7 @@ const LoginPage = () => {
           icon: "success",
           title: `Iniciando sesión ${login_msg}`,
         });
-        navigate("/Dashboard/main");
+        navigate("/Console/Content_TRC/Status");
       } else {
         Toast.fire({
           icon: "error",
