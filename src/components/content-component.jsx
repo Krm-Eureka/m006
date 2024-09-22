@@ -1,7 +1,7 @@
 
 // import SideBarLayout from "./sideBar-component"; // import the sidebar layout
 
-import HeaderLayout from "./Header-Component.jsx";
+import HeaderLayout from "./Header-component.jsx";
 
 
 const ContentLayout = () => {

@@ -1,7 +1,62 @@
-import HeaderLayout from "../Header-Component";
-
+import { useState } from "react";
+import HeaderLayout from "../Header-component";
+import Swal from "sweetalert2";
 
 const MasterSetting = () => {
+  const [password, setPassword] = useState(""); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  // Define the correct password
+  const correctPassword = "123456";
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === correctPassword) {
+      setIsAuthenticated(true);
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Incorrect password. Please try again.",
+      });
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="bg-gray-200 p-6 rounded-md shadow-lg">
+          <h1 className="text-xl font-semibold text-gray-700 mb-4">Enter Password</h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="password"
+              className="w-full p-2 mb-4 border rounded-lg text-gray-700"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
     <HeaderLayout page="Setting Parameter"/>

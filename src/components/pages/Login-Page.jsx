@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import ValeoLogo from "../../assets/Valeo_Logo.png";
+import { useNavigate } from "react-router-dom";
+import AuthLogin from "../../services/auth-sv";
 
 const LoginPage = () => {
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/Console/Content_TRCStatus");
+    }
+  }, [navigate]);
+
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -19,36 +30,26 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    if (
-      (userName === "123" && password === "123") ||
-      (userName === "321" && password === "321")
-    ) {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "กำลังเข้าสู่ระบบ",
-      }).then(() => {
-        // Redirect or take some action on success
-        console.log("Logged in!");
-      });
-    } else {
+    try {
+      const { success, token, login_msg } = await AuthLogin(email, password);
+      if (success) {
+        localStorage.setItem("authToken", token);
+        Toast.fire({
+          icon: "success",
+          title: `Iniciando sesión ${login_msg}`,
+        });
+        navigate("/Dashboard/main");
+      } else {
+        Toast.fire({
+          icon: "error",
+          title: "Inicio de sesión fallido",
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       Toast.fire({
         icon: "error",
-        title: "กำลังเข้าสู่ระบบ",
-      }).then(() => {
-        // Redirect or take some action on success
-        console.log("Log in Fail!");
+        title: "Inicio de sesión fallido",
       });
     }
   };
@@ -82,8 +83,8 @@ const LoginPage = () => {
                 type="text"
                 name="userName"
                 id="userName"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="UserName"
                 required
@@ -131,7 +132,7 @@ const LoginPage = () => {
               type="submit"
               className="w-full text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
-              Sign in
+              Login
             </button>
           </form>
         </div>

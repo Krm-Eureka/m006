@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import HeaderLayout from "../Header-Component";
+import HeaderLayout from "../header-component/";
 
 function createLstStatus(SerialCode, Result) {
   return { SerialCode, Result };
@@ -35,7 +35,7 @@ const test = {
 const TraceabilityStatus = () => {
   return (
     <>
-    <HeaderLayout page="Acoustic Auto Run" />
+    <HeaderLayout page="Traceability Status" />
     <div className="content h-screen">
       <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">

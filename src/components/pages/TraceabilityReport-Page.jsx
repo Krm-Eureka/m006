@@ -8,7 +8,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import HeaderLayout from "../Header-Component";
+import HeaderLayout from "../Header-component";
 import * as XLSX from "xlsx";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

@@ -60,7 +60,7 @@ const HeaderLayout = (props) => {
           <div className="content p-1 items-center">
             <div className=" flex flex-between flex-wrap justify-start">
               <Link
-                to="/Console/Content_TRCStatus"
+                to="/Console/Content_TRC/Status"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2">
@@ -69,7 +69,7 @@ const HeaderLayout = (props) => {
                 </div>
               </Link>
               <Link
-                to="/Console/Content_ACT-AutoRun"
+                to="/Console/Content_ACT/AutoRun"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2">
@@ -78,7 +78,7 @@ const HeaderLayout = (props) => {
                 </div>
               </Link>
               <Link
-                to="/Console/Content_ACT-ManualRun"
+                to="/Console/Content_ACT/ManualRun"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2">
@@ -87,7 +87,7 @@ const HeaderLayout = (props) => {
                 </div>
               </Link>
               <Link
-                to="/Console/Content_ACT-TestReport"
+                to="/Console/Content_ACT/TestReport"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2">
@@ -96,7 +96,7 @@ const HeaderLayout = (props) => {
                 </div>
               </Link>
               <Link
-                to="/Console/Content_TRCReport"
+                to="/Console/Content_TRC/Report"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2">
@@ -105,7 +105,7 @@ const HeaderLayout = (props) => {
                 </div>
               </Link>
               <Link
-                to="/Console/Content_Setting"
+                to="/Console/Content_EOLT/Setting"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2">
