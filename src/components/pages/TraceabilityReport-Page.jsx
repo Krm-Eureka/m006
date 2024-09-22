@@ -10,7 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
 import * as XLSX from "xlsx";
-
+import { formatDateTime } from "../../services/formatTimeStamp";
+import { TableSortLabel } from "@mui/material";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.white,
@@ -25,30 +26,29 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
 const columns = [
-  { id: "Device", label: "Device" },
-  { id: "Date", label: "Date" },
-  { id: "TotalStatus", label: "TotalStatus" },
-  { id: "Current", label: "Current" },
-  { id: "CurrentJud", label: "CurrentJudgment" },
-  { id: "Sensitivity", label: "Sensitivity" },
-  { id: "SensitivityJud", label: "SensitivityJudgment" },
-  { id: "THD", label: "THD" },
-  { id: "THDName", label: "THDName" },
-  { id: "THDMin", label: "THDMin" },
-  { id: "THDMax", label: "THDMax" },
-  { id: "THDResult", label: "THDResult" },
-  { id: "THDJud", label: "THDJudgment" },
-  { id: "Name4", label: "Name" },
-  { id: "Measurement4", label: "Measurement" },
-  { id: "Status4", label: "Status" },
-  { id: "Flag", label: "Flag" },
-  { id: "CreateDate", label: "CreateDate" },
+  { id: "Device", label: "Device", sortable: true },
+  { id: "Date", label: "Date", sortable: true },
+  { id: "TotalStatus", label: "TotalStatus", sortable: true },
+  { id: "Current", label: "Current", sortable: true },
+  { id: "CurrentJud", label: "CurrentJudgment", sortable: true },
+  { id: "Sensitivity", label: "Sensitivity", sortable: true },
+  { id: "SensitivityJud", label: "SensitivityJudgment", sortable: true },
+  { id: "THD", label: "THD", sortable: true },
+  { id: "THDName", label: "THDName", sortable: true },
+  { id: "THDMin", label: "THDMin", sortable: true },
+  { id: "THDMax", label: "THDMax", sortable: true },
+  { id: "THDResult", label: "THDResult", sortable: true },
+  { id: "THDJud", label: "THDJudgment", sortable: true },
+  { id: "Name4", label: "Name", sortable: true },
+  { id: "Measurement4", label: "Measurement", sortable: true },
+  { id: "Status4", label: "Status", sortable: true },
+  { id: "Flag", label: "Flag", sortable: true },
+  { id: "CreateDate", label: "CreateDate", sortable: true },
 ];
 
 function createData(
@@ -246,46 +246,72 @@ const rows = [
   // Add more data rows here as needed
 ];
 
-// const ResponsiveTableContainer = styled(TableContainer)({
-//   overflowX: "auto",
-//   "@media (max-width: 600px)": {
-//     fontSize: "0.75rem",
-//   },
-//   "@media (min-width: 300px) and (max-width: 500px)": {
-//     fontSize: "0.85rem",
-//   },
-// });
-
 const TraceabilityReport = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [order, setOrder] = React.useState("desc");
+  const [orderBy, setOrderBy] = React.useState("CreateDate");
+  const [error, setError] = React.useState(null);
+
+  const handleRequestSort = (property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  // Filter the rows based on the search term
-  // Filter rows based on search term
+
   const filteredRows = rows.filter((row) =>
     Object.values(row).some((value) =>
       String(value).toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
-  // Export filtered data to Excel
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredRows);
-    const workbook = XLSX.utils.book_new();
-    // console.log(workbook)
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
-    XLSX.writeFile(workbook, "traceability_report.xlsx");
+  const sortRows = (rows, order, orderBy) => {
+    return rows.slice().sort((a, b) => {
+      const valueA = orderBy === "Date" ? new Date(a[orderBy]) : a[orderBy];
+      const valueB = orderBy === "Date" ? new Date(b[orderBy]) : b[orderBy];
+
+      if (order === "asc") return valueA > valueB ? 1 : -1;
+      return valueA < valueB ? 1 : -1;
+    });
   };
-  // const exportAllToExcel = () => {
-  //   const worksheet = XLSX.utils.json_to_sheet(filteredRows); // Convert filtered rows to Excel format
-  //   const workbook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Traceability Report");
-  //   XLSX.writeFile(workbook, "traceability_report.xlsx");
-  // };
+
+  const sortedRows = sortRows(filteredRows, order, orderBy);
+
+  const exportToCSV = () => {
+    const headers = columns.map((column) => column.label).join(",");
+    const csvRows = sortedRows.map((row) =>
+      columns
+        .map((column) => {
+          const value = row[column.id];
+          return typeof value === "string"
+            ? `"${value.replace(/"/g, '""')}"`
+            : value;
+        })
+        .join(",")
+    );
+
+    const today = new Date();
+    const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}-${today.getFullYear()}`;
+    const csvContent = [`DATE: ${formattedDate}`, headers, ...csvRows].join(
+      "\n"
+    );
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `EOLT_report_${formattedDate}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -295,10 +321,16 @@ const TraceabilityReport = () => {
     setPage(0);
   };
 
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
+  if (error) return <p>Error loading data: {error.message}</p>;
+
   return (
     <>
       <HeaderLayout page="Traceability Report" />
-      <div className="flex flex-col text-gray-700 bg-gray-300 m-4  pb-4 rounded-md w-90% h-fit over">
+      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 pb-4 rounded-md w-90% h-fit over">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">
           <p>Show Process Current of EOLTStation</p>
         </div>
@@ -319,33 +351,34 @@ const TraceabilityReport = () => {
           <div className="justify-items-center mx-2 mt-3">
             <button
               disabled={!searchTerm}
-              onClick={exportToExcel}
+              onClick={exportToCSV}
               className={`mx-2 my-1 py-1 px-2 ${
                 !searchTerm ? "hidden" : ""
-              } bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border  rounded-btn`}
+              } bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
             >
               EXPORT
             </button>
             <button
               disabled={searchTerm}
-              onClick={exportToExcel}
+              onClick={exportToCSV}
               className={`mx-2 my-1 py-1 px-2 ${
                 searchTerm ? "hidden" : ""
-              } bg-blue-500 hover:bg-blue-600 text-gray-900 hover:text-white h-fit w-fit border  rounded-btn`}
+              } bg-blue-500 hover:bg-blue-600 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
             >
               EXPORT ALL
             </button>
             <button
+              onClick={clearSearch}
               className={`mx-2 my-1 py-1 px-2 ${
                 !searchTerm ? "hidden" : ""
-              } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border  rounded-btn`}
+              } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
             >
               CLEAR
             </button>
           </div>
         </div>
         <div className="px-8">
-        <TablePagination
+          <TablePagination
             rowsPerPageOptions={[5, 10, 20, 50]}
             component="div"
             count={filteredRows.length}
@@ -354,41 +387,58 @@ const TraceabilityReport = () => {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        <TableContainer component={Paper} sx={{
-                maxHeight: 600,
-                overflowY: "scroll",
-                overflowX: "scroll",
-              }}>
-          
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <StyledTableCell key={column.id}>
-                    {column.label}
-                  </StyledTableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <StyledTableRow key={row.id}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <StyledTableCell key={column.id} align="left">
-                          {value}
-                        </StyledTableCell>
-                      );
-                    })}
+          <TableContainer
+            component={Paper}
+            sx={{ maxHeight: 600, overflowY: "scroll", overflowX: "scroll" }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <StyledTableCell
+                      key={column.id}
+                      sx={{ width: column.width }}
+                    >
+                      <TableSortLabel
+                        active={orderBy === column.id}
+                        direction={orderBy === column.id ? order : "asc"}
+                        onClick={() => handleRequestSort(column.id)}
+                      >
+                        {column.label}
+                      </TableSortLabel>
+                    </StyledTableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedRows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <StyledTableRow key={row.id}>
+                      {columns.map((column) => {
+                        const value =
+                          column.id === "Date"
+                            ? formatDateTime(row[column.id])
+                            : row[column.id];
+                        return (
+                          <StyledTableCell key={column.id} align="left">
+                            {value}
+                          </StyledTableCell>
+                        );
+                      })}
+                    </StyledTableRow>
+                  ))}
+                {sortedRows.length === 0 && (
+                  <StyledTableRow>
+                    <StyledTableCell colSpan={columns.length} align="center">
+                      No results found.
+                    </StyledTableCell>
                   </StyledTableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
             rowsPerPageOptions={[5, 10, 20, 50]}
             component="div"
             count={filteredRows.length}
