@@ -16,16 +16,37 @@ function createSmrData(Name, Lower, Upper, smrResult, Status) {
 }
 const lstStatus = [
   createLstStatus("EOLT-A-382315929117", "PASS"),
-  createLstStatus("EOLT-A-120885838401", "PASS"),
+  createLstStatus("EOLT-A-120885838401", "FAIL"),
   createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "Fail"),
+  createLstStatus("EOLT-A-37003047849", "FAIL"),
   createLstStatus("EOLT-A-529520075944", "PASS"),
+  createLstStatus("EOLT-A-529520075944", "FAIL"),
+  createLstStatus("EOLT-A-554779049699", "PASS"),
+  createLstStatus("EOLT-A-37003047849", "FAIL"),
+  createLstStatus("EOLT-A-529520075944", "PASS"),
+  createLstStatus("EOLT-A-52952007591111", "FAIL"),
+
+  createLstStatus("EOLT-A-554779049699", "PASS"),
+  createLstStatus("EOLT-A-37003047849", "FAIL"),
+  createLstStatus("EOLT-A-529520075944", "PASS"),
+  createLstStatus("EOLT-A-52952007591111", "FAIL"),
+  createLstStatus("EOLT-A-554779049699", "PASS"),
+  createLstStatus("EOLT-A-37003047849", "FAIL"),
+  createLstStatus("EOLT-A-529520075944", "PASS"),
+  createLstStatus("EOLT-A-52952007591111", "FAIL"),
+  createLstStatus("EOLT-A-37003047849", "FAIL"),
+  createLstStatus("EOLT-A-529520075944", "PASS"),
+  createLstStatus("EOLT-A-52952007591111", "FAIL"),
+  createLstStatus("EOLT-A-554779049699", "PASS"),
+  createLstStatus("EOLT-A-37003047849", "FAIL"),
+  createLstStatus("EOLT-A-529520075944", "PASS"),
+  createLstStatus("EOLT-A-529520075911112", "FAIL"),
 ];
 const smrData = [
-  createSmrData("Current", "-", "-", "-", "-"),
-  createSmrData("Sensitivity", "-", "-", "-", "-"),
-  createSmrData("THD", "-", "-", "-", "-"),
-  createSmrData("Frequency", "-", "-", "-", "-"),
+  createSmrData("Current", "1", "-", "-", "-"),
+  createSmrData("Sensitivity", "1", "-", "-", "-"),
+  createSmrData("THD", "2", "-", "-", "-"),
+  createSmrData("Frequency", "3", "-", "-", "-"),
 ];
 const test = {
   pass: "PASS",
@@ -55,7 +76,7 @@ const AcousticAutoRun = () => {
               </div>
             </div>
             <div className="m-2 justify-start">
-            <div
+              <div
                 className={`box flex bg-gray-400 ${
                   test.err === "PASS"
                     ? "bg-green-500 text-white font-semibold"
@@ -65,7 +86,9 @@ const AcousticAutoRun = () => {
                     ? "bg-yellow-400 text-white font-semibold"
                     : {}
                 } p-4  rounded-lg w-40 text-black`}
-              >                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
+              >
+                {" "}
+                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
                 <div className="flex flex-col text-center align-middle">
                   <p>Current</p>
                   <p>PASS</p>
@@ -73,7 +96,7 @@ const AcousticAutoRun = () => {
               </div>
             </div>
             <div className="m-2 justify-start">
-            <div
+              <div
                 className={`box flex bg-gray-400 ${
                   test.fail === "PASS"
                     ? "bg-green-500 text-white font-semibold"
@@ -175,7 +198,7 @@ const AcousticAutoRun = () => {
                             <p className="font-semibold">{row.Upper}</p>
                           </TableCell>
                           <TableCell align="left">
-                            {row.smrResult == "Fail" ? (
+                            {row.Result === "Fail" || row.Result === "FAIL" ? (
                               <p className=" text-red-700 font-semibold">
                                 {row.smrResult}
                               </p>
@@ -222,29 +245,32 @@ const AcousticAutoRun = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {lstStatus.map((row) => (
-                        <TableRow
-                          key={row.SerialCode}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell component="th" scope="row">
-                            <p className="font-semibold">{row.SerialCode}</p>
-                          </TableCell>
-                          <TableCell align="left">
-                            {row.Result == "Fail" ? (
-                              <p className=" text-red-700 font-semibold">
-                                {row.Result}
-                              </p>
-                            ) : (
-                              <p className=" text-green-700 font-semibold">
-                                {row.Result}
-                              </p>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {lstStatus
+                        .slice(0, 10)
+                        .map((row) => (
+                          <TableRow
+                            key={row.SerialCode}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell component="th" scope="row">
+                              <p className="font-semibold">{row.SerialCode}</p>
+                            </TableCell>
+                            <TableCell align="left">
+                              {row.Result === "Fail" ||
+                              row.Result === "FAIL" ? (
+                                <p className="text-red-700 font-semibold">
+                                  {row.Result}
+                                </p>
+                              ) : (
+                                <p className="text-green-700 font-semibold">
+                                  {row.Result}
+                                </p>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
                     </TableBody>
                   </Table>
                 </TableContainer>

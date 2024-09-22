@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,9 +9,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
-import * as XLSX from "xlsx";
+// import * as XLSX from "xlsx";
 import { formatDateTime } from "../../services/formatTimeStamp";
 import { TableSortLabel } from "@mui/material";
+import { FitScreen } from "@mui/icons-material";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.white,
@@ -31,9 +32,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 const columns = [
-  { id: "Device", label: "Device", sortable: true },
-  { id: "Date", label: "Date", sortable: true },
-  { id: "TotalStatus", label: "TotalStatus", sortable: true },
+  { id: "Device", label: "Device", sortable: true , aln: "center"},
+  { id: "Date", label: "Date", sortable: true, w: 200, aln: "center" },
+  {
+    id: "TotalStatus",
+    label: "TotalStatus",
+    sortable: true,
+    w: 340,
+    aln: "center",
+  },
   { id: "Current", label: "Current", sortable: true },
   { id: "CurrentJud", label: "CurrentJudgment", sortable: true },
   { id: "Sensitivity", label: "Sensitivity", sortable: true },
@@ -100,7 +107,7 @@ const rows = [
     1,
     "Device A",
     "2024-09-10",
-    "Status 1",
+    "1234568790-1122334455-020405-A-00001",
     10,
     "Good",
     0.5,
@@ -226,7 +233,7 @@ const rows = [
     7,
     "Device B",
     "2024-09-10",
-    "Status 1",
+    "9865473780-68636791TS-220924-T-00001",
     10,
     "Good",
     0.5,
@@ -247,12 +254,12 @@ const rows = [
 ];
 
 const TraceabilityReport = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [order, setOrder] = React.useState("desc");
-  const [orderBy, setOrderBy] = React.useState("CreateDate");
-  const [error, setError] = React.useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [order, setOrder] = useState("desc");
+  const [orderBy, setOrderBy] = useState("CreateDate");
+  const [error, setError] = useState(null);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -397,7 +404,8 @@ const TraceabilityReport = () => {
                   {columns.map((column) => (
                     <StyledTableCell
                       key={column.id}
-                      sx={{ width: column.width }}
+                      sx={{ minWidth: column.w }}
+                      align={column.aln}
                     >
                       <TableSortLabel
                         active={orderBy === column.id}
@@ -410,6 +418,7 @@ const TraceabilityReport = () => {
                   ))}
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {sortedRows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

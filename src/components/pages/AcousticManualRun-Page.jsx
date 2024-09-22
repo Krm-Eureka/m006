@@ -1,4 +1,4 @@
-// import * as React from "react";
+import {useState} from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -33,16 +33,36 @@ const test = {
   err: "Exception",
 };
 const AcousticManualRun = () => {
+  const [serialNumber, setSerialNumber] = useState("");
+  const handleInputChange = (e) => {
+    setSerialNumber(e.target.value);
+  };
+
+  const handleRunClick = () => {
+    console.log("Running with Serial Number:", serialNumber);
+  };
   return (
     <>
-      <HeaderLayout page="Acoustic Auto Run" />
+      <HeaderLayout page="Acoustic ManualRun" />
       <div className="content h-screen">
         <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-              Show Process Current of Auto EOLTStation {">>>"}{" "}
+              Show Process Current of Manual EOLTStation {">>>"}{" "}
               <span className="text-red-600 font-bold">DB_Device_ID</span>
             </p>
+          </div>
+          <div className="m-4">
+            <label htmlFor="SN">Serial Number :</label>
+            <input
+              id="SN"
+              className="mx-2 p-2 rounded-md w-96"
+              type="text"
+              placeholder="Serial Number"
+              value={serialNumber}
+              onChange={handleInputChange}
+            />
+            <button className={`mx-2 my-1 py-1 px-4 bg-blue-500 hover:bg-blue-700 text-white hover:text-white h-fit w-fit border rounded-btn`} onClick={handleRunClick}>Run</button>
           </div>
           <div className="content flex flex-wrap flex-between p-4 items-center">
             <div className="m-2 flex flex-wrap justify-start">
@@ -55,9 +75,9 @@ const AcousticManualRun = () => {
               </div>
             </div>
             <div className="m-2 justify-start">
-            <div
+              <div
                 className={`box flex bg-gray-400 ${
-                  test.err === "PASS"
+                  test.err === "PASS" || test.err === "pass"
                     ? "bg-green-500 text-white font-semibold"
                     : test.err === "FAIL"
                     ? "bg-red-500 text-white font-semibold"
@@ -65,7 +85,9 @@ const AcousticManualRun = () => {
                     ? "bg-yellow-400 text-white font-semibold"
                     : {}
                 } p-4  rounded-lg w-40 text-black`}
-              >                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
+              >
+                {" "}
+                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
                 <div className="flex flex-col text-center align-middle">
                   <p>Current</p>
                   <p>PASS</p>
@@ -73,7 +95,7 @@ const AcousticManualRun = () => {
               </div>
             </div>
             <div className="m-2 justify-start">
-            <div
+              <div
                 className={`box flex bg-gray-400 ${
                   test.fail === "PASS"
                     ? "bg-green-500 text-white font-semibold"
