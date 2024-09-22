@@ -307,7 +307,7 @@ const TraceabilityReport = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `EOLT_report_${formattedDate}.csv`;
+    a.download = `EOLT_TRC_report_${formattedDate}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
