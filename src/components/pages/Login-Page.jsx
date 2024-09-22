@@ -12,7 +12,7 @@ const LoginPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      navigate("/Console/Content_TRCStatus");
+      navigate("/Console/Content_TRC/Status");
     }
   }, [navigate]);
 
@@ -36,20 +36,20 @@ const LoginPage = () => {
         localStorage.setItem("authToken", token);
         Toast.fire({
           icon: "success",
-          title: `Iniciando sesión ${login_msg}`,
+          title: `Logging in ${login_msg}`,
         });
         navigate("/Console/Content_TRC/Status");
       } else {
         Toast.fire({
           icon: "error",
-          title: "Inicio de sesión fallido",
+          title: "Login failed",
         });
       }
     } catch (error) {
       console.error("Login error:", error);
       Toast.fire({
         icon: "error",
-        title: "Inicio de sesión fallido",
+        title: "Login failed",
       });
     }
   };

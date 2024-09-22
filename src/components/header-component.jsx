@@ -33,7 +33,7 @@ const HeaderLayout = (props) => {
   };
   return (
     <>
-      <div className="z-50 flex flex-col top-0 sticky bg-white shadow-md max-w-screen">
+      <div className="z-50 flex flex-col top-0 sticky dark:text-gray-700 bg-white shadow-md max-w-screen">
         <div className="flex items-center">
           <div className="logo">
             <img
@@ -42,10 +42,10 @@ const HeaderLayout = (props) => {
               alt="Valeo_Logo_VCDA-M006"
             />
           </div>
-          <button className="text-gray-800 p-4 dark:text-white" onClick={toggleNav}>
+          <button className="text-gray-800 p-4 dark:text-gray-700" onClick={toggleNav}>
             <i className="fa-solid fa-bars"></i>
           </button>
-          <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-white">
+          <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-gray-700">
             Stellantis OMNI Microphone Assemblyline | {PAGE}
           </h4>
         </div>
