@@ -12,7 +12,6 @@ import HeaderLayout from "../Header-component";
 // import * as XLSX from "xlsx";
 import { formatDateTime } from "../../services/formatTimeStamp";
 import { TableSortLabel } from "@mui/material";
-import { FitScreen } from "@mui/icons-material";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.white,
@@ -250,7 +249,6 @@ const rows = [
     "Flag A",
     "2024-09-01"
   ),
-  // Add more data rows here as needed
 ];
 
 const TraceabilityReport = () => {

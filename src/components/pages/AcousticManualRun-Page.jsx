@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -34,11 +34,14 @@ const test = {
 };
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
+  const [sN, setSN] = useState("");
+
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
   };
 
   const handleRunClick = () => {
+    setSN(serialNumber);
     console.log("Running with Serial Number:", serialNumber);
   };
   return (
@@ -49,7 +52,7 @@ const AcousticManualRun = () => {
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
               Show Process Current of Manual EOLTStation {">>>"}{" "}
-              <span className="text-red-600 font-bold">DB_Device_ID</span>
+              <span className="text-red-600 font-semibold">{sN}</span>
             </p>
           </div>
           <div className="m-4">
@@ -62,7 +65,12 @@ const AcousticManualRun = () => {
               value={serialNumber}
               onChange={handleInputChange}
             />
-            <button className={`mx-2 my-1 py-1 px-4 bg-blue-500 hover:bg-blue-700 text-white hover:text-white h-fit w-fit border rounded-btn`} onClick={handleRunClick}>Run</button>
+            <button
+              className={`mx-2 my-1 py-1 px-4 bg-blue-500 hover:bg-blue-700 text-white hover:text-white h-fit w-fit border rounded-btn`}
+              onClick={handleRunClick}
+            >
+              Run
+            </button>
           </div>
           <div className="content flex flex-wrap flex-between p-4 items-center">
             <div className="m-2 flex flex-wrap justify-start">

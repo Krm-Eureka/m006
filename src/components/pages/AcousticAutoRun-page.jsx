@@ -246,7 +246,7 @@ const AcousticAutoRun = () => {
                     </TableHead>
                     <TableBody>
                       {lstStatus
-                        .slice(0, 10)
+                        .slice(0, 5)
                         .map((row) => (
                           <TableRow
                             key={row.SerialCode}

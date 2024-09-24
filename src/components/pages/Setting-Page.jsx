@@ -82,17 +82,18 @@ const MasterSetting = () => {
             <div className="title bg-green-500 p-2 rounded-t-md font-bold text-gray-700">
               <p>DMC CODE CONTENT</p>
             </div>
-            <div className="content px-8 py-2 items-center">
+            <div className="content px-8 py-2 items-center min-w-96">
               <div className=" flex flex-between flex-wrap justify-start">
                 <div className="mr-4 mb-2">
                   <label className="block mb-2 text-sm font-medium  text-gray-700">
-                    PLM Reference
+                    PLM Reference <span className="text-red-600">*</span>
                   </label>
                   <input
+                    required
                     type="text"
                     id="PLM_Reference"
                     value={PLM_Reference}
-                    className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="PLM Ref."
                     onChange={(e) => setPLM_Reference(e.target.value)}
                     //   disabled={props.disable === true? true: false}
@@ -100,13 +101,14 @@ const MasterSetting = () => {
                 </div>
                 <div className="mr-4 mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-700">
-                    EBOM Reference
+                    EBOM Reference <span className="text-red-600">*</span>
                   </label>
                   <input
+                    required
                     type="text"
                     id="EBOM_Reference"
                     value={EBOM_Reference}
-                    className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="EBOM Ref."
                     onChange={(e) => setEBOM_Reference(e.target.value)}
                     //   disabled={props.disable === true? true: false}
@@ -114,13 +116,14 @@ const MasterSetting = () => {
                 </div>
                 <div className="mr-4 mb-2">
                   <label className="block mb-2 text-sm font-medium  text-gray-700">
-                    Manufacturing Date
+                    Manufacturing Date <span className="text-red-600">*</span>
                   </label>
                   <input
+                    required
                     type="date"
                     id="Date"
                     value={manufacturingDate}
-                    className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="EBOM Ref."
                     onChange={(e) => setManufacturingDate(e.target.value)}
                     //   disabled={props.disable === true? true: false}
@@ -128,13 +131,14 @@ const MasterSetting = () => {
                 </div>
                 <div className="mr-4 mb-2">
                   <label className="block mb-2 text-sm font-medium  text-gray-700">
-                    EOLT Reference A/B
+                    EOLT Reference A/B <span className="text-red-600">*</span>
                   </label>
                   <input
+                    required
                     type="text"
                     id="Line_Machine"
                     value={EOLT_Reference}
-                    className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="EOLT Ref."
                     onChange={(e) => setEOLT_Reference(e.target.value)}
                     //   disabled={props.disable === true? true: false}
@@ -142,13 +146,14 @@ const MasterSetting = () => {
                 </div>
                 <div className="mr-4 mb-2">
                   <label className="block mb-2 text-sm font-medium  text-gray-700">
-                    SerialNumber
+                    SerialNumber <span className="text-red-600">*</span>
                   </label>
                   <input
+                    required
                     type="text"
                     id="SerialNumber"
                     value={serialNumber}
-                    className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="SerialNumber"
                     onChange={(e) => setSerialNumber(e.target.value)}
                     //   disabled={props.disable === true? true: false}
@@ -156,7 +161,7 @@ const MasterSetting = () => {
                 </div>
               </div>
             </div>
-            <p className="text-xs pl-4 pb-4">
+            <p className="text-xs pl-4 pb-4 font-bold">
               {PLM_Reference &&
               EBOM_Reference &&
               manufacturingDate &&
@@ -171,19 +176,18 @@ const MasterSetting = () => {
                   EOLT_Reference
                 ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
                     manufacturingDate
-                  )}-${EOLT_Reference}-00001`
+                  )}-${EOLT_Reference}-*****`
                 : PLM_Reference && EBOM_Reference && manufacturingDate
                 ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
                     manufacturingDate
-                  )}-A-00001`
+                  )}-S-*****`
                 : PLM_Reference && EBOM_Reference
-                ? `Example : ${PLM_Reference}-${EBOM_Reference}-220924-A-00001`
+                ? `Example : ${PLM_Reference}-${EBOM_Reference}-DDMMYY-S-*****`
                 : PLM_Reference
-                ? `Example : ${PLM_Reference}-yyyyyyyyyy-220924-A-00001`
-                : `Example : xxxxxxxxxx-yyyyyyyyyy-220924-A-00001`}
+                ? `Example : ${PLM_Reference}-yyyyyyyyyy-DDMMYY-S-*****`
+                : `Example : xxxxxxxxxx-yyyyyyyyyy-DDMMYY-S-*****`}
             </p>
           </div>
-          
           <div className="flex flex-between flex-wrap justify-start">
             <div className="card-content bg-gray-200 ml-2 mr-0.5 my-2 rounded-md w-100 h-fit">
               <div className="title bg-green-500 p-2 rounded-t-md font-bold text-gray-700">
