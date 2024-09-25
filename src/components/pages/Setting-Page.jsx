@@ -15,7 +15,6 @@ const MasterSetting = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [serialNumber, setSerialNumber] = useState("");
   const [minLimitCurrent, setMinLimitCurrent] = useState("");
   const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
   const [minLimitSensitivity, setMinLimitSensitivity] = useState("");
@@ -89,15 +88,14 @@ const MasterSetting = () => {
       plmReference &&
       ebomReference &&
       manufacturingDateFormat &&
-      eoltRefCode &&
-      serialNumber
+      eoltRefCode
+
     ) {
       const data = {
         plmReference,
         ebomReference,
         manufacturingDateFormat,
-        eoltRefCode,
-        serialNumber,
+        eoltRefCode
       };
 
       try {
@@ -196,11 +194,11 @@ const MasterSetting = () => {
                         eoltRefCode: value,
                       })),
                   },
-                  {
-                    label: "Serial Number",
-                    value: serialNumber,
-                    setter: setSerialNumber,
-                  },
+                  // {
+                  //   label: "Serial Number",
+                  //   value: serialNumber,
+                  //   setter: setSerialNumber,
+                  // },
                 ].map(({ label, value, setter, type = "text" }) => (
                   <div className="mr-4 mb-2" key={label}>
                     <label className="block mb-2 text-sm font-medium text-gray-700">
@@ -224,13 +222,14 @@ const MasterSetting = () => {
                 {masterData.plmReference &&
                 masterData.ebomReference &&
                 masterData.manufacturingDateFormat &&
-                masterData.eoltRefCode &&
-                serialNumber
+                masterData.eoltRefCode 
+                // &&
+                // serialNumber
                   ? `Example : ${masterData.plmReference}-${
                       masterData.ebomReference
                     }-${formatDate(masterData.manufacturingDateFormat)}-${
                       masterData.eoltRefCode
-                    }-${serialNumber}`
+                    }-*****`
                   : masterData.plmReference &&
                     masterData.ebomReference &&
                     masterData.manufacturingDateFormat &&
