@@ -34,14 +34,14 @@ const test = {
 };
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
-  const [sN, setSN] = useState("");
+  const [serialRun, setSerialRun] = useState("");
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
   };
 
   const handleRunClick = () => {
-    setSN(serialNumber);
+    setSerialRun(serialNumber);
     console.log("Running with Serial Number:", serialNumber);
   };
   return (
@@ -52,7 +52,7 @@ const AcousticManualRun = () => {
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
               Show Process Current of Manual EOLTStation {">>>"}{" "}
-              <span className="text-red-600 font-semibold">{sN}</span>
+              <span className="text-red-600 font-semibold">{serialRun}</span>
             </p>
           </div>
           <div className="m-4">
