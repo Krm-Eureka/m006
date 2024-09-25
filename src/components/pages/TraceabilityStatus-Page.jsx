@@ -34,6 +34,7 @@ const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [LstActLog, setLstActLog] = useState(null);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,12 +45,13 @@ const TraceabilityStatus = () => {
     };
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [LstActLog]);
+  }, []);
+
   return (
     <>
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
-        <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+        <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           {loading ? (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
@@ -87,19 +89,19 @@ const TraceabilityStatus = () => {
                 />
                 <StatusBox
                   name="TotalStatus"
-                  status={LstActLog.tracReportStatus}
+                  status={LstActLog.tracReporJudgementtResult}
                 />
               </div>
             </>
           )}
         </div>
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
-          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md  w-90% h-fit">
+          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Show Data Run Summary</p>
             </div>
             <div className="content flex flex-between p-4 items-center">
-              <div className=" flex flex-between flex-wrap justify-start">
+              <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
                     sx={{ minWidth: 500, maxWidth: 800, overflowX: "auto" }}
@@ -125,9 +127,9 @@ const TraceabilityStatus = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.map((row) => (
+                      {smrData.map((row, index) => (
                         <TableRow
-                          key={row.SerialCode}
+                          key={row.Name + index}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
@@ -142,12 +144,12 @@ const TraceabilityStatus = () => {
                             <p className="font-semibold">{row.Upper}</p>
                           </TableCell>
                           <TableCell align="left">
-                            {row.smrResult == "Fail" ? (
-                              <p className=" text-red-700 font-semibold">
+                            {row.smrResult === "Fail" ? (
+                              <p className="text-red-700 font-semibold">
                                 {row.smrResult}
                               </p>
                             ) : (
-                              <p className=" text-green-700 font-semibold">
+                              <p className="text-green-700 font-semibold">
                                 {row.smrResult}
                               </p>
                             )}
@@ -163,16 +165,12 @@ const TraceabilityStatus = () => {
               </div>
             </div>
           </div>
-          <div className=" text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+          <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
             <div className="content p-4 items-center">
-              <div className=" flex flex-between flex-wrap justify-start">
-                {/* <div className="box bg-slate-300 p-4 mr-2 rounded-lg w-40">
-                <i className="fa-solid fa-microphone mr-4 "></i>
-                <span>AcousticTest</span>
-              </div> */}
+              <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
                     sx={{ minWidth: 400, maxWidth: 700, overflowX: "auto" }}
@@ -191,7 +189,7 @@ const TraceabilityStatus = () => {
                     <TableBody>
                       {lstStatus.map((row) => (
                         <TableRow
-                          key={row.SerialCode}
+                          key={row.SerialCode} // SerialCode is already unique
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
@@ -200,12 +198,12 @@ const TraceabilityStatus = () => {
                             <p className="font-semibold">{row.SerialCode}</p>
                           </TableCell>
                           <TableCell align="left">
-                            {row.Result == "Fail" ? (
-                              <p className=" text-red-700 font-semibold">
+                            {row.Result === "Fail" ? (
+                              <p className="text-red-700 font-semibold">
                                 {row.Result}
                               </p>
                             ) : (
-                              <p className=" text-green-700 font-semibold">
+                              <p className="text-green-700 font-semibold">
                                 {row.Result}
                               </p>
                             )}
