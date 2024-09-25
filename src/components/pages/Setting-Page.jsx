@@ -15,12 +15,21 @@ const MasterSetting = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [serialNumber, setSerialNumber] = useState("");
+  const [minLimitCurrent, setMinLimitCurrent] = useState("");
+  const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
+  const [minLimitSensitivity, setMinLimitSensitivity] = useState("");
+  const [maxLimitSensitivity, setMaxLimitSensitivity] = useState("");
+  const [minLimitTHD, setMinLimitTHD] = useState("");
+  const [maxLimitTHD, setMaxLimitTHD] = useState("");
+  const [minLimitFrequency, setMinLimitFrequency] = useState("");
+  const [maxLimitFrequency, setMaxLimitFrequency] = useState("");
   const [masterData, setMasterData] = useState({
     plmReference: "",
     ebomReference: "",
-    manufacturingDate: "",
+    manufacturingDateFormat: "",
     eoltRefCode: "",
-    serialNumber: "",
+    serialNumber:""
   });
 
   const correctPassword = "123456";
@@ -40,16 +49,11 @@ const MasterSetting = () => {
     if (!isAuthenticated) return;
 
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const data = await GetMasterSetting("1", "1", setMasterData, setLoading);
-        setMasterData(data);
+        await GetMasterSetting("1", "1", setMasterData);
       } catch (error) {
         setError(error.message);
-        Toast.fire({
-          icon: "error",
-          title: "Failed to fetch data.",
-        });
       } finally {
         setLoading(false);
       }
@@ -75,24 +79,34 @@ const MasterSetting = () => {
   };
 
   const handleDMCUpdate = async () => {
-    const { plmReference, ebomReference, manufacturingDate, eoltRefCode, serialNumber } = masterData;
-
-    if (plmReference && ebomReference && manufacturingDate && eoltRefCode && serialNumber) {
+    const {
+      plmReference,
+      ebomReference,
+      manufacturingDateFormat,
+      eoltRefCode,
+    } = masterData;
+    if (
+      plmReference &&
+      ebomReference &&
+      manufacturingDateFormat &&
+      eoltRefCode &&
+      serialNumber
+    ) {
       const data = {
-        PLM_Reference: plmReference,
-        EBOM_Reference: ebomReference,
-        manufacturingDate,
-        EOLT_Reference: eoltRefCode,
+        plmReference,
+        ebomReference,
+        manufacturingDateFormat,
+        eoltRefCode,
         serialNumber,
       };
 
       try {
-        await PutDMCSetting('1', '1', data);
+        await PutDMCSetting("1", "1", data);
         Toast.fire({
           icon: "success",
           title: "DMC settings updated successfully!",
         });
-      } catch (err) {
+      } catch (error) {
         Toast.fire({
           icon: "error",
           title: "Failed to update DMC settings.",
@@ -105,7 +119,6 @@ const MasterSetting = () => {
       });
     }
   };
-
 
   if (!isAuthenticated) {
     return (
@@ -132,10 +145,11 @@ const MasterSetting = () => {
         </div>
       </div>
     );
-  } else if (isAuthenticated) {
-    return (
-      <>
-        <HeaderLayout page="Setting Parameter" />
+  }
+
+  return (
+    <>
+      <HeaderLayout page="Setting Parameter" />
       <div className="flex flex-wrap bg-gray-300 m-4 p-2 rounded-md w-90% h-fit">
         <div className="flex justify-between">
           <div className="card-content bg-gray-200 m-2 rounded-md w-96 h-fit">
@@ -143,83 +157,204 @@ const MasterSetting = () => {
               <p>DMC CODE CONTENT</p>
             </div>
             <div className="content px-8 py-2 items-center min-w-96">
-              <div className="flex flex-between flex-wrap justify-start">
-                {["PLM Reference", "EBOM Reference", "Manufacturing Date", "EOLT Reference A/B", "Serial Number"].map((label, index) => (
-                  <div className="mr-4 mb-2" key={index}>
+              <div className="flex flex-wrap justify-start">
+                {[
+                  {
+                    label: "PLM Reference",
+                    value: masterData.plmReference,
+                    setter: (value) =>
+                      setMasterData((prev) => ({
+                        ...prev,
+                        plmReference: value,
+                      })),
+                  },
+                  {
+                    label: "EBOM Reference",
+                    value: masterData.ebomReference,
+                    setter: (value) =>
+                      setMasterData((prev) => ({
+                        ...prev,
+                        ebomReference: value,
+                      })),
+                  },
+                  {
+                    label: "Manufacturing Date",
+                    value: masterData.manufacturingDateFormat,
+                    setter: (value) =>
+                      setMasterData((prev) => ({
+                        ...prev,
+                        manufacturingDateFormat: value,
+                      })),
+                    type: "date",
+                  },
+                  {
+                    label: "EOLT Reference A/B",
+                    value: masterData.eoltRefCode,
+                    setter: (value) =>
+                      setMasterData((prev) => ({
+                        ...prev,
+                        eoltRefCode: value,
+                      })),
+                  },
+                  {
+                    label: "Serial Number",
+                    value: serialNumber,
+                    setter: setSerialNumber,
+                  },
+                ].map(({ label, value, setter, type = "text" }) => (
+                  <div className="mr-4 mb-2" key={label}>
                     <label className="block mb-2 text-sm font-medium text-gray-700">
                       {label} <span className="text-red-600">*</span>
                     </label>
                     <input
                       disabled={!modify}
                       required
-                      type={label === "Manufacturing Date" ? "date" : "text"}
-                      id={label.replace(/ /g, "_")}
-                      value={masterData[label.toLowerCase().replace(/ /g, "")] || ""}
-                      className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder={`${label}...`}
-                      onChange={(e) => setMasterData({ ...masterData, [label.toLowerCase().replace(/ /g, "")]: e.target.value })}
+                      type={type}
+                      value={value}
+                      className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      placeholder={label}
+                      onChange={(e) => setter(e.target.value)}
                     />
                   </div>
                 ))}
               </div>
             </div>
-              <div className="flex flex-col items-center text-center mb-4">
+            <div className="flex flex-col items-center text-center mb-4">
               <p className="text-xs pl-4 pb-4 font-bold">
-                {masterData.plmReference && masterData.ebomReference && masterData.manufacturingDate && masterData.eoltRefCode && masterData.serialNumber
-                  ? `Example : ${masterData.plmReference}-${masterData.ebomReference}-${formatDate(masterData.manufacturingDate)}-${masterData.eoltRefCode}-${masterData.serialNumber}`
+                {masterData.plmReference &&
+                masterData.ebomReference &&
+                masterData.manufacturingDateFormat &&
+                masterData.eoltRefCode &&
+                serialNumber
+                  ? `Example : ${masterData.plmReference}-${
+                      masterData.ebomReference
+                    }-${formatDate(masterData.manufacturingDateFormat)}-${
+                      masterData.eoltRefCode
+                    }-${serialNumber}`
+                  : masterData.plmReference &&
+                    masterData.ebomReference &&
+                    masterData.manufacturingDateFormat &&
+                    masterData.eoltRefCode
+                  ? `Example : ${masterData.plmReference}-${
+                      masterData.ebomReference
+                    }-${formatDate(masterData.manufacturingDateFormat)}-${
+                      masterData.eoltRefCode
+                    }-*****`
+                  : masterData.plmReference &&
+                    masterData.ebomReference &&
+                    masterData.manufacturingDateFormat
+                  ? `Example : ${masterData.plmReference}-${
+                      masterData.ebomReference
+                    }-${formatDate(masterData.manufacturingDateFormat)}-S-*****`
+                  : masterData.plmReference && masterData.ebomReference
+                  ? `Example : ${masterData.plmReference}-${masterData.ebomReference}-DDMMYY-S-*****`
+                  : masterData.plmReference
+                  ? `Example : ${masterData.plmReference}-yyyyyyyyyy-DDMMYY-S-*****`
                   : `Example : xxxxxxxxxx-yyyyyyyyyy-DDMMYY-S-*****`}
               </p>
-                <button
-                  onClick={handleDMCUpdate}
-                  disabled={!modify}
-                  className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
-                    !modify ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  UPDATE DMC
-                </button>
-              </div>
+              {/* <p className="text-xs pl-4 pb-4 font-bold">
+                  {PLM_Reference &&
+                  EBOM_Reference &&
+                  manufacturingDate &&
+                  EOLT_Reference &&
+                  serialNumber
+                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
+                        manufacturingDate
+                      )}-${EOLT_Reference}-${serialNumber}`
+                    : PLM_Reference &&
+                      EBOM_Reference &&
+                      manufacturingDate &&
+                      EOLT_Reference
+                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
+                        manufacturingDate
+                      )}-${EOLT_Reference}-*****`
+                    : PLM_Reference && EBOM_Reference && manufacturingDate
+                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
+                        manufacturingDate
+                      )}-S-*****`
+                    : PLM_Reference && EBOM_Reference
+                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-DDMMYY-S-*****`
+                    : PLM_Reference
+                    ? `Example : ${PLM_Reference}-yyyyyyyyyy-DDMMYY-S-*****`
+                    : `Example : xxxxxxxxxx-yyyyyyyyyy-DDMMYY-S-*****`}
+                </p> */}
+              <button
+                onClick={handleDMCUpdate}
+                disabled={!modify}
+                className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
+                  !modify ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                UPDATE DMC
+              </button>
             </div>
-            <div className="flex flex-col items-center">
-            <div className="flex flex-between flex-wrap justify-start">
-              {["current", "sensitivity", "thd", "Frequency"].map((title) => (
-                <CardSetting
-                  key={title}
-                  disable={!modify}
-                  title={title}
-                  minValue={masterData[`minLimit${title.charAt(0).toUpperCase() + title.slice(1)}`] || ""}
-                  maxValue={masterData[`maxLimit${title.charAt(0).toUpperCase() + title.slice(1)}`] || ""}
-                  setMinValue={(value) => setMasterData({ ...masterData, [`minLimit${title.charAt(0).toUpperCase() + title.slice(1)}`]: value })}
-                  setMaxValue={(value) => setMasterData({ ...masterData, [`maxLimit${title.charAt(0).toUpperCase() + title.slice(1)}`]: value })}
-                />
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="flex flex-wrap justify-start">
+              {[
+                {
+                  id:0,
+                  title: "Current",
+                  minValue: minLimitCurrent,
+                  maxValue: maxLimitCurrent,
+                  setMinValue: setMinLimitCurrent,
+                  setMaxValue: setMaxLimitCurrent,
+                },
+                {
+                  id:1,
+                  title: "Sensitivity",
+                  minValue: minLimitSensitivity,
+                  maxValue: maxLimitSensitivity,
+                  setMinValue: setMinLimitSensitivity,
+                  setMaxValue: setMaxLimitSensitivity,
+                },
+                {
+                  id:2,
+                  title: "THD",
+                  minValue: minLimitTHD,
+                  maxValue: maxLimitTHD,
+                  setMinValue: setMinLimitTHD,
+                  setMaxValue: setMaxLimitTHD,
+                },
+                {
+                  id:3,
+                  title: "Frequency",
+                  minValue: minLimitFrequency,
+                  maxValue: maxLimitFrequency,
+                  setMinValue: setMinLimitFrequency,
+                  setMaxValue: setMaxLimitFrequency,
+                },
+              ].map((props) => (
+                <CardSetting key={props.id} disable={!modify} {...props} />
               ))}
             </div>
-              <div>
-                <button
-                  disabled={!modify}
-                  className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
-                    !modify ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  UPDATE PARAMETER
-                </button>
-              </div>
+            <div>
+              <button
+                disabled={!modify}
+                className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
+                  !modify ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                UPDATE PARAMETER
+              </button>
             </div>
           </div>
         </div>
-        <div className="items-center">
-          <button
-            onClick={handleModify}
-            className={`mx-4 ${modify ? "bg-red-500" : "bg-blue-500"} hover:${
-              modify ? "bg-red-700" : "bg-blue-700"
-            } text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg`}
-          >
-            {modify ? "CANCEL" : "Modify"}
-          </button>
-        </div>
-      </>
-    );
-  }
+      </div>
+      <div className="items-center">
+        <button
+          onClick={handleModify}
+          className={`mx-4 ${
+            modify
+              ? "bg-red-500 hover:bg-red-700"
+              : "bg-blue-500 hover:bg-blue-700"
+          } text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg`}
+        >
+          {modify ? "CANCEL" : "Modify"}
+        </button>
+      </div>
+    </>
+  );
 };
 
 export default MasterSetting;

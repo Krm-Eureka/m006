@@ -62,6 +62,7 @@ CardSetting.propTypes = {
     .isRequired,
   setMinValue: PropTypes.func.isRequired,
   setMaxValue: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default CardSetting;
