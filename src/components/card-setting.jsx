@@ -28,7 +28,6 @@ const CardSetting = ({
                 className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Min Limit"
                 onChange={(e) => setMinValue(e.target.value)}
-                //   disabled={props.disable === true? true: false}
               />
             </div>
             <div className="mr-2 mb-2">
@@ -43,7 +42,6 @@ const CardSetting = ({
                 className="w-32 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Max Limit"
                 onChange={(e) => setMaxValue(e.target.value)}
-                //   disabled={props.disable === true? true: false}
               />
             </div>
           </div>

@@ -18,7 +18,9 @@ export function GetLastAcousticTraceLog(
 
       SET(res.data.data);
       {
-        res.data.succeeded && res.data.succeeded === true ? LOADING(false) : LOADING(true);
+        res.data.succeeded && res.data.succeeded === true
+          ? LOADING(false)
+          : LOADING(true);
       }
     } catch (error) {
       console.error("Failed to fetch Data:", error);
