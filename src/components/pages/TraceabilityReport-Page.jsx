@@ -93,16 +93,12 @@ const TraceabilityReport = () => {
   const [rows, setRows] = useState([]);
   const [toDate, setToDate] = useState(today);
   const [error, setError] = useState(null);
-
-  console.log("Rows:", rows);
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
   const sortRows = (rows, order, orderBy) => {
-    console.log(rows);
-
     return rows.slice().sort((a, b) => {
       const valueA = a[orderBy];
       const valueB = b[orderBy];
@@ -142,7 +138,6 @@ const TraceabilityReport = () => {
   const searchWithDate = async () => {
     try {
       await getTraceabilityDataWithDate("1", fromDate, toDate, setRows);
-      console.log(rows);
     } catch (err) {
       setError(err);
     }
@@ -311,9 +306,9 @@ const TraceabilityReport = () => {
         </div>
 
         <div className="p-4">
-          <Paper
-            sx={{ maxHeight: 600, overflowY: "scroll", overflowX: "scroll" }}
-          >
+          {/* <Paper
+            
+          > */}
             <TablePagination
               rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
               component="div"
@@ -323,7 +318,14 @@ const TraceabilityReport = () => {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <TableContainer>
+             <TableContainer
+              component={Paper}
+              sx={{
+                maxHeight: 700,
+                overflowY: "scroll",
+                overflowX: "scroll",
+              }}
+            >
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
@@ -378,7 +380,7 @@ const TraceabilityReport = () => {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </Paper>
+          {/* </Paper> */}
         </div>
       </div>
     </>
