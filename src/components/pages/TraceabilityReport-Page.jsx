@@ -53,11 +53,26 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  { id: "tracReporJudgementtResult", label: "Judgement", sortable: true },
+  {
+    id: "tracReporJudgementtResult",
+    label: "Judgement",
+    aln: "center",
+    sortable: true,
+  },
   // { id: "SensitivityJud", label: "SensitivityJudgment", sortable: true },
-  { id: "acousticStatus", label: "AcousticStatus", sortable: true },
-  { id: "laserMarkStatus", label: "LaserMarkStatus", sortable: true },
-  { id: "qrStatus", label: "QrStatus", w: 50, sortable: true },
+  {
+    id: "acousticStatus",
+    label: "AcousticStatus",
+    aln: "center",
+    sortable: true,
+  },
+  {
+    id: "laserMarkStatus",
+    label: "LaserMarkStatus",
+    aln: "center",
+    sortable: true,
+  },
+  { id: "qrStatus", label: "QrStatus", w: 50, aln: "center", sortable: true },
   {
     id: "lastUpdateDate",
     label: "Date",
@@ -79,80 +94,6 @@ const TraceabilityReport = () => {
   const [toDate, setToDate] = useState(today);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   setRows([
-  //     {
-  //       productionLineId: 1,
-  //       productionLineName: "Line A",
-  //       serialNoRequestFlag: true,
-  //       serialCode: "9865473780-68636791AA-270924-A-00001",
-  //       readyReadFlag: false,
-  //       receiveReportFlag: false,
-  //       tracReportStatus: 0,
-  //       tracReporJudgementtResult: 0,
-  //       qrSendRequestFlag: false,
-  //       qrSendRequestStatus: 0,
-  //       tracQRResponseStatus: 0,
-  //       acousticStatus: 0,
-  //       laserMarkStatus: 0,
-  //       qrStatus: 0,
-  //       cancelFlag: false,
-  //       closeFlag: false,
-  //       closeCode: "",
-  //       closeDate: "0001-01-01T00:00:00",
-  //       id: 13,
-  //       creationDate: "2024-09-27T15:04:40.375056",
-  //       lastUpdateDate: "2024-09-27T15:04:40.375058",
-  //     },
-  //     {
-  //       productionLineId: 1,
-  //       productionLineName: "Line A",
-  //       serialNoRequestFlag: true,
-  //       serialCode: "9865473780-68636791AA-270924-A-00002",
-  //       readyReadFlag: false,
-  //       receiveReportFlag: false,
-  //       tracReportStatus: 0,
-  //       tracReporJudgementtResult: 0,
-  //       qrSendRequestFlag: false,
-  //       qrSendRequestStatus: 0,
-  //       tracQRResponseStatus: 0,
-  //       acousticStatus: 0,
-  //       laserMarkStatus: 0,
-  //       qrStatus: 0,
-  //       cancelFlag: false,
-  //       closeFlag: false,
-  //       closeCode: "",
-  //       closeDate: "0001-01-01T00:00:00",
-  //       id: 14,
-  //       creationDate: "2024-09-27T16:23:22.750087",
-  //       lastUpdateDate: "2024-09-27T16:23:22.750093",
-  //     },
-  //     {
-  //       productionLineId: 1,
-  //       productionLineName: "Line A",
-  //       serialNoRequestFlag: true,
-  //       serialCode: "9865473780-68636791AA-270924-A-00003",
-  //       readyReadFlag: false,
-  //       receiveReportFlag: false,
-  //       tracReportStatus: 0,
-  //       tracReporJudgementtResult: 0,
-  //       qrSendRequestFlag: false,
-  //       qrSendRequestStatus: 0,
-  //       tracQRResponseStatus: 0,
-  //       acousticStatus: 0,
-  //       laserMarkStatus: 0,
-  //       qrStatus: 0,
-  //       cancelFlag: false,
-  //       closeFlag: false,
-  //       closeCode: "",
-  //       closeDate: "0001-01-01T00:00:00",
-  //       id: 15,
-  //       creationDate: "2024-09-27T16:34:42.078203",
-  //       lastUpdateDate: "2024-09-30T16:34:42.078205",
-  //     },
-  //   ]);
-  // }, []);
-
   console.log("Rows:", rows);
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -161,7 +102,7 @@ const TraceabilityReport = () => {
   };
   const sortRows = (rows, order, orderBy) => {
     console.log(rows);
-    
+
     return rows.slice().sort((a, b) => {
       const valueA = a[orderBy];
       const valueB = b[orderBy];
@@ -182,7 +123,6 @@ const TraceabilityReport = () => {
   };
 
   const handleSearchChange = (event) => {
-   
     setSearchTerm(event.target.value);
   };
 
@@ -214,10 +154,10 @@ const TraceabilityReport = () => {
     const to = toDate ? new Date(toDate) : null;
 
     if (from) {
-        from.setHours(0, 0, 0, 0);
+      from.setHours(0, 0, 0, 0);
     }
     if (to) {
-        to.setHours(23, 59, 59, 999);
+      to.setHours(23, 59, 59, 999);
     }
     const isDateInRange = (!from || rowDate >= from) && (!to || rowDate <= to);
     const isSearchMatch =
@@ -227,8 +167,7 @@ const TraceabilityReport = () => {
       );
 
     return isDateInRange && isSearchMatch;
-});
-
+  });
 
   const sortedRows = sortRows(filteredRows, order, orderBy);
 
@@ -375,7 +314,7 @@ const TraceabilityReport = () => {
           <Paper
             sx={{ maxHeight: 600, overflowY: "scroll", overflowX: "scroll" }}
           >
-             <TablePagination
+            <TablePagination
               rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
               component="div"
               count={sortedRows.length}
@@ -410,26 +349,7 @@ const TraceabilityReport = () => {
                     ))}
                   </TableRow>
                 </TableHead>
-                {/* <TableBody>
-                {sortedRows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <StyledTableRow key={row.id}>
-                      {columns.map((column) => (
-                        <StyledTableCell
-                          key={column.id}
-                          align={column.aln || "left"}
-                        >
-                          {column.id === "lastUpdateDate"
-                            ? formatDateTime(row[column.id])
-                            : column.id !== "lastUpdateDate" && row[column.id]}
-                          {row[column.id]}
-                        </StyledTableCell>
-                      ))}
-                    </StyledTableRow>
-                  ))}
-              </TableBody> */}
-                {/* <TableBody>
+                <TableBody>
                   {sortedRows
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
@@ -446,29 +366,6 @@ const TraceabilityReport = () => {
                         ))}
                       </StyledTableRow>
                     ))}
-                </TableBody> */}
-                <TableBody>
-                  {sortedRows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                    <StyledTableRow key={row.id} >
-                      <StyledTableCell align={'center'}>
-                        {row.productionLineName}
-                      </StyledTableCell>
-                      <StyledTableCell align={'center'}>{row.serialCode}</StyledTableCell>
-                      <StyledTableCell align={'center'}>{row.tracReportStatus}</StyledTableCell>
-                      <StyledTableCell align={'center'}>
-                        {row.tracReporJudgementtResult}
-                      </StyledTableCell>
-                      {/* <StyledTableCell>{row.SensitivityJud}</StyledTableCell> */}
-                      <StyledTableCell align={'center'}>{row.acousticStatus}</StyledTableCell>
-                      <StyledTableCell align={'center'}>{row.laserMarkStatus}</StyledTableCell>
-                      <StyledTableCell align={'center'}>{row.qrStatus}</StyledTableCell>
-                      <StyledTableCell align={'center'}>
-                        {formatDateTime(row.lastUpdateDate)}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
