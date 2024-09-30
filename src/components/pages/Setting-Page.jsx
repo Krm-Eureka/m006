@@ -49,15 +49,15 @@ const MasterSetting = () => {
   useEffect(() => {
     if (!isAuthenticated) return;
     const fetchData = async () => {
-      // setLoading(true);
+      setLoading(true);
       try {
         await GetMasterSetting("1", "1", setMasterData, setLoading);
       } catch (error) {
         setError(error.message);
       }
-      //  finally {
-      //   setLoading(false);
-      // }
+       finally {
+        setLoading(false);
+      }
       //   const intervalId = setInterval(fetchData, 2000);
       // return () => clearInterval(intervalId);
     };
@@ -110,6 +110,7 @@ const MasterSetting = () => {
         Toast.fire({
           icon: "error",
           title: "Failed to update DMC settings.",
+          error,
         });
       }
     } else {
@@ -121,8 +122,8 @@ const MasterSetting = () => {
   };
   const handleUpdateParam = async () => {
     const data = {
-      runningMin:minLimitCurrent,
-      runningMax:maxLimitCurrent,
+      runningMin: minLimitCurrent,
+      runningMax: maxLimitCurrent,
     };
     if ((minLimitCurrent, maxLimitCurrent)) {
       try {
@@ -135,6 +136,7 @@ const MasterSetting = () => {
         Toast.fire({
           icon: "error",
           title: "Failed to update DMC settings.",
+          error,
         });
       }
     } else {
@@ -237,7 +239,7 @@ const MasterSetting = () => {
                       </label>
                       <input
                         disabled={!modify || label === "Serial Number"}
-                        required={label !== "Serial Number" }
+                        required={label !== "Serial Number"}
                         type={type}
                         // value={value}
                         value={loading ? "" : value}

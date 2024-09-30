@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
+import { useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -9,9 +10,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
-// import * as XLSX from "xlsx";
+import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 import { formatDateTime } from "../../services/formatTimeStamp";
 import { TableSortLabel } from "@mui/material";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.white,
@@ -30,289 +32,251 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
+
 const columns = [
-  { id: "Device", label: "Device", sortable: true , aln: "center"},
-  { id: "Date", label: "Date", sortable: true, w: 200, aln: "center" },
   {
-    id: "TotalStatus",
-    label: "TotalStatus",
+    id: "productionLineName",
+    label: "Production",
+    sortable: true,
+    aln: "center",
+  },
+  {
+    id: "serialCode",
+    label: "SerialNumber",
     sortable: true,
     w: 340,
     aln: "center",
   },
-  { id: "Current", label: "Current", sortable: true },
-  { id: "CurrentJud", label: "CurrentJudgment", sortable: true },
-  { id: "Sensitivity", label: "Sensitivity", sortable: true },
-  { id: "SensitivityJud", label: "SensitivityJudgment", sortable: true },
-  { id: "THD", label: "THD", sortable: true },
-  { id: "THDName", label: "THDName", sortable: true },
-  { id: "THDMin", label: "THDMin", sortable: true },
-  { id: "THDMax", label: "THDMax", sortable: true },
-  { id: "THDResult", label: "THDResult", sortable: true },
-  { id: "THDJud", label: "THDJudgment", sortable: true },
-  { id: "Name4", label: "Name", sortable: true },
-  { id: "Measurement4", label: "Measurement", sortable: true },
-  { id: "Status4", label: "Status", sortable: true },
-  { id: "Flag", label: "Flag", sortable: true },
-  { id: "CreateDate", label: "CreateDate", sortable: true },
-];
-
-function createData(
-  id,
-  Device,
-  Date,
-  TotalStatus,
-  Current,
-  CurrentJud,
-  Sensitivity,
-  SensitivityJud,
-  THD,
-  THDName,
-  THDMin,
-  THDMax,
-  THDResult,
-  THDJud,
-  Name4,
-  Measurement4,
-  Status4,
-  Flag,
-  CreateDate
-) {
-  return {
-    id,
-    Device,
-    Date,
-    TotalStatus,
-    Current,
-    CurrentJud,
-    Sensitivity,
-    SensitivityJud,
-    THD,
-    THDName,
-    THDMin,
-    THDMax,
-    THDResult,
-    THDJud,
-    Name4,
-    Measurement4,
-    Status4,
-    Flag,
-    CreateDate,
-  };
-}
-
-const rows = [
-  createData(
-    1,
-    "Device A",
-    "2024-09-10",
-    "1234568790-1122334455-020405-A-00001",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
-  createData(
-    2,
-    "Device A",
-    "2024-09-10",
-    "Status 1",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
-  createData(
-    3,
-    "Device A",
-    "2024-09-10",
-    "Status 1",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
-  createData(
-    4,
-    "Device A",
-    "2024-09-10",
-    "Status 1",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
-  createData(
-    5,
-    "Device A",
-    "2024-09-10",
-    "Status 1",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
-  createData(
-    6,
-    "Device A",
-    "2024-09-10",
-    "Status 1",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
-  createData(
-    7,
-    "Device B",
-    "2024-09-10",
-    "9865473780-68636791TS-220924-T-00001",
-    10,
-    "Good",
-    0.5,
-    "High",
-    2.0,
-    "THD 1",
-    0.1,
-    5.0,
-    "Pass",
-    "Judged",
-    "Name 4",
-    "Measurement 4",
-    "Status 4",
-    "Flag A",
-    "2024-09-01"
-  ),
+  {
+    id: "tracReportStatus",
+    label: "Status",
+    sortable: true,
+    aln: "center",
+  },
+  { id: "tracReporJudgementtResult", label: "Judgement", sortable: true },
+  // { id: "SensitivityJud", label: "SensitivityJudgment", sortable: true },
+  { id: "acousticStatus", label: "AcousticStatus", sortable: true },
+  { id: "laserMarkStatus", label: "LaserMarkStatus", sortable: true },
+  { id: "qrStatus", label: "QrStatus", w: 50, sortable: true },
+  {
+    id: "lastUpdateDate",
+    label: "Date",
+    w: 200,
+    sortable: true,
+    aln: "center",
+  },
 ];
 
 const TraceabilityReport = () => {
+  const today = new Date().toISOString().split("T")[0];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState("desc");
-  const [orderBy, setOrderBy] = useState("CreateDate");
+  const [orderBy, setOrderBy] = useState("lastUpdateDate");
+  const [fromDate, setFromDate] = useState(today);
+  const [rows, setRows] = useState([]);
+  const [toDate, setToDate] = useState(today);
   const [error, setError] = useState(null);
 
+  // useEffect(() => {
+  //   setRows([
+  //     {
+  //       productionLineId: 1,
+  //       productionLineName: "Line A",
+  //       serialNoRequestFlag: true,
+  //       serialCode: "9865473780-68636791AA-270924-A-00001",
+  //       readyReadFlag: false,
+  //       receiveReportFlag: false,
+  //       tracReportStatus: 0,
+  //       tracReporJudgementtResult: 0,
+  //       qrSendRequestFlag: false,
+  //       qrSendRequestStatus: 0,
+  //       tracQRResponseStatus: 0,
+  //       acousticStatus: 0,
+  //       laserMarkStatus: 0,
+  //       qrStatus: 0,
+  //       cancelFlag: false,
+  //       closeFlag: false,
+  //       closeCode: "",
+  //       closeDate: "0001-01-01T00:00:00",
+  //       id: 13,
+  //       creationDate: "2024-09-27T15:04:40.375056",
+  //       lastUpdateDate: "2024-09-27T15:04:40.375058",
+  //     },
+  //     {
+  //       productionLineId: 1,
+  //       productionLineName: "Line A",
+  //       serialNoRequestFlag: true,
+  //       serialCode: "9865473780-68636791AA-270924-A-00002",
+  //       readyReadFlag: false,
+  //       receiveReportFlag: false,
+  //       tracReportStatus: 0,
+  //       tracReporJudgementtResult: 0,
+  //       qrSendRequestFlag: false,
+  //       qrSendRequestStatus: 0,
+  //       tracQRResponseStatus: 0,
+  //       acousticStatus: 0,
+  //       laserMarkStatus: 0,
+  //       qrStatus: 0,
+  //       cancelFlag: false,
+  //       closeFlag: false,
+  //       closeCode: "",
+  //       closeDate: "0001-01-01T00:00:00",
+  //       id: 14,
+  //       creationDate: "2024-09-27T16:23:22.750087",
+  //       lastUpdateDate: "2024-09-27T16:23:22.750093",
+  //     },
+  //     {
+  //       productionLineId: 1,
+  //       productionLineName: "Line A",
+  //       serialNoRequestFlag: true,
+  //       serialCode: "9865473780-68636791AA-270924-A-00003",
+  //       readyReadFlag: false,
+  //       receiveReportFlag: false,
+  //       tracReportStatus: 0,
+  //       tracReporJudgementtResult: 0,
+  //       qrSendRequestFlag: false,
+  //       qrSendRequestStatus: 0,
+  //       tracQRResponseStatus: 0,
+  //       acousticStatus: 0,
+  //       laserMarkStatus: 0,
+  //       qrStatus: 0,
+  //       cancelFlag: false,
+  //       closeFlag: false,
+  //       closeCode: "",
+  //       closeDate: "0001-01-01T00:00:00",
+  //       id: 15,
+  //       creationDate: "2024-09-27T16:34:42.078203",
+  //       lastUpdateDate: "2024-09-30T16:34:42.078205",
+  //     },
+  //   ]);
+  // }, []);
+
+  console.log("Rows:", rows);
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+  const sortRows = (rows, order, orderBy) => {
+    console.log(rows);
+    
+    return rows.slice().sort((a, b) => {
+      const valueA = a[orderBy];
+      const valueB = b[orderBy];
+
+      if (Date.parse(valueA) && Date.parse(valueB)) {
+        return order === "asc"
+          ? new Date(valueA) - new Date(valueB)
+          : new Date(valueB) - new Date(valueA);
+      }
+      return order === "asc"
+        ? valueA > valueB
+          ? 1
+          : -1
+        : valueA < valueB
+        ? 1
+        : -1;
+    });
+  };
 
   const handleSearchChange = (event) => {
+   
     setSearchTerm(event.target.value);
   };
 
-  const filteredRows = rows.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
-
-  const sortRows = (rows, order, orderBy) => {
-    return rows.slice().sort((a, b) => {
-      const valueA = orderBy === "Date" ? new Date(a[orderBy]) : a[orderBy];
-      const valueB = orderBy === "Date" ? new Date(b[orderBy]) : b[orderBy];
-
-      if (order === "asc") return valueA > valueB ? 1 : -1;
-      return valueA < valueB ? 1 : -1;
-    });
+  const handleFromDateChange = (event) => {
+    setFromDate(event.target.value);
   };
+
+  const handleToDateChange = (event) => {
+    setToDate(event.target.value);
+  };
+
+  const handleClear = () => {
+    setSearchTerm("");
+    setFromDate("");
+    setToDate("");
+  };
+  const searchWithDate = async () => {
+    try {
+      await getTraceabilityDataWithDate("1", fromDate, toDate, setRows);
+      console.log(rows);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const filteredRows = rows.filter((row) => {
+    const rowDate = new Date(row.lastUpdateDate);
+    const from = fromDate ? new Date(fromDate) : null;
+    const to = toDate ? new Date(toDate) : null;
+
+    if (from) {
+        from.setHours(0, 0, 0, 0);
+    }
+    if (to) {
+        to.setHours(23, 59, 59, 999);
+    }
+    const isDateInRange = (!from || rowDate >= from) && (!to || rowDate <= to);
+    const isSearchMatch =
+      searchTerm === "" ||
+      Object.values(row).some((value) =>
+        String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    return isDateInRange && isSearchMatch;
+});
+
 
   const sortedRows = sortRows(filteredRows, order, orderBy);
 
   const exportToCSV = () => {
     const headers = columns.map((column) => column.label).join(",");
-    const csvRows = sortedRows.map((row) =>
-      columns
+    const csvRows = sortedRows.map((row) => {
+      return columns
         .map((column) => {
           const value = row[column.id];
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
             : value;
         })
-        .join(",")
-    );
+        .join(",");
+    });
 
+    const fromData = new Date(fromDate);
+    const toData = new Date(toDate);
     const today = new Date();
     const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
       today.getMonth() + 1
     ).padStart(2, "0")}-${today.getFullYear()}`;
-    const csvContent = [`DATE: ${formattedDate}`, headers, ...csvRows].join(
-      "\n"
-    );
+    const formattedFromDate = `${String(fromData.getDate()).padStart(
+      2,
+      "0"
+    )}-${String(fromData.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${fromData.getFullYear()}`;
+    const formattedToDate = `${String(toData.getDate()).padStart(
+      2,
+      "0"
+    )}-${String(toData.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${toData.getFullYear()}`;
 
+    const csvContent = [
+      `DATE : ${formattedFromDate} To ${formattedToDate}`,
+      "",
+      headers,
+      ...csvRows,
+    ].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `EOLT_TRC_report_${formattedDate}.csv`;
+    a.download = `EOLT_report_${formattedDate}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -324,10 +288,6 @@ const TraceabilityReport = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  const clearSearch = () => {
-    setSearchTerm("");
   };
 
   if (error) return <p>Error loading data: {error.message}</p>;
@@ -342,29 +302,56 @@ const TraceabilityReport = () => {
         <div className="flex flex-wrap mx-4 py-2 h-fit items-center justify-center">
           <div className="mx-2 mb-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-              DeviceID / SerialCode
+              SerialNumber
             </label>
             <input
               type="text"
-              id="DeviceID_SerialCode"
+              className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+              placeholder="SerialNumber..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="sm:min-w-20 md:min-w-60 lg:min-w-80 p-2.5 m-2 rounded-md w-80 h-10 mx-2 bg-gray-50 dark:text-gray-900 dark:border-gray-600 dark:placeholder-gray-400"
-              placeholder="DeviceID / SerialCode"
+            />
+          </div>
+          <div className="mx-2 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+              From Date
+            </label>
+            <input
+              type="date"
+              className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+              value={fromDate}
+              onChange={handleFromDateChange}
+            />
+          </div>
+          <div className="mx-2 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+              To Date
+            </label>
+            <input
+              type="date"
+              className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+              value={toDate}
+              onChange={handleToDateChange}
             />
           </div>
           <div className="justify-items-center mx-2 mt-3">
             <button
-              disabled={!searchTerm}
+              onClick={searchWithDate}
+              className="mx-2 my-1 py-1 px-2 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn"
+            >
+              Search
+            </button>
+
+            <button
               onClick={exportToCSV}
               className={`mx-2 my-1 py-1 px-2 ${
                 !searchTerm ? "hidden" : ""
-              } bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
+              } bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
             >
               EXPORT
             </button>
+
             <button
-              disabled={searchTerm}
               onClick={exportToCSV}
               className={`mx-2 my-1 py-1 px-2 ${
                 searchTerm ? "hidden" : ""
@@ -372,8 +359,9 @@ const TraceabilityReport = () => {
             >
               EXPORT ALL
             </button>
+
             <button
-              onClick={clearSearch}
+              onClick={handleClear}
               className={`mx-2 my-1 py-1 px-2 ${
                 !searchTerm ? "hidden" : ""
               } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
@@ -382,78 +370,118 @@ const TraceabilityReport = () => {
             </button>
           </div>
         </div>
-        <div className="px-8">
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 20, 50]}
-            component="div"
-            count={filteredRows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-          <TableContainer
-            component={Paper}
+
+        <div className="p-4">
+          <Paper
             sx={{ maxHeight: 600, overflowY: "scroll", overflowX: "scroll" }}
           >
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <StyledTableCell
-                      key={column.id}
-                      sx={{ minWidth: column.w }}
-                      align={column.aln}
-                    >
-                      <TableSortLabel
-                        active={orderBy === column.id}
-                        direction={orderBy === column.id ? order : "asc"}
-                        onClick={() => handleRequestSort(column.id)}
+             <TablePagination
+              rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
+              component="div"
+              count={sortedRows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+            <TableContainer>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <StyledTableCell
+                        key={column.id}
+                        sx={{ minWidth: column.w }}
+                        align={column.aln || "left"}
+                        sortDirection={orderBy === column.id ? order : false}
                       >
-                        {column.label}
-                      </TableSortLabel>
-                    </StyledTableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
+                        {column.sortable ? (
+                          <TableSortLabel
+                            active={orderBy === column.id}
+                            direction={orderBy === column.id ? order : "asc"}
+                            onClick={() => handleRequestSort(column.id)}
+                          >
+                            {column.label}
+                          </TableSortLabel>
+                        ) : (
+                          column.label
+                        )}
+                      </StyledTableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                {/* <TableBody>
                 {sortedRows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <StyledTableRow key={row.id}>
-                      {columns.map((column) => {
-                        const value =
-                          column.id === "Date"
+                      {columns.map((column) => (
+                        <StyledTableCell
+                          key={column.id}
+                          align={column.aln || "left"}
+                        >
+                          {column.id === "lastUpdateDate"
                             ? formatDateTime(row[column.id])
-                            : row[column.id];
-                        return (
-                          <StyledTableCell key={column.id} align="left">
-                            {value}
-                          </StyledTableCell>
-                        );
-                      })}
+                            : column.id !== "lastUpdateDate" && row[column.id]}
+                          {row[column.id]}
+                        </StyledTableCell>
+                      ))}
                     </StyledTableRow>
                   ))}
-                {sortedRows.length === 0 && (
-                  <StyledTableRow>
-                    <StyledTableCell colSpan={columns.length} align="center">
-                      No results found.
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 20, 50]}
-            component="div"
-            count={filteredRows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+              </TableBody> */}
+                {/* <TableBody>
+                  {sortedRows
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => (
+                      <StyledTableRow key={row.id}>
+                        {columns.map((column) => (
+                          <StyledTableCell
+                            key={column.id}
+                            align={column.aln || "left"}
+                          >
+                            {column.id === "lastUpdateDate"
+                              ? formatDateTime(row[column.id])
+                              : row[column.id]}
+                          </StyledTableCell>
+                        ))}
+                      </StyledTableRow>
+                    ))}
+                </TableBody> */}
+                <TableBody>
+                  {sortedRows
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => (
+                    <StyledTableRow key={row.id} >
+                      <StyledTableCell align={'center'}>
+                        {row.productionLineName}
+                      </StyledTableCell>
+                      <StyledTableCell align={'center'}>{row.serialCode}</StyledTableCell>
+                      <StyledTableCell align={'center'}>{row.tracReportStatus}</StyledTableCell>
+                      <StyledTableCell align={'center'}>
+                        {row.tracReporJudgementtResult}
+                      </StyledTableCell>
+                      {/* <StyledTableCell>{row.SensitivityJud}</StyledTableCell> */}
+                      <StyledTableCell align={'center'}>{row.acousticStatus}</StyledTableCell>
+                      <StyledTableCell align={'center'}>{row.laserMarkStatus}</StyledTableCell>
+                      <StyledTableCell align={'center'}>{row.qrStatus}</StyledTableCell>
+                      <StyledTableCell align={'center'}>
+                        {formatDateTime(row.lastUpdateDate)}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
+              component="div"
+              count={sortedRows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
         </div>
       </div>
     </>
