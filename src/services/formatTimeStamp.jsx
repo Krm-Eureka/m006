@@ -28,23 +28,44 @@ export function formatTime(dateTimeString) {
         hour12: true
     }).format(date);
 }
-export function formatDateTime(dateTimeString){
+// export function formatDateTime(dateTimeString){
+//     if (!dateTimeString) {
+//         return "Invalid Date"
+//     }
+//     const date = new Date(dateTimeString);
+//     if (isNaN(date.getTime())) {
+//         return "Invalid Date";
+//     }
+//     return new Intl.DateTimeFormat('en-US', {
+//         year: 'numeric',
+//         month: '2-digit',
+//         day: '2-digit',
+
+//         hour: '2-digit',
+//         minute: '2-digit',
+//         second: '2-digit',
+//         hour12: true
+//     }).format(date);
+    
+// }
+export function formatDateTime(dateTimeString) {
     if (!dateTimeString) {
-        return "Invalid Date"
+        return "Invalid Date";
     }
     const date = new Date(dateTimeString);
     if (isNaN(date.getTime())) {
         return "Invalid Date";
     }
-    return new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         hour12: true
-    }).format(date);
+    });
     
+    const time = timeFormatter.format(date);
+    return `${day}-${month}-${year} ${time}`;
 }
