@@ -4,7 +4,7 @@ export function GetLastAcousticTraceLog(
   version,
   productionLineID,
   SET,
-  LOADING
+  LOADING,
 ) {
   console.log(
     `/api/v${version}/AcousticTraceLog/GetLastAcousticTraceLog/${productionLineID}`
@@ -41,7 +41,6 @@ export function GetAcousticTraceDetailById(version,
           `/api/v${version}/AcousticTraceDetail/GetByAcousticLogId/${acousticTraceId}`
         );
         console.log(`AcousticTraceDetail ${acousticTraceId} : `, res.data);
-  
         SET(res.data.data);
         
         {

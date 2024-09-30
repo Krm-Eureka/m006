@@ -7,16 +7,17 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../header-component/";
-import { GetLastAcousticTraceLog ,GetAcousticTraceDetailById} from "../../services/api-service/stationData";
+import {
+  GetLastAcousticTraceLog,
+  GetAcousticTraceDetailById,
+} from "../../services/api-service/stationData";
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 
 function createLstStatus(SerialCode, Result) {
   return { SerialCode, Result };
 }
-function createSmrData(Name, Lower, Upper, smrResult, Status) {
-  return { Name, Lower, Upper, smrResult, Status };
-}
+
 const lstStatus = [
   createLstStatus("EOLT-A-382315929117", "PASS"),
   createLstStatus("EOLT-A-120885838401", "PASS"),
@@ -24,31 +25,71 @@ const lstStatus = [
   createLstStatus("EOLT-A-37003047849", "Fail"),
   createLstStatus("EOLT-A-529520075944", "PASS"),
 ];
-const smrData = [
-  createSmrData("Current", "-", "-", "-", "-"),
-  createSmrData("Sensitivity", "-", "-", "-", "-"),
-  createSmrData("THD", "-", "-", "-", "-"),
-  createSmrData("Frequency", "-", "-", "-", "-"),
-];
+function createSmrData(description, lowerValue, upperValue, result, status) {
+  const formattedResult = parseFloat(result).toFixed(2);
+  return {
+    description,
+    lowerValue,
+    upperValue,
+    result: formattedResult,
+    status,
+  };
+}
+
 const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [LstActLog, setLstActLog] = useState(null);
-  const [ActLogById, setActLogById] = useState(null);
-  
+  const [ActDetailById, setActDetailById] = useState(null);
+  const [smrData, setSmrData] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
-        {LstActLog? await GetAcousticTraceDetailById('1',LstActLog.id,setActLogById,setLoading):''}
       } catch (error) {
         setError(error.message);
       }
     };
+
+    fetchData();
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, []);
-console.log(ActLogById);
+
+  useEffect(() => {
+    if (LstActLog && LstActLog.id) {
+      const fetchDetails = async () => {
+        try {
+          await GetAcousticTraceDetailById(
+            "1",
+            LstActLog.id,
+            (response) => {
+              setActDetailById(response);
+
+              const updatedSmrData = response.map((item) =>
+                createSmrData(
+                  item.description,
+                  item.lowerValue,
+                  item.upperValue,
+                  item.result,
+                  item.status
+                )
+              );
+              setSmrData(updatedSmrData);
+              setLoading(false);
+            },
+            setLoading
+          );
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+      fetchDetails();
+    }
+  }, [LstActLog]);
+
+  console.log(ActDetailById);
 
   return (
     <>
@@ -98,6 +139,7 @@ console.log(ActLogById);
             </>
           )}
         </div>
+
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
           <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
@@ -132,33 +174,57 @@ console.log(ActLogById);
                     <TableBody>
                       {smrData.map((row, index) => (
                         <TableRow
-                          key={row.Name + index}
+                          key={row.description + index}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
                           <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.Name}</p>
+                            <p className="font-semibold">{row.description}</p>
                           </TableCell>
                           <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.Lower}</p>
+                            <p className="font-semibold">{row.lowerValue}</p>
                           </TableCell>
                           <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.Upper}</p>
+                            <p className="font-semibold">{row.upperValue}</p>
                           </TableCell>
                           <TableCell align="left">
-                            {row.smrResult === "Fail" ? (
+                            {row.result === "Fail" ? (
                               <p className="text-red-700 font-semibold">
-                                {row.smrResult}
+                                {row.result}
                               </p>
+                            ) : row.description.toLowerCase() ===
+                              "sensitivity" ? (
+                              parseFloat(row.result) <
+                                parseFloat(row.lowerValue) ||
+                              parseFloat(row.result) >
+                                parseFloat(row.upperValue) ? (
+                                <p className="text-red-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              ) : (
+                                <p className="text-green-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              )
                             ) : (
                               <p className="text-green-700 font-semibold">
-                                {row.smrResult}
+                                {row.result}
                               </p>
                             )}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            <p className="font-semibold">{row.Status}</p>
+                            {row.status.toLowerCase() === "failed" ? (
+                              <p className="text-red-700 font-semibold">
+                                {row.status}
+                              </p>
+                            ) : row.status.toLowerCase() === "passed" ? (
+                              <p className="text-green-700 font-semibold">
+                                {row.status}
+                              </p>
+                            ) : (
+                              <p className="font-semibold">{row.status}</p>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -192,7 +258,7 @@ console.log(ActLogById);
                     <TableBody>
                       {lstStatus.map((row) => (
                         <TableRow
-                          key={row.SerialCode} // SerialCode is already unique
+                          key={row.SerialCode}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
