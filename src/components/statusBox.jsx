@@ -42,14 +42,13 @@ const StatusBox = ({ name, status }) => {
         : null
       : null;
   return (
-    <div className="m-2 justify-start">
-      <div className={`box flex ${className} p-4 rounded-lg w-40`}>
+    <div className="m-4 justify-start">
+      <div className={`box flex ${className} p-4 rounded-lg w-64`}>
         <img
           src={icon}
           alt={name}
           className="mr-4 h-8 w-8 justify-center mt-2"
         />
-        {/* <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i> */}
         <div className="flex flex-col text-center align-middle">
           <p>{name}</p>
           <p>{text}</p>

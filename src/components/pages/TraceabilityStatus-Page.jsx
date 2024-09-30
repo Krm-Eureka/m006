@@ -14,17 +14,17 @@ import {
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 
-function createLstStatus(SerialCode, Result) {
-  return { SerialCode, Result };
-}
+// function createLstStatus(SerialCode, Result) {
+//   return { SerialCode, Result };
+// }
 
-const lstStatus = [
-  createLstStatus("EOLT-A-382315929117", "PASS"),
-  createLstStatus("EOLT-A-120885838401", "PASS"),
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "Fail"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-];
+// const lstStatus = [
+//   createLstStatus("EOLT-A-382315929117", "PASS"),
+//   createLstStatus("EOLT-A-120885838401", "PASS"),
+//   createLstStatus("EOLT-A-554779049699", "PASS"),
+//   createLstStatus("EOLT-A-37003047849", "Fail"),
+//   createLstStatus("EOLT-A-529520075944", "PASS"),
+// ];
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
   return {
@@ -50,6 +50,7 @@ const TraceabilityStatus = () => {
       } catch (error) {
         setError(error.message);
       }
+
     };
 
     fetchData();
@@ -126,11 +127,12 @@ const TraceabilityStatus = () => {
                   status={LstActLog.acousticStatus}
                 />
                 <StatusBox name="Current" status={LstActLog.currentStatus} />
-                <StatusBox name="QRCode" status={LstActLog.qrStatus} />
                 <StatusBox
                   name="LaserMark"
                   status={LstActLog.laserMarkStatus}
                 />
+                <StatusBox name="QRCode" status={LstActLog.qrStatus} />
+               
                 <StatusBox
                   name="TotalStatus"
                   status={LstActLog.tracReporJudgementtResult}
@@ -149,7 +151,7 @@ const TraceabilityStatus = () => {
               <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
-                    sx={{ minWidth: 500, maxWidth: 800, overflowX: "auto" }}
+                    sx={{ width: 1000, overflowX: "auto" }}
                     aria-label="simple table"
                   >
                     <TableHead>
@@ -188,7 +190,7 @@ const TraceabilityStatus = () => {
                           <TableCell align="center" component="th" scope="row">
                             <p className="font-semibold">{row.upperValue}</p>
                           </TableCell>
-                          <TableCell align="left">
+                          <TableCell align="center">
                             {row.result === "Fail" ? (
                               <p className="text-red-700 font-semibold">
                                 {row.result}
@@ -197,7 +199,7 @@ const TraceabilityStatus = () => {
                               "sensitivity" ? (
                               parseFloat(row.result) <
                                 parseFloat(row.lowerValue) ||
-                              parseFloat(row.result) >
+                                parseFloat(row.result) >
                                 parseFloat(row.upperValue) ? (
                                 <p className="text-red-700 font-semibold">
                                   {row.result}
@@ -213,7 +215,7 @@ const TraceabilityStatus = () => {
                               </p>
                             )}
                           </TableCell>
-                          <TableCell component="th" scope="row">
+                          <TableCell align="center" component="th" scope="row">
                             {row.status.toLowerCase() === "failed" ? (
                               <p className="text-red-700 font-semibold">
                                 {row.status}
@@ -222,9 +224,9 @@ const TraceabilityStatus = () => {
                               <p className="text-green-700 font-semibold">
                                 {row.status}
                               </p>
-                            ) : (
-                              <p className="font-semibold">{row.status}</p>
-                            )}
+                            ) :  row.status.toLowerCase() === "" ? (
+                              <p className="font-semibold text-yellow-500">Exception</p>
+                            ):""}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -234,7 +236,7 @@ const TraceabilityStatus = () => {
               </div>
             </div>
           </div>
-          <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+          {/* <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
@@ -284,7 +286,7 @@ const TraceabilityStatus = () => {
                 </TableContainer>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
