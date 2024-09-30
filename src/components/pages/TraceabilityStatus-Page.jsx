@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../header-component/";
-import { GetLastAcousticTraceLog } from "../../services/api-service/stationData";
+import { GetLastAcousticTraceLog ,GetAcousticTraceDetailById} from "../../services/api-service/stationData";
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 
@@ -34,11 +34,13 @@ const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [LstActLog, setLstActLog] = useState(null);
+  const [ActLogById, setActLogById] = useState(null);
   
   useEffect(() => {
     const fetchData = async () => {
       try {
         await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
+        {LstActLog? await GetAcousticTraceDetailById('1',LstActLog.id,setActLogById,setLoading):''}
       } catch (error) {
         setError(error.message);
       }
@@ -46,6 +48,7 @@ const TraceabilityStatus = () => {
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, []);
+console.log(ActLogById);
 
   return (
     <>
