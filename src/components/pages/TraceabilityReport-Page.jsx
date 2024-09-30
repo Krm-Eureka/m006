@@ -74,8 +74,15 @@ const columns = [
   },
   { id: "qrStatus", label: "QrStatus", w: 50, aln: "center", sortable: true },
   {
+    id: "creationDate",
+    label: "CreateDate",
+    w: 200,
+    sortable: true,
+    aln: "center",
+  },
+  {
     id: "lastUpdateDate",
-    label: "Date",
+    label: "LastUpdateDate",
     w: 200,
     sortable: true,
     aln: "center",
@@ -171,7 +178,8 @@ const TraceabilityReport = () => {
     const csvRows = sortedRows.map((row) => {
       return columns
         .map((column) => {
-          const value = row[column.id];
+          const value = row[column.id] ;
+          
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
             : value;
@@ -235,16 +243,26 @@ const TraceabilityReport = () => {
         </div>
         <div className="flex flex-wrap mx-4 py-2 h-fit items-center justify-center">
           <div className="mx-2 mb-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-              SerialNumber
-            </label>
-            <input
-              type="text"
-              className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-              placeholder="SerialNumber..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
+            {rows && rows.length > 0 ? (
+              <>
+                <label
+                  htmlFor="serialNumber"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-800"
+                >
+                  Serial Number
+                </label>
+                <input
+                  type="text"
+                  id="serialNumber"
+                  className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                  placeholder="Serial Number..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+              </>
+            ) : (
+            ''
+            )}
           </div>
           <div className="mx-2 mb-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
@@ -275,7 +293,12 @@ const TraceabilityReport = () => {
             >
               Search
             </button>
-
+            <button
+              onClick={handleClear}
+              className={`mx-2 my-1 py-1 px-2  bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
+            >
+              CLEAR
+            </button>
             <button
               onClick={exportToCSV}
               className={`mx-2 my-1 py-1 px-2 ${
@@ -293,15 +316,6 @@ const TraceabilityReport = () => {
             >
               EXPORT ALL
             </button>
-
-            <button
-              onClick={handleClear}
-              className={`mx-2 my-1 py-1 px-2 ${
-                !searchTerm ? "hidden" : ""
-              } bg-red-500 hover:bg-red-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
-            >
-              CLEAR
-            </button>
           </div>
         </div>
 
@@ -309,77 +323,90 @@ const TraceabilityReport = () => {
           {/* <Paper
             
           > */}
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
-              component="div"
-              count={sortedRows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-             <TableContainer
-              component={Paper}
-              sx={{
-                maxHeight: 700,
-                overflowY: "scroll",
-                overflowX: "scroll",
-              }}
-            >
-              <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <StyledTableCell
-                        key={column.id}
-                        sx={{ minWidth: column.w }}
-                        align={column.aln || "left"}
-                        sortDirection={orderBy === column.id ? order : false}
-                      >
-                        {column.sortable ? (
-                          <TableSortLabel
-                            active={orderBy === column.id}
-                            direction={orderBy === column.id ? order : "asc"}
-                            onClick={() => handleRequestSort(column.id)}
-                          >
-                            {column.label}
-                          </TableSortLabel>
-                        ) : (
-                          column.label
-                        )}
-                      </StyledTableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sortedRows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <StyledTableRow key={row.id}>
-                        {columns.map((column) => (
-                          <StyledTableCell
-                            key={column.id}
-                            align={column.aln || "left"}
-                          >
-                            {column.id === "lastUpdateDate"
-                              ? formatDateTime(row[column.id])
-                              : row[column.id]}
-                          </StyledTableCell>
-                        ))}
-                      </StyledTableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
-              component="div"
-              count={sortedRows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
+            component="div"
+            count={sortedRows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+          <TableContainer
+            component={Paper}
+            sx={{
+              maxHeight: 700,
+              overflowY: "scroll",
+              overflowX: "scroll",
+            }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <StyledTableCell
+                      key={column.id}
+                      sx={{ minWidth: column.w }}
+                      align={column.aln || "left"}
+                      sortDirection={orderBy === column.id ? order : false}
+                    >
+                      {column.sortable ? (
+                        <TableSortLabel
+                          active={orderBy === column.id}
+                          direction={orderBy === column.id ? order : "asc"}
+                          onClick={() => handleRequestSort(column.id)}
+                        >
+                          {column.label}
+                        </TableSortLabel>
+                      ) : (
+                        column.label
+                      )}
+                    </StyledTableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedRows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => (
+                    <StyledTableRow key={row.id}>
+                      {columns.map((column) => (
+                        <StyledTableCell
+                          key={column.id}
+                          align={column.aln || "left"}
+                          style={{
+                            color:
+                              row[column.id] === 0
+                                ? "red"
+                                : row[column.id] === 1
+                                ? "green"
+                                : "inherit",
+                          }}
+                        >
+                          {column.id === "lastUpdateDate" ||
+                          column.id === "creationDate"
+                            ? formatDateTime(row[column.id])
+                            : row[column.id] === 0
+                            ? "NOK"
+                            : row[column.id] === 1
+                            ? "OK"
+                            : row[column.id]}
+                        </StyledTableCell>
+                      ))}
+                    </StyledTableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
+            component="div"
+            count={sortedRows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
           {/* </Paper> */}
         </div>
       </div>
