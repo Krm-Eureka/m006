@@ -7,10 +7,12 @@ import BOX from "../assets/svg/border-all-solid.svg";
 
 const StatusBox = ({ name, status }) => {
   const getStatusTextAndClass = (name, status) => {
+    console.log(name, status);
+    
     let text = "Exception";
     let className = "bg-yellow-400 text-white font-semibold";
 
-    switch (name) {
+    switch (name.toLowerCase()) {
       case 'acoustictest':
         switch (status) {
           case 0:
@@ -30,7 +32,8 @@ const StatusBox = ({ name, status }) => {
             className = "bg-red-500 text-white font-semibold";
             break;
           default:
-            break;
+            text = "Exception";
+            className = "bg-yellow-500 text-white font-semibold";
         }
         break;
       case 'lasermark':
@@ -47,9 +50,10 @@ const StatusBox = ({ name, status }) => {
             text = "COMPLETE";
             className = "bg-green-500 text-white font-semibold";
             break;
-          default:
-            break;
-        }
+            default:
+              text = "Exception";
+              className = "bg-yellow-500 text-white font-semibold";
+          }
         break;
       case 'qrcode':
         switch (status) {
@@ -69,9 +73,56 @@ const StatusBox = ({ name, status }) => {
             text = "FAIL";
             className = "bg-red-500 text-white font-semibold";
             break;
-          default:
+            default:
+              text = "Exception";
+              className = "bg-yellow-500 text-white font-semibold";
+          }
+        break;
+      case 'totalstatus':
+        switch (status) {
+          case 0:
+            text = "Exception";
+            className = "bg-yellow-500 text-white font-semibold";
             break;
-        }
+          case 1:
+            text = "Reading";
+            className = "bg-yellow-500 text-white font-semibold";
+            break;
+          case 2:
+            text = "OK";
+            className = "bg-green-500 text-white font-semibold";
+            break;
+          case 3:
+            text = "FAIL";
+            className = "bg-red-500 text-white font-semibold";
+            break;
+            default:
+              text = "Exception";
+              className = "bg-yellow-500 text-white font-semibold";
+          }
+        break;
+      case 'current':
+        switch (status) {
+          case 0:
+            text = "Exception";
+            className = "bg-yellow-500 text-white font-semibold";
+            break;
+          case 1:
+            text = "Reading";
+            className = "bg-yellow-500 text-white font-semibold";
+            break;
+          case 2:
+            text = "OK";
+            className = "bg-green-500 text-white font-semibold";
+            break;
+          case 3:
+            text = "FAIL";
+            className = "bg-red-500 text-white font-semibold";
+            break;
+            default:
+              text = "Exception";
+              className = "bg-yellow-500 text-white font-semibold";
+          }
         break;
       default:
         text = "Unknown Status";
