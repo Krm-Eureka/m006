@@ -395,9 +395,9 @@ const TraceabilityReport = () => {
                             : row[column.id] === 1
                             ? "NOK"
                             : row[column.id] === 2
-                            ? "OK"
+                            ? "PASS"
                             : row[column.id] === 3
-                            ? "NG"
+                            ? "FAIL"
                             : row[column.id]}
                         </StyledTableCell>
                       ))}

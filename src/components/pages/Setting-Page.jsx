@@ -103,9 +103,9 @@ const MasterSetting = () => {
       Toast.fire({
         icon: "error",
         title: "Authorization Fail",
-      });///////////////////////////////////////////////////////////////test
-      // navigate("/Console/Content_ACT/AutoRun");
-      setIsAuthenticated(true);
+      });
+      navigate("/Console/Content_ACT/AutoRun");
+      // setIsAuthenticated(true);
     }
   };
 
@@ -258,13 +258,23 @@ const MasterSetting = () => {
                     {
                       label: "Manufacturing Date",
                       type: "date",
-                      value: masterData.manufacturingDateFormat,
+                      value: masterData.lastRunningDate,
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          manufacturingDateFormat: value,
+                          lastRunningDate: value,
                         })),
                     },
+                    // {
+                    //   label: "Manufacturing Date",
+                    //   type: "date",
+                    //   value: masterData.manufacturingDateFormat,
+                    //   setter: (value) =>
+                    //     setMasterData((prev) => ({
+                    //       ...prev,
+                    //       manufacturingDateFormat: value,
+                    //     })),
+                    // },
                     {
                       label: "EOLT Reference A/B",
                       type: "text",
