@@ -46,8 +46,8 @@ const TraceabilityStatus = () => {
   }, []);
 
   useEffect(() => {
-    if (LstActLog && LstActLog.id) {
-      const fetchDetails = async () => {
+    const fetchDetails = async () => {
+      if (LstActLog?.id) {
         try {
           const res = await GetAcousticTraceDetailById(
             "1",
@@ -66,13 +66,14 @@ const TraceabilityStatus = () => {
             )
           );
           setSmrData(updatedSmrData);
-          setLoading(false);
         } catch (error) {
           setError(error.message);
+        } finally {
+          setLoading(false);
         }
-      };
-      fetchDetails();
-    }
+      }
+    };
+    fetchDetails();
   }, [LstActLog]);
 
   return (
@@ -102,7 +103,7 @@ const TraceabilityStatus = () => {
                   <span className="text-red-600 font-bold">{LstActLog.serialCode}</span>
                 </p>
               </div>
-              <div className="content flex flex-wrap flex-between p-4 items-center">
+              <div className="content flex flex-wrap justify-between p-4 items-center">
                 <StatusBox name="AcousticTest" status={LstActLog.acousticStatus} />
                 <StatusBox name="Current" status={LstActLog.currentStatus} />
                 <StatusBox name="LaserMark" status={LstActLog.laserMarkStatus} />
@@ -118,7 +119,7 @@ const TraceabilityStatus = () => {
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Show Data Run Summary</p>
             </div>
-            <div className="content flex flex-between p-4 items-center">
+            <div className="content p-4">
               <TableContainer component={Paper}>
                 <Table sx={{ width: 1000, overflowX: "auto" }} aria-label="simple table">
                   <TableHead>

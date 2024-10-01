@@ -14,6 +14,9 @@ const StatusBox = ({ name, status }) => {
       case 'acoustictest':
         switch (status) {
           case 0:
+            text = "Exception";
+            className = "bg-yellow-500 text-white font-semibold";
+            break;
           case 1:
             text = "Testing";
             className = "bg-yellow-500 text-white font-semibold";
@@ -26,11 +29,15 @@ const StatusBox = ({ name, status }) => {
             text = "FAIL";
             className = "bg-red-500 text-white font-semibold";
             break;
+          default:
+            break;
         }
         break;
       case 'lasermark':
         switch (status) {
           case 0:
+            text = "Exception";
+            className = "bg-yellow-500 text-white font-semibold";
             break;
           case 1:
             text = "Marking";
@@ -40,11 +47,15 @@ const StatusBox = ({ name, status }) => {
             text = "COMPLETE";
             className = "bg-green-500 text-white font-semibold";
             break;
+          default:
+            break;
         }
         break;
       case 'qrcode':
         switch (status) {
           case 0:
+            text = "Exception";
+            className = "bg-yellow-500 text-white font-semibold";
             break;
           case 1:
             text = "Reading";
@@ -58,6 +69,8 @@ const StatusBox = ({ name, status }) => {
             text = "FAIL";
             className = "bg-red-500 text-white font-semibold";
             break;
+          default:
+            break;
         }
         break;
       default:
@@ -70,13 +83,15 @@ const StatusBox = ({ name, status }) => {
   };
 
   const { text, className } = getStatusTextAndClass(name, status);
-  const icon = {
+  const iconMap = {
     current: CRR,
     acoustictest: MIC,
     qrcode: QR,
     lasermark: MRK,
     totalstatus: BOX
-  }[name.toLowerCase()] || null;
+  };
+  
+  const icon = iconMap[name.toLowerCase()] || null;
 
   return (
     <div className="m-4 justify-start">
@@ -89,7 +104,7 @@ const StatusBox = ({ name, status }) => {
           />
         )}
         <div className="flex flex-col text-center align-middle">
-          <p>{name}</p>
+          <p className="font-bold">{name}</p>
           <p>{text}</p>
         </div>
       </div>
