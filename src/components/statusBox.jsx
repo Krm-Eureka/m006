@@ -54,8 +54,13 @@ const StatusBox = ({ name, status }) => {
             };
           case 2:
             return {
-              text: "COMPLETE",
+              text: "PASS",
               className: "bg-green-500 text-white font-semibold",
+            };
+          case 3:
+            return {
+              text: "FAIL",
+              className: "bg-red-500 text-white font-semibold",
             };
           default:
             return {
@@ -78,12 +83,12 @@ const StatusBox = ({ name, status }) => {
             };
           case 2:
             return {
-              text: "OK",
+              text: "PASS",
               className: "bg-green-500 text-white font-semibold",
             };
           case 3:
             return {
-              text: "NG",
+              text: "FAIL",
               className: "bg-red-500 text-white font-semibold",
             };
           default:
@@ -92,7 +97,62 @@ const StatusBox = ({ name, status }) => {
               className: "bg-yellow-400 text-white font-semibold",
             };
         }
-
+      case "totalstatus":
+        switch (status) {
+          case 0:
+            return {
+              text: "Exception",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 1:
+            return {
+              text: "Reading",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 2:
+            return {
+              text: "PASS",
+              className: "bg-green-500 text-white font-semibold",
+            };
+          case 3:
+            return {
+              text: "FAIL",
+              className: "bg-red-500 text-white font-semibold",
+            };
+          default:
+            return {
+              text: "Exception",
+              className: "bg-yellow-400 text-white font-semibold",
+            };
+        }
+      case "current":
+        switch (status) {
+          case 0:
+            return {
+              text: "Exception",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 1:
+            return {
+              text: "Reading",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 2:
+            return {
+              text: "PASS",
+              className: "bg-green-500 text-white font-semibold",
+            };
+          case 3:
+            return {
+              text: "FAIL",
+              className: "bg-red-500 text-white font-semibold",
+            };
+          default:
+            return {
+              text: "Exception",
+              className: "bg-yellow-400 text-white font-semibold",
+            };
+        }
       default:
         return {
           text: "Unknown",

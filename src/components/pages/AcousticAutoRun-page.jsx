@@ -97,22 +97,7 @@ const TraceabilityStatus = () => {
                   <span className="text-red-600 font-bold">X-X-X-X-X</span>
                 </p>
               </div>
-              <StatusBox
-                  name="AcousticTest"
-                  status={2}
-                />
-              <StatusBox
-                  name="AcousticTest"
-                  status={1}
-                />
-              <StatusBox
-                  name="AcousticTest"
-                  status={3}
-                />
-              <StatusBox
-                  name="AcousticTest"
-                  status={0}
-                />
+             
               <Loading text="Data Not Found . . ." />
             </>
           ) : error ? (
