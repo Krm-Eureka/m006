@@ -19,12 +19,12 @@ const MasterSetting = () => {
 
   const [minLimitCurrent, setMinLimitCurrent] = useState("");
   const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
-  const [minLimitSensitivity, setMinLimitSensitivity] = useState("");
-  const [maxLimitSensitivity, setMaxLimitSensitivity] = useState("");
-  const [minLimitTHD, setMinLimitTHD] = useState("");
-  const [maxLimitTHD, setMaxLimitTHD] = useState("");
-  const [minLimitFrequency, setMinLimitFrequency] = useState("");
-  const [maxLimitFrequency, setMaxLimitFrequency] = useState("");
+  // const [minLimitSensitivity, setMinLimitSensitivity] = useState("");
+  // const [maxLimitSensitivity, setMaxLimitSensitivity] = useState("");
+  // const [minLimitTHD, setMinLimitTHD] = useState("");
+  // const [maxLimitTHD, setMaxLimitTHD] = useState("");
+  // const [minLimitFrequency, setMinLimitFrequency] = useState("");
+  // const [maxLimitFrequency, setMaxLimitFrequency] = useState("");
   const [masterData, setMasterData] = useState({
     plmReference: "",
     ebomReference: "",
@@ -49,7 +49,7 @@ const MasterSetting = () => {
   useEffect(() => {
     if (!isAuthenticated) return;
     const fetchData = async () => {
-      setLoading(true);
+      // setLoading(true);
       try {
         await GetMasterSetting("1", "1", setMasterData, setLoading);
       } catch (error) {
@@ -77,8 +77,16 @@ const MasterSetting = () => {
     }
   };
 
-  const handleModify = () => {
+  const handleModify = async() => {
     setModify((prev) => !prev);
+      try {
+        await GetMasterSetting("1", "1", setMasterData, setLoading);
+      } catch (error) {
+        setError(error.message);
+      }
+       finally {
+        setLoading(false);
+      }
   };
 
   const handleDMCUpdate = async () => {
@@ -287,32 +295,7 @@ const MasterSetting = () => {
                     ? `Example : ${masterData.plmReference}-yyyyyyyyyy-DDMMYY-S-*****`
                     : `Example : xxxxxxxxxx-yyyyyyyyyy-DDMMYY-S-*****`}
                 </p>
-                {/* <p className="text-xs pl-4 pb-4 font-bold">
-                  {PLM_Reference &&
-                  EBOM_Reference &&
-                  manufacturingDate &&
-                  EOLT_Reference &&
-                  serialNumber
-                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
-                        manufacturingDate
-                      )}-${EOLT_Reference}-${serialNumber}`
-                    : PLM_Reference &&
-                      EBOM_Reference &&
-                      manufacturingDate &&
-                      EOLT_Reference
-                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
-                        manufacturingDate
-                      )}-${EOLT_Reference}-*****`
-                    : PLM_Reference && EBOM_Reference && manufacturingDate
-                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-${formatDate(
-                        manufacturingDate
-                      )}-S-*****`
-                    : PLM_Reference && EBOM_Reference
-                    ? `Example : ${PLM_Reference}-${EBOM_Reference}-DDMMYY-S-*****`
-                    : PLM_Reference
-                    ? `Example : ${PLM_Reference}-yyyyyyyyyy-DDMMYY-S-*****`
-                    : `Example : xxxxxxxxxx-yyyyyyyyyy-DDMMYY-S-*****`}
-                </p> */}
+               
                 <button
                   onClick={handleDMCUpdate}
                   disabled={!modify}
@@ -335,30 +318,30 @@ const MasterSetting = () => {
                     setMinValue: setMinLimitCurrent,
                     setMaxValue: setMaxLimitCurrent,
                   },
-                  {
-                    id: 1,
-                    title: "Sensitivity",
-                    minValue: minLimitSensitivity,
-                    maxValue: maxLimitSensitivity,
-                    setMinValue: setMinLimitSensitivity,
-                    setMaxValue: setMaxLimitSensitivity,
-                  },
-                  {
-                    id: 2,
-                    title: "THD",
-                    minValue: minLimitTHD,
-                    maxValue: maxLimitTHD,
-                    setMinValue: setMinLimitTHD,
-                    setMaxValue: setMaxLimitTHD,
-                  },
-                  {
-                    id: 3,
-                    title: "Frequency",
-                    minValue: minLimitFrequency,
-                    maxValue: maxLimitFrequency,
-                    setMinValue: setMinLimitFrequency,
-                    setMaxValue: setMaxLimitFrequency,
-                  },
+                  // {
+                  //   id: 1,
+                  //   title: "Sensitivity",
+                  //   minValue: minLimitSensitivity,
+                  //   maxValue: maxLimitSensitivity,
+                  //   setMinValue: setMinLimitSensitivity,
+                  //   setMaxValue: setMaxLimitSensitivity,
+                  // },
+                  // {
+                  //   id: 2,
+                  //   title: "THD",
+                  //   minValue: minLimitTHD,
+                  //   maxValue: maxLimitTHD,
+                  //   setMinValue: setMinLimitTHD,
+                  //   setMaxValue: setMaxLimitTHD,
+                  // },
+                  // {
+                  //   id: 3,
+                  //   title: "Frequency",
+                  //   minValue: minLimitFrequency,
+                  //   maxValue: maxLimitFrequency,
+                  //   setMinValue: setMinLimitFrequency,
+                  //   setMaxValue: setMaxLimitFrequency,
+                  // },
                 ].map((props) => (
                   <CardSetting key={props.id} disable={!modify} {...props} />
                 ))}
