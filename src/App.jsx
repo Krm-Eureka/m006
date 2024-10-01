@@ -23,7 +23,7 @@ function App() {
         <Route path="/" element={<RedirectIfLoggedIn />} />
         <Route path="*" element={<ErrorPage />} />
           <Route path="/auth/login" element={<LoginPage />} />
-          {/* <Route element={<ProtectedRoute />}> */}
+          <Route element={<ProtectedRoute />}>
           {/* <Route path="/Console/Content" element={<ContentLayout />} /> */}
           <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
           <Route path="/Console/Content_TRC/Report" element={<TraceabilityReport />} />
@@ -31,7 +31,7 @@ function App() {
           <Route path="/Console/Content_ACT/AutoRun" element={<AcousticAutoRun/>} />
           <Route path="/Console/Content_ACT/ManualRun" element={<AcousticManualRun/>} />
           {/* <Route path="/Console/Content_ACT/TESTReport" element={<Acoustic} /> */}
-          {/* </Route> */}
+          </Route>
         </Routes>
       </Router>
     </>
