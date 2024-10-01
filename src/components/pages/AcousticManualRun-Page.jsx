@@ -42,7 +42,7 @@ const AcousticManualRun = () => {
 
   const handleRunClick = () => {
     setSerialRun(serialNumber);
-    console.log("Running with Serial Number:", serialNumber);
+    // console.log("Running with Serial Number:", serialNumber);
   };
   return (
     <>

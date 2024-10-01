@@ -6,7 +6,7 @@ import QR from "../assets/svg/qrcode-solid.svg";
 import BOX from "../assets/svg/border-all-solid.svg";
 import { setStatus } from '../services/setter';
 const StatusBox = ({ name, status }) => {
-  console.log("Rendering StatusBox:", name, status);
+  // console.log("Rendering StatusBox:", name, status);
   // const getStatusTextAndClass = (name, status) => {
   //   console.log("Name:", name);
   //   console.log("Status:", status);

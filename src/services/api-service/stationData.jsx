@@ -40,6 +40,8 @@ export function GetLastAcousticTraceLog(
       const tracReportStatus = setStatus(res.data.data.tracReportStatus);
 
       // Log the statuses
+      console.log('data : ' ,res.data.data);
+      
       console.log(`Acoustic Status: ${acousticStatus}`);
       console.log(`QR Code Status: ${qrcodeStatus}`);
       console.log(`Laser Mark Status: ${laserMarkStatus}`);
