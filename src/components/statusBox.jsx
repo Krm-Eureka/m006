@@ -6,87 +6,102 @@ import QR from "../assets/svg/qrcode-solid.svg";
 import BOX from "../assets/svg/border-all-solid.svg";
 
 const StatusBox = ({ name, status }) => {
-  const getStatusTextAndClass = (name,status) => {
+  const getStatusTextAndClass = (name, status) => {
+    console.log("Name:", name);
+    console.log("Status:", status);
+    switch (name.toLowerCase()) {
+      case "acoustictest":
+        switch (status) {
+          case 0:
+            return {
+              text: "Exception",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 1:
+            return {
+              text: "Testing",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 2:
+            return {
+              text: "PASS",
+              className: "bg-green-500 text-white font-semibold",
+            };
+          case 3:
+            return {
+              text: "FAIL",
+              className: "bg-red-500 text-white font-semibold",
+            };
+          default:
+            return {
+              text: "Exception",
+              className: "bg-yellow-400 text-white font-semibold",
+            };
+        }
 
-    switch (name === 'acoustictest' ,status) {
-      case 0:
-        return {
-          text: "Exception",
-          className: "bg-yellow-500 text-white font-semibold",
-        };
-      case 1:
-        return {
-          text: "Testing",
-          className: "bg-yellow-500 text-white font-semibold",
-        };
-      case 2:
-        return {
-          text: "PASS",
-          className: "bg-green-500 text-white font-semibold",
-        };
-      case 3:
-        return {
-          text: "FAIL",
-          className: "bg-red-500 text-white font-semibold",
-        };
+      case "lasermark":
+        switch (status) {
+          case 0:
+            return {
+              text: "Exception",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 1:
+            return {
+              text: "Marking",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 2:
+            return {
+              text: "COMPLETE",
+              className: "bg-green-500 text-white font-semibold",
+            };
+          default:
+            return {
+              text: "Exception",
+              className: "bg-yellow-400 text-white font-semibold",
+            };
+        }
+
+      case "qrcode":
+        switch (status) {
+          case 0:
+            return {
+              text: "Exception",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 1:
+            return {
+              text: "Reading",
+              className: "bg-yellow-500 text-white font-semibold",
+            };
+          case 2:
+            return {
+              text: "OK",
+              className: "bg-green-500 text-white font-semibold",
+            };
+          case 3:
+            return {
+              text: "NG",
+              className: "bg-red-500 text-white font-semibold",
+            };
+          default:
+            return {
+              text: "Exception",
+              className: "bg-yellow-400 text-white font-semibold",
+            };
+        }
+
       default:
         return {
-          text: "Exception",
-          className: "bg-yellow-400 text-white font-semibold",
-        };
-    }
-    switch (name === 'lasermark' ,status) {
-      case 0:
-        return {
-          text: "Exception",
-          className: "bg-yellow-500 text-white font-semibold",
-        };
-      case 1:
-        return {
-          text: "Marking",
-          className: "bg-yellow-500 text-white font-semibold",
-        };
-      case 2:
-        return {
-          text: "COMPLETE",
-          className: "bg-green-500 text-white font-semibold",
-        };
-      default:
-        return {
-          text: "Exception",
-          className: "bg-yellow-400 text-white font-semibold",
-        };
-    }
-    switch (name === 'qrcode' ,status) {
-      case 0:
-        return {
-          text: "Exception",
-          className: "bg-yellow-500 text-white font-semibold",
-        };
-      case 1:
-        return {
-          text: "Reading",
-          className: "bg-yellow-500 text-white font-semibold",
-        };
-      case 2:
-        return {
-          text: "OK",
-          className: "bg-green-500 text-white font-semibold",
-        };
-        case 3:
-        return {
-          text: "FAIL",
-          className: "bg-red-500 text-white font-semibold",
-        };
-      default:
-        return {
-          text: "Exception",
-          className: "bg-yellow-400 text-white font-semibold",
+          text: "Unknown",
+          className: "bg-gray-400 text-white font-semibold",
         };
     }
   };
 
-  const { text, className } = getStatusTextAndClass(status);
+  const { text, className } = getStatusTextAndClass(name, status);
+
   const icon =
     typeof name === "string"
       ? name.toLowerCase() === "current"
@@ -101,6 +116,7 @@ const StatusBox = ({ name, status }) => {
         ? BOX
         : null
       : null;
+
   return (
     <div className="m-4 justify-start">
       <div className={`box flex ${className} p-4 rounded-lg w-64`}>
@@ -117,8 +133,10 @@ const StatusBox = ({ name, status }) => {
     </div>
   );
 };
+
 StatusBox.propTypes = {
   name: PropTypes.string.isRequired,
   status: PropTypes.number.isRequired,
 };
+
 export default StatusBox;
