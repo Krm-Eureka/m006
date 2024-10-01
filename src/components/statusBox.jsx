@@ -40,7 +40,6 @@ const StatusBox = ({ name, status }) => {
 
   const defaultStatus = { text: "Unknown Status", className: "bg-gray-400" };
 
-  // Get the status based on name and status; default to unknown if not found
   const { text, className } = statusMap[name.toLowerCase()]?.[status] || defaultStatus;
 
   const iconMap = {
