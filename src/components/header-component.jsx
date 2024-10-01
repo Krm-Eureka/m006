@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import ValeoLogo from "../assets/Valeo_Logo.png";
+import OUT from "../assets/svg/logout.svg";
 
 const HeaderLayout = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,20 +35,43 @@ const HeaderLayout = (props) => {
   return (
     <>
       <div className="z-50 flex flex-col top-0 sticky dark:text-gray-700 bg-white shadow-md max-w-screen">
-        <div className="flex items-center">
-          <div className="logo">
-            <img
-              className="object-contain justify-center p-0 my-2 h-20 w-50"
-              src={ValeoLogo}
-              alt="Valeo_Logo_VCDA-M006"
-            />
+        <div className="flex justify-between items-center">
+          <div className="l flex flew-row items-center">
+            <div className="logo">
+              <img
+                className="object-contain justify-center p-0 my-2 h-20 w-50"
+                src={ValeoLogo}
+                alt="Valeo_Logo_VCDA-M006"
+              />
+            </div>
+            <button
+              className="text-gray-800 p-4 dark:text-gray-700"
+              onClick={toggleNav}
+            >
+              <i className="fa-solid fa-bars"></i>
+            </button>
+            <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-gray-700">
+              Stellantis OMNI Microphone Assemblyline | {PAGE}
+            </h4>
           </div>
-          <button className="text-gray-800 p-4 dark:text-gray-700" onClick={toggleNav}>
-            <i className="fa-solid fa-bars"></i>
-          </button>
-          <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-gray-700">
-            Stellantis OMNI Microphone Assemblyline | {PAGE}
-          </h4>
+          <div className="r px-4 flex flew-row items-center">
+            <Link
+              to="/auth/login"
+              className="bg-white-400 hover:bg-gray-300  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-gray-600 "
+              onClick={() => {
+                localStorage.removeItem("authToken");
+              }}
+            >
+              <div className="flex items-center">
+                <img
+                  src={OUT}
+                  alt={"Logout"}
+                  className="mr-2 h-6 w-6 justify-center mt-1"
+                />
+                <span className="font-semibold text-lg">Logout</span>
+              </div>
+            </Link>
+          </div>
         </div>
         <div
           className={`${
