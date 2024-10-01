@@ -47,7 +47,7 @@ const MasterSetting = () => {
   });
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    // if (!isAuthenticated) return;
     const fetchData = async () => {
       // setLoading(true);
       try {
@@ -63,7 +63,8 @@ const MasterSetting = () => {
     };
 
     fetchData();
-  }, [isAuthenticated]);
+  // }, [isAuthenticated]);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -154,32 +155,32 @@ const MasterSetting = () => {
       });
     }
   };
-  if (!isAuthenticated) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="bg-gray-200 p-6 rounded-md shadow-lg">
-          <h1 className="text-xl font-semibold text-gray-700 mb-4">
-            Enter Password
-          </h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="password"
-              className="w-full p-2 mb-4 border rounded-lg text-gray-700"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="w-full bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <div className="bg-gray-200 p-6 rounded-md shadow-lg">
+  //         <h1 className="text-xl font-semibold text-gray-700 mb-4">
+  //           Enter Password
+  //         </h1>
+  //         <form onSubmit={handleSubmit}>
+  //           <input
+  //             type="password"
+  //             className="w-full p-2 mb-4 border rounded-lg text-gray-700"
+  //             placeholder="••••••••"
+  //             value={password}
+  //             onChange={(e) => setPassword(e.target.value)}
+  //           />
+  //           <button
+  //             type="submit"
+  //             className="w-full bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
+  //           >
+  //             Submit
+  //           </button>
+  //         </form>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
