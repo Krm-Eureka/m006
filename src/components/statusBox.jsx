@@ -6,17 +6,77 @@ import QR from "../assets/svg/qrcode-solid.svg";
 import BOX from "../assets/svg/border-all-solid.svg";
 
 const StatusBox = ({ name, status }) => {
-  const getStatusTextAndClass = (status) => {
-    switch (status) {
+  const getStatusTextAndClass = (name,status) => {
+
+    switch (name === 'acoustictest' ,status) {
       case 0:
+        return {
+          text: "Exception",
+          className: "bg-yellow-500 text-white font-semibold",
+        };
+      case 1:
+        return {
+          text: "Testing",
+          className: "bg-yellow-500 text-white font-semibold",
+        };
+      case 2:
+        return {
+          text: "PASS",
+          className: "bg-green-500 text-white font-semibold",
+        };
+      case 3:
         return {
           text: "FAIL",
           className: "bg-red-500 text-white font-semibold",
         };
+      default:
+        return {
+          text: "Exception",
+          className: "bg-yellow-400 text-white font-semibold",
+        };
+    }
+    switch (name === 'lasermark' ,status) {
+      case 0:
+        return {
+          text: "Exception",
+          className: "bg-yellow-500 text-white font-semibold",
+        };
       case 1:
         return {
-          text: "PASS",
+          text: "Marking",
+          className: "bg-yellow-500 text-white font-semibold",
+        };
+      case 2:
+        return {
+          text: "COMPLETE",
           className: "bg-green-500 text-white font-semibold",
+        };
+      default:
+        return {
+          text: "Exception",
+          className: "bg-yellow-400 text-white font-semibold",
+        };
+    }
+    switch (name === 'qrcode' ,status) {
+      case 0:
+        return {
+          text: "Exception",
+          className: "bg-yellow-500 text-white font-semibold",
+        };
+      case 1:
+        return {
+          text: "Reading",
+          className: "bg-yellow-500 text-white font-semibold",
+        };
+      case 2:
+        return {
+          text: "OK",
+          className: "bg-green-500 text-white font-semibold",
+        };
+        case 3:
+        return {
+          text: "FAIL",
+          className: "bg-red-500 text-white font-semibold",
         };
       default:
         return {
