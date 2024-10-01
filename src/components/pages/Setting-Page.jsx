@@ -258,7 +258,7 @@ const MasterSetting = () => {
                     {
                       label: "Manufacturing Date",
                       type: "date",
-                      value: masterData.lastRunningDate,
+                      value: formatDateForSetting(masterData.lastRunningDate),
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
