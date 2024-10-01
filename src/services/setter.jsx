@@ -1,40 +1,33 @@
 export function setStatus(name, status) {
-  switch (status) {
-    case 0:
-      return {
+    const statusMap = {
+      0: {
         text: "Exception",
         className: "bg-yellow-400 text-white font-semibold",
-      };
-    case 1:
-      return {
-        text:
-          name === "acoustictest"
-            ? "Testing"
-            : name === "qrcode"
-            ? "Reading"
-            : name === "lasermark"
-            ? "Marking"
-            : name === "totalstatus"
-            ? "Reading"
-            : name === "current"
-            ? "Reading"
-            : "Reading",
+      },
+      1: {
+        text: {
+          acoustictest: "Testing",
+          qrcode: "Reading",
+          lasermark: "Marking",
+          totalstatus: "Reading",
+          current: "Reading",
+        }[name] || "Reading",
         className: "bg-blue-400 text-white font-semibold",
-      };
-    case 2:
-      return {
+      },
+      2: {
         text: "PASS",
         className: "bg-green-500 text-white font-semibold",
-      };
-    case 3:
-      return {
+      },
+      3: {
         text: "FAIL",
         className: "bg-red-500 text-white font-semibold",
-      };
-    default:
-      return {
+      },
+      default: {
         text: "Exception",
         className: "bg-yellow-400 text-white font-semibold",
-      };
+      },
+    };
+  
+    return statusMap[status] || statusMap.default;
   }
-}
+  
