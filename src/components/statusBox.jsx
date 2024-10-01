@@ -45,12 +45,12 @@ const StatusBox = ({ name, status }) => {
           case 0:
             return {
               text: "Exception",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 1:
             return {
               text: "Marking",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 2:
             return {
@@ -74,12 +74,12 @@ const StatusBox = ({ name, status }) => {
           case 0:
             return {
               text: "Exception",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 1:
             return {
               text: "Reading",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 2:
             return {
@@ -102,12 +102,12 @@ const StatusBox = ({ name, status }) => {
           case 0:
             return {
               text: "Exception",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 1:
             return {
               text: "Reading",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 2:
             return {
@@ -130,12 +130,12 @@ const StatusBox = ({ name, status }) => {
           case 0:
             return {
               text: "Exception",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 1:
             return {
               text: "Reading",
-              className: "bg-yellow-500 text-white font-semibold",
+              className: "bg-yellow-400 text-white font-semibold",
             };
           case 2:
             return {
