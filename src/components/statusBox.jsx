@@ -16,12 +16,13 @@ const StatusBox = ({ name, status }) => {
     lasermark: {
       0: { text: "Exception", className: "bg-yellow-400" },
       1: { text: "Marking", className: "bg-blue-500" },
-      2: { text: "COMPLETE", className: "bg-green-500" },
+      2: { text: "PASS", className: "bg-green-500" },
+      3: { text: "FAIL", className: "bg-red-500" },
     },
     qrcode: {
       0: { text: "Exception", className: "bg-yellow-400" },
       1: { text: "Reading", className: "bg-blue-500" },
-      2: { text: "OK", className: "bg-green-500" },
+      2: { text: "PASS", className: "bg-green-500" },
       3: { text: "FAIL", className: "bg-red-500" },
     },
     totalstatus: {
