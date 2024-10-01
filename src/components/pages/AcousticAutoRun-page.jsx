@@ -50,7 +50,6 @@ const TraceabilityStatus = () => {
       } catch (error) {
         setError(error.message);
       }
-
     };
 
     fetchData();
@@ -132,7 +131,7 @@ const TraceabilityStatus = () => {
                   status={LstActLog.laserMarkStatus}
                 />
                 <StatusBox name="QRCode" status={LstActLog.qrStatus} />
-               
+
                 <StatusBox
                   name="TotalStatus"
                   status={LstActLog.tracReporJudgementtResult}
@@ -197,15 +196,15 @@ const TraceabilityStatus = () => {
                               </p>
                             ) : row.description.toLowerCase() ===
                               "sensitivity" ? (
-                              parseFloat(row.result) <
-                                parseFloat(row.lowerValue) ||
-                                parseFloat(row.result) >
+                              parseFloat(row.result) >=
+                                parseFloat(row.lowerValue) &&
+                              parseFloat(row.result) <=
                                 parseFloat(row.upperValue) ? (
-                                <p className="text-red-700 font-semibold">
+                                <p className="text-green-700 font-semibold">
                                   {row.result}
                                 </p>
                               ) : (
-                                <p className="text-green-700 font-semibold">
+                                <p className="text-red-700 font-semibold">
                                   {row.result}
                                 </p>
                               )
@@ -217,16 +216,18 @@ const TraceabilityStatus = () => {
                           </TableCell>
                           <TableCell align="center" component="th" scope="row">
                             {row.status.toLowerCase() === "failed" ? (
-                              <p className="text-red-700 font-semibold">
-                                FAIL
-                              </p>
+                              <p className="text-red-700 font-semibold">FAIL</p>
                             ) : row.status.toLowerCase() === "passed" ? (
                               <p className="text-green-700 font-semibold">
                                 PASS
                               </p>
-                            ) :  row.status.toLowerCase() === "" ? (
-                              <p className="font-semibold text-yellow-500">Exception</p>
-                            ):""}
+                            ) : row.status.toLowerCase() === "" ? (
+                              <p className="font-semibold text-yellow-500">
+                                Exception
+                              </p>
+                            ) : (
+                              ""
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
