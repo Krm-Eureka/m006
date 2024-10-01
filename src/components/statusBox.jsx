@@ -6,147 +6,56 @@ import QR from "../assets/svg/qrcode-solid.svg";
 import BOX from "../assets/svg/border-all-solid.svg";
 
 const StatusBox = ({ name, status }) => {
-  const getStatusTextAndClass = (name, status) => {
-    console.log(name, status);
-    
-    let text = "Exception";
-    let className = "bg-yellow-400 text-white font-semibold";
-
-    switch (name.toLowerCase()) {
-      case 'acoustictest':
-        switch (status) {
-          case 0:
-            text = "Exception";
-            className = "bg-yellow-400 text-white font-semibold";
-            break;
-          case 1:
-            text = "Testing";
-            className = "bg-blue-500 text-white font-semibold";
-            break;
-          case 2:
-            text = "PASS";
-            className = "bg-green-500 text-white font-semibold";
-            break;
-          case 3:
-            text = "FAIL";
-            className = "bg-red-500 text-white font-semibold";
-            break;
-          default:
-            text = "Exception";
-            className = "bg-yellow-400 text-white font-semibold";
-        }
-        break;
-      case 'lasermark':
-        switch (status) {
-          case 0:
-            text = "Exception";
-            className = "bg-yellow-400 text-white font-semibold";
-            break;
-          case 1:
-            text = "Marking";
-            className = "bg-blue-500 text-white font-semibold";
-            break;
-          case 2:
-            text = "COMPLETE";
-            className = "bg-green-500 text-white font-semibold";
-            break;
-            default:
-              text = "Exception";
-              className = "bg-yellow-400 text-white font-semibold";
-          }
-        break;
-      case 'qrcode':
-        switch (status) {
-          case 0:
-            text = "Exception";
-            className = "bg-yellow-400 text-white font-semibold";
-            break;
-          case 1:
-            text = "Reading";
-            className = "bg-blue-500 text-white font-semibold";
-            break;
-          case 2:
-            text = "OK";
-            className = "bg-green-500 text-white font-semibold";
-            break;
-          case 3:
-            text = "FAIL";
-            className = "bg-red-500 text-white font-semibold";
-            break;
-            default:
-              text = "Exception";
-              className = "bg-yellow-400 text-white font-semibold";
-          }
-        break;
-      case 'totalstatus':
-        switch (status) {
-          case 0:
-            text = "Exception";
-            className = "bg-yellow-400 text-white font-semibold";
-            break;
-          case 1:
-            text = "Reading";
-            className = "bg-blue-500 text-white font-semibold";
-            break;
-          case 2:
-            text = "OK";
-            className = "bg-green-500 text-white font-semibold";
-            break;
-          case 3:
-            text = "FAIL";
-            className = "bg-red-500 text-white font-semibold";
-            break;
-            default:
-              text = "Exception";
-              className = "bg-yellow-400 text-white font-semibold";
-          }
-        break;
-      case 'current':
-        switch (status) {
-          case 0:
-            text = "Exception";
-            className = "bg-yellow-400 text-white font-semibold";
-            break;
-          case 1:
-            text = "Reading";
-            className = "bg-blue-500 text-white font-semibold";
-            break;
-          case 2:
-            text = "OK";
-            className = "bg-green-500 text-white font-semibold";
-            break;
-          case 3:
-            text = "FAIL";
-            className = "bg-red-500 text-white font-semibold";
-            break;
-            default:
-              text = "Exception";
-              className = "bg-yellow-400 text-white font-semibold";
-          }
-        break;
-      default:
-        text = "Unknown Status";
-        className = "bg-gray-400 text-white font-semibold";
-        break;
-    }
-
-    return { text, className };
+  const statusMap = {
+    acoustictest: {
+      0: { text: "Exception", className: "bg-yellow-400" },
+      1: { text: "Testing", className: "bg-blue-500" },
+      2: { text: "PASS", className: "bg-green-500" },
+      3: { text: "FAIL", className: "bg-red-500" },
+    },
+    lasermark: {
+      0: { text: "Exception", className: "bg-yellow-400" },
+      1: { text: "Marking", className: "bg-blue-500" },
+      2: { text: "COMPLETE", className: "bg-green-500" },
+    },
+    qrcode: {
+      0: { text: "Exception", className: "bg-yellow-400" },
+      1: { text: "Reading", className: "bg-blue-500" },
+      2: { text: "OK", className: "bg-green-500" },
+      3: { text: "FAIL", className: "bg-red-500" },
+    },
+    totalstatus: {
+      0: { text: "Exception", className: "bg-yellow-400" },
+      1: { text: "Reading", className: "bg-blue-500" },
+      2: { text: "OK", className: "bg-green-500" },
+      3: { text: "FAIL", className: "bg-red-500" },
+    },
+    current: {
+      0: { text: "Exception", className: "bg-yellow-400" },
+      1: { text: "Reading", className: "bg-blue-500" },
+      2: { text: "OK", className: "bg-green-500" },
+      3: { text: "FAIL", className: "bg-red-500" },
+    },
   };
 
-  const { text, className } = getStatusTextAndClass(name, status);
+  const defaultStatus = { text: "Unknown Status", className: "bg-gray-400" };
+
+  // Get the status based on name and status; default to unknown if not found
+  const { text, className } = statusMap[name.toLowerCase()]?.[status] || defaultStatus;
+
   const iconMap = {
     current: CRR,
     acoustictest: MIC,
     qrcode: QR,
     lasermark: MRK,
-    totalstatus: BOX
+    totalstatus: BOX,
   };
-  
+
   const icon = iconMap[name.toLowerCase()] || null;
 
   return (
     <div className="m-4 justify-start">
-      <div className={`box flex ${className} p-4 rounded-lg w-64`}>
+      <div className={`box flex ${className} text-white font-semibold p-4 rounded-lg w-64`}>
         {icon && (
           <img
             src={icon}
@@ -165,7 +74,7 @@ const StatusBox = ({ name, status }) => {
 
 StatusBox.propTypes = {
   name: PropTypes.string.isRequired,
-  status: PropTypes.number.isRequired
+  status: PropTypes.number.isRequired,
 };
 
 export default StatusBox;
