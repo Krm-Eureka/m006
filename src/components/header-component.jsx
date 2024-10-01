@@ -86,7 +86,7 @@ const HeaderLayout = (props) => {
                   <span className="ml-2">AcousticManualRun</span>
                 </div>
               </Link>
-              <Link
+              {/* <Link
                 to="/Console/Content_ACT/TestReport"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
@@ -94,7 +94,7 @@ const HeaderLayout = (props) => {
                   <i className="text-xl fa-solid fa-file-audio"></i>
                   <span className="ml-2">AcousticTestReport</span>
                 </div>
-              </Link>
+              </Link> */}
               <Link
                 to="/Console/Content_TRC/Report"
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "

@@ -94,7 +94,7 @@ const TraceabilityStatus = () => {
 
   return (
     <>
-      <HeaderLayout page="Traceability Status" />
+      <HeaderLayout page="Acoustic Auto Run" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           {loading ? (
