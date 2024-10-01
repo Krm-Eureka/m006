@@ -1,4 +1,4 @@
-// import * as React from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,159 +6,152 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import HeaderLayout from "../Header-component";
+import HeaderLayout from "../header-component/";
+import {
+  GetLastAcousticTraceLog,
+  GetAcousticTraceDetailById,
+} from "../../services/api-service/stationData";
+import Loading from "../loadingComponent";
+import StatusBox from "../statusBox";
 
-function createLstStatus(SerialCode, Result) {
-  return { SerialCode, Result };
-}
-function createSmrData(Name, Lower, Upper, smrResult, Status) {
-  return { Name, Lower, Upper, smrResult, Status };
-}
-const lstStatus = [
-  createLstStatus("EOLT-A-382315929117", "PASS"),
-  createLstStatus("EOLT-A-120885838401", "FAIL"),
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "FAIL"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-  createLstStatus("EOLT-A-529520075944", "FAIL"),
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "FAIL"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-  createLstStatus("EOLT-A-52952007591111", "FAIL"),
+// function createLstStatus(SerialCode, Result) {
+//   return { SerialCode, Result };
+// }
 
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "FAIL"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-  createLstStatus("EOLT-A-52952007591111", "FAIL"),
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "FAIL"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-  createLstStatus("EOLT-A-52952007591111", "FAIL"),
-  createLstStatus("EOLT-A-37003047849", "FAIL"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-  createLstStatus("EOLT-A-52952007591111", "FAIL"),
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "FAIL"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-  createLstStatus("EOLT-A-529520075911112", "FAIL"),
-];
-const smrData = [
-  createSmrData("Current", "1", "-", "-", "-"),
-  createSmrData("Sensitivity", "1", "-", "-", "-"),
-  createSmrData("THD", "2", "-", "-", "-"),
-  createSmrData("Frequency", "3", "-", "-", "-"),
-];
-const test = {
-  pass: "PASS",
-  fail: "FAIL",
-  err: "Exception",
-};
-const AcousticAutoRun = () => {
+// const lstStatus = [
+//   createLstStatus("EOLT-A-382315929117", "PASS"),
+//   createLstStatus("EOLT-A-120885838401", "PASS"),
+//   createLstStatus("EOLT-A-554779049699", "PASS"),
+//   createLstStatus("EOLT-A-37003047849", "Fail"),
+//   createLstStatus("EOLT-A-529520075944", "PASS"),
+// ];
+function createSmrData(description, lowerValue, upperValue, result, status) {
+  const formattedResult = parseFloat(result).toFixed(2);
+  return {
+    description,
+    lowerValue,
+    upperValue,
+    result: formattedResult,
+    status,
+  };
+}
+
+const TraceabilityStatus = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [LstActLog, setLstActLog] = useState(null);
+  const [ActDetailById, setActDetailById] = useState(null);
+  const [smrData, setSmrData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
+      } catch (error) {
+        setError(error.message);
+      }
+
+    };
+
+    fetchData();
+    const intervalId = setInterval(fetchData, 2000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (LstActLog && LstActLog.id) {
+      const fetchDetails = async () => {
+        try {
+          await GetAcousticTraceDetailById(
+            "1",
+            LstActLog.id,
+            (response) => {
+              setActDetailById(response);
+
+              const updatedSmrData = response.map((item) =>
+                createSmrData(
+                  item.description,
+                  item.lowerValue,
+                  item.upperValue,
+                  item.result,
+                  item.status
+                )
+              );
+              setSmrData(updatedSmrData);
+              setLoading(false);
+            },
+            setLoading
+          );
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+      fetchDetails();
+    }
+  }, [LstActLog]);
+
+  console.log(ActDetailById);
+
   return (
     <>
-      <HeaderLayout page="Acoustic Auto Run" />
+      <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
-        <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          <div className="title bg-green-500 p-2 rounded-t-md font-bold">
-            <p>
-              Show Process Current of Auto EOLTStation {">>>"}{" "}
-              <span className="text-red-600 font-bold">DB_Device_ID</span>
-            </p>
-          </div>
-          <div className="content flex flex-wrap flex-between p-4 items-center">
-            <div className="m-2 flex flex-wrap justify-start">
-              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                <i className="fa-solid fa-microphone mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>AcousticTest</p>
-                  <p>PASS</p>
-                </div>
+        <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+          {loading ? (
+            <>
+              <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+                <p>
+                  Show Process Current of Auto EOLTStation{" "}
+                  <span className="text-red-600 font-bold">X-X</span> {">>>"}
+                  <span className="text-red-600 font-bold">X-X-X-X-X</span>
+                </p>
               </div>
-            </div>
-            <div className="m-2 justify-start">
-              <div
-                className={`box flex bg-gray-400 ${
-                  test.err === "PASS"
-                    ? "bg-green-500 text-white font-semibold"
-                    : test.err === "FAIL"
-                    ? "bg-red-500 text-white font-semibold"
-                    : test.err === "Exception"
-                    ? "bg-yellow-400 text-white font-semibold"
-                    : {}
-                } p-4  rounded-lg w-40 text-black`}
-              >
-                {" "}
-                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>Current</p>
-                  <p>PASS</p>
-                </div>
+              <Loading text="Data Not Found . . ." />
+            </>
+          ) : error ? (
+            <p className="text-red-600">{error}</p>
+          ) : (
+            <>
+              <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+                <p>
+                  Show Process Current of Auto EOLTStation{" "}
+                  {LstActLog.productionLineName} {">>>"}
+                  <span className="text-red-600 font-bold">
+                    {LstActLog.serialCode}
+                  </span>
+                </p>
               </div>
-            </div>
-            <div className="m-2 justify-start">
-              <div
-                className={`box flex bg-gray-400 ${
-                  test.fail === "PASS"
-                    ? "bg-green-500 text-white font-semibold"
-                    : test.fail === "FAIL"
-                    ? "bg-red-500 text-white font-semibold"
-                    : test.fail === "FAIL"
-                    ? "bg-yellow-400 text-white font-semibold"
-                    : {}
-                } p-4  rounded-lg w-40 text-black`}
-              >
-                <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>LaserMark</p>
-                  <p>PASS</p>
-                  {/* {status == "PASS" ? (
-                    <p className="text-green-700 font-semibold">PASS</p>
-                  ) : (
-                    <p className="text-red-700 font-semibold">FAIL</p>
-                  )} */}
-                </div>
+              <div className="content flex flex-wrap flex-between p-4 items-center">
+                <StatusBox
+                  name="AcousticTest"
+                  status={LstActLog.acousticStatus}
+                />
+                <StatusBox name="Current" status={LstActLog.currentStatus} />
+                <StatusBox
+                  name="LaserMark"
+                  status={LstActLog.laserMarkStatus}
+                />
+                <StatusBox name="QRCode" status={LstActLog.qrStatus} />
+               
+                <StatusBox
+                  name="TotalStatus"
+                  status={LstActLog.tracReporJudgementtResult}
+                />
               </div>
-            </div>
-            <div className=" m-2 justify-start">
-              <div
-                className={`box flex bg-gray-400 ${
-                  test.pass === "PASS"
-                    ? "bg-green-500 text-white font-semibold"
-                    : test.fail === "FAIL"
-                    ? "bg-red-500"
-                    : test.err === "FAIL"
-                    ? "bg-yellow-400"
-                    : {}
-                } p-4  rounded-lg w-40 text-black`}
-              >
-                <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>QRCode</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-            <div className=" m-2 justify-start">
-              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                <i className="fa-solid fa-border-all mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>Total Status</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
-        <div className="flex mx-2 md:flex-wrap ">
-          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md  w-90% h-fit">
+
+        <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
+          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Show Data Run Summary</p>
             </div>
             <div className="content flex flex-between p-4 items-center">
-              <div className=" flex flex-between flex-wrap justify-start">
+              <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
-                    sx={{ minWidth: 500, maxWidth: 800, overflowX: "auto" }}
+                    sx={{ width: 1000, overflowX: "auto" }}
                     aria-label="simple table"
                   >
                     <TableHead>
@@ -181,35 +174,59 @@ const AcousticAutoRun = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.map((row) => (
+                      {smrData.map((row, index) => (
                         <TableRow
-                          key={row.SerialCode}
+                          key={row.description + index}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
                           <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.Name}</p>
+                            <p className="font-semibold">{row.description}</p>
                           </TableCell>
                           <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.Lower}</p>
+                            <p className="font-semibold">{row.lowerValue}</p>
                           </TableCell>
                           <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.Upper}</p>
+                            <p className="font-semibold">{row.upperValue}</p>
                           </TableCell>
-                          <TableCell align="left">
-                            {row.Result === "Fail" || row.Result === "FAIL" ? (
-                              <p className=" text-red-700 font-semibold">
-                                {row.smrResult}
+                          <TableCell align="center">
+                            {row.result === "Fail" ? (
+                              <p className="text-red-700 font-semibold">
+                                {row.result}
                               </p>
+                            ) : row.description.toLowerCase() ===
+                              "sensitivity" ? (
+                              parseFloat(row.result) <
+                                parseFloat(row.lowerValue) ||
+                                parseFloat(row.result) >
+                                parseFloat(row.upperValue) ? (
+                                <p className="text-red-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              ) : (
+                                <p className="text-green-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              )
                             ) : (
-                              <p className=" text-green-700 font-semibold">
-                                {row.smrResult}
+                              <p className="text-green-700 font-semibold">
+                                {row.result}
                               </p>
                             )}
                           </TableCell>
-                          <TableCell component="th" scope="row">
-                            <p className="font-semibold">{row.Status}</p>
+                          <TableCell align="center" component="th" scope="row">
+                            {row.status.toLowerCase() === "failed" ? (
+                              <p className="text-red-700 font-semibold">
+                                {row.status}
+                              </p>
+                            ) : row.status.toLowerCase() === "passed" ? (
+                              <p className="text-green-700 font-semibold">
+                                {row.status}
+                              </p>
+                            ) :  row.status.toLowerCase() === "" ? (
+                              <p className="font-semibold text-yellow-500">Exception</p>
+                            ):""}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -219,16 +236,12 @@ const AcousticAutoRun = () => {
               </div>
             </div>
           </div>
-          <div className=" text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+          {/* <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
             <div className="content p-4 items-center">
-              <div className=" flex flex-between flex-wrap justify-start">
-                {/* <div className="box bg-slate-300 p-4 mr-2 rounded-lg w-40">
-                  <i className="fa-solid fa-microphone mr-4 "></i>
-                  <span>AcousticTest</span>
-                </div> */}
+              <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
                     sx={{ minWidth: 400, maxWidth: 700, overflowX: "auto" }}
@@ -245,42 +258,39 @@ const AcousticAutoRun = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {lstStatus
-                        .slice(0, 5)
-                        .map((row) => (
-                          <TableRow
-                            key={row.SerialCode}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
-                          >
-                            <TableCell component="th" scope="row">
-                              <p className="font-semibold">{row.SerialCode}</p>
-                            </TableCell>
-                            <TableCell align="left">
-                              {row.Result === "Fail" ||
-                              row.Result === "FAIL" ? (
-                                <p className="text-red-700 font-semibold">
-                                  {row.Result}
-                                </p>
-                              ) : (
-                                <p className="text-green-700 font-semibold">
-                                  {row.Result}
-                                </p>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                      {lstStatus.map((row) => (
+                        <TableRow
+                          key={row.SerialCode}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            <p className="font-semibold">{row.SerialCode}</p>
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.Result === "Fail" ? (
+                              <p className="text-red-700 font-semibold">
+                                {row.Result}
+                              </p>
+                            ) : (
+                              <p className="text-green-700 font-semibold">
+                                {row.Result}
+                              </p>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </TableContainer>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
   );
 };
 
-export default AcousticAutoRun;
+export default TraceabilityStatus;
