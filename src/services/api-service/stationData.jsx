@@ -42,12 +42,25 @@ export function GetLastAcousticTraceLog(
       // Log the statuses
       console.log('data : ' ,res.data.data);
       
-      console.log(`Acoustic Status: ${acousticStatus}`);
-      console.log(`QR Code Status: ${qrcodeStatus}`);
-      console.log(`Laser Mark Status: ${laserMarkStatus}`);
-      console.log(`Judgement Result: ${judgementResult}`);
-      console.log(`Traceability Status: ${tracReportStatus}`);
-      SET(res.data.data);
+      console.log(`Acoustic Status: ${acousticStatus.text}`);
+      console.log(`QR Code Status: ${qrcodeStatus.text}`);
+      console.log(`Laser Mark Status: ${laserMarkStatus.text}`);
+      console.log(`Judgement Result: ${judgementResult.text}`);
+      console.log(`Traceability Status: ${tracReportStatus.text}`);
+      // SET(res.data.data);
+      SET({
+        ...res.data.data,
+        acousticStatus: acousticStatus.text,
+        acousticClass: acousticStatus.className,
+        qrcodeStatus: qrcodeStatus.text,
+        qrcodeClass: qrcodeStatus.className,
+        lasermarkStatus: laserMarkStatus.text,
+        lasermarkClass: laserMarkStatus.className,
+        judgementResult: judgementResult.text,
+        judgementClass: judgementResult.className,
+        tracReportStatus: tracReportStatus.text,
+        tracReportClass: tracReportStatus.className,
+      });
       {
         LOADING(
           res.data.succeeded && res.data.succeeded === true ? false : true

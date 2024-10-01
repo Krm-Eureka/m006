@@ -118,16 +118,16 @@ const TraceabilityStatus = () => {
                   name="AcousticTest"
                   status={LstActLog.acousticStatus}
                 />
-                <StatusBox name="Current" status={LstActLog.currentStatus} />
+                <StatusBox name="Current" status={LstActLog.currentStatus} class={LstActLog.currentclass} />
                 <StatusBox
                   name="LaserMark"
-                  status={LstActLog.laserMarkStatus}
+                  status={LstActLog.laserMarkStatus} class={LstActLog.laserMarkclass}
                 />
-                <StatusBox name="QRCode" status={LstActLog.qrStatus} />
+                <StatusBox name="QRCode" status={LstActLog.qrcodeStatus} class={LstActLog.qrcodeClass} />
                
                 <StatusBox
                   name="TotalStatus"
-                  status={LstActLog.tracReporJudgementtResult}
+                  status={LstActLog.judgementResult} class={LstActLog.judgementClass}
                 />
               </div>
             </>
