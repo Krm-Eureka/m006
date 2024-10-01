@@ -387,9 +387,11 @@ const TraceabilityReport = () => {
                           column.id === "creationDate"
                             ? formatDateTime(row[column.id])
                             : row[column.id] === 0
-                            ? "NOK"
-                            : row[column.id] === 1
+                            ? "Exception"
+                            : row[column.id] === 2
                             ? "OK"
+                            : row[column.id] === 3
+                            ? "NG"
                             : row[column.id]}
                         </StyledTableCell>
                       ))}
