@@ -1,4 +1,4 @@
-export function setStatus(name ,status) {
+export function setStatus(name, status) {
   switch (status) {
     case 0:
       return {
@@ -8,13 +8,17 @@ export function setStatus(name ,status) {
     case 1:
       return {
         text:
-        name === "acoustictest"
-        ? "Testing"
-        : name === "qrcode"
-        ? "Reading"
-        : name === "lasermark"
-        ? "Marking"
-        : "Reading",
+          name === "acoustictest"
+            ? "Testing"
+            : name === "qrcode"
+            ? "Reading"
+            : name === "lasermark"
+            ? "Marking"
+            : name === "totalstatus"
+            ? "Reading"
+            : name === "current"
+            ? "Reading"
+            : "Reading",
         className: "bg-blue-400 text-white font-semibold",
       };
     case 2:
