@@ -218,11 +218,11 @@ const TraceabilityStatus = () => {
                           <TableCell align="center" component="th" scope="row">
                             {row.status.toLowerCase() === "failed" ? (
                               <p className="text-red-700 font-semibold">
-                                {row.status}
+                                FAIL
                               </p>
                             ) : row.status.toLowerCase() === "passed" ? (
                               <p className="text-green-700 font-semibold">
-                                {row.status}
+                                PASS
                               </p>
                             ) :  row.status.toLowerCase() === "" ? (
                               <p className="font-semibold text-yellow-500">Exception</p>
