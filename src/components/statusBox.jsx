@@ -17,11 +17,11 @@ const StatusBox = ({ name, status }) => {
         switch (status) {
           case 0:
             text = "Exception";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-yellow-400 text-white font-semibold";
             break;
           case 1:
             text = "Testing";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-blue-500 text-white font-semibold";
             break;
           case 2:
             text = "PASS";
@@ -33,18 +33,18 @@ const StatusBox = ({ name, status }) => {
             break;
           default:
             text = "Exception";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-yellow-400 text-white font-semibold";
         }
         break;
       case 'lasermark':
         switch (status) {
           case 0:
             text = "Exception";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-yellow-400 text-white font-semibold";
             break;
           case 1:
             text = "Marking";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-blue-500 text-white font-semibold";
             break;
           case 2:
             text = "COMPLETE";
@@ -52,18 +52,18 @@ const StatusBox = ({ name, status }) => {
             break;
             default:
               text = "Exception";
-              className = "bg-yellow-500 text-white font-semibold";
+              className = "bg-yellow-400 text-white font-semibold";
           }
         break;
       case 'qrcode':
         switch (status) {
           case 0:
             text = "Exception";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-yellow-400 text-white font-semibold";
             break;
           case 1:
             text = "Reading";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-blue-500 text-white font-semibold";
             break;
           case 2:
             text = "OK";
@@ -75,18 +75,18 @@ const StatusBox = ({ name, status }) => {
             break;
             default:
               text = "Exception";
-              className = "bg-yellow-500 text-white font-semibold";
+              className = "bg-yellow-400 text-white font-semibold";
           }
         break;
       case 'totalstatus':
         switch (status) {
           case 0:
             text = "Exception";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-yellow-400 text-white font-semibold";
             break;
           case 1:
             text = "Reading";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-blue-500 text-white font-semibold";
             break;
           case 2:
             text = "OK";
@@ -98,18 +98,18 @@ const StatusBox = ({ name, status }) => {
             break;
             default:
               text = "Exception";
-              className = "bg-yellow-500 text-white font-semibold";
+              className = "bg-yellow-400 text-white font-semibold";
           }
         break;
       case 'current':
         switch (status) {
           case 0:
             text = "Exception";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-yellow-400 text-white font-semibold";
             break;
           case 1:
             text = "Reading";
-            className = "bg-yellow-500 text-white font-semibold";
+            className = "bg-blue-500 text-white font-semibold";
             break;
           case 2:
             text = "OK";
@@ -121,7 +121,7 @@ const StatusBox = ({ name, status }) => {
             break;
             default:
               text = "Exception";
-              className = "bg-yellow-500 text-white font-semibold";
+              className = "bg-yellow-400 text-white font-semibold";
           }
         break;
       default:
