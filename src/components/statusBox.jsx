@@ -162,7 +162,7 @@ const StatusBox = ({ name, status }) => {
   // };
 
   // const { text, className } = getStatusTextAndClass(name, status);
-  const { text, className } = setStatus(name ,status);
+  const { text, className } = setStatus(name.toLowerCase(), status);
 
   const icon =
     typeof name === "string"
