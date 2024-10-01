@@ -27,7 +27,7 @@ function App() {
           {/* <Route path="/Console/Content" element={<ContentLayout />} /> */}
           <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
           <Route path="/Console/Content_TRC/Report" element={<TraceabilityReport />} />
-          <Route path="/Console/Content_TRC/Status" element={<TraceabilityStatus/>} />
+          {/* <Route path="/Console/Content_TRC/Status" element={<TraceabilityStatus/>} /> */}
           <Route path="/Console/Content_ACT/AutoRun" element={<AcousticAutoRun/>} />
           <Route path="/Console/Content_ACT/ManualRun" element={<AcousticManualRun/>} />
           {/* <Route path="/Console/Content_ACT/TESTReport" element={<Acoustic} /> */}
