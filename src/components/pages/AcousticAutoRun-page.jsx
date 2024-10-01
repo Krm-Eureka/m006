@@ -14,17 +14,6 @@ import {
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 
-// function createLstStatus(SerialCode, Result) {
-//   return { SerialCode, Result };
-// }
-
-// const lstStatus = [
-//   createLstStatus("EOLT-A-382315929117", "PASS"),
-//   createLstStatus("EOLT-A-120885838401", "PASS"),
-//   createLstStatus("EOLT-A-554779049699", "PASS"),
-//   createLstStatus("EOLT-A-37003047849", "Fail"),
-//   createLstStatus("EOLT-A-529520075944", "PASS"),
-// ];
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
   return {
@@ -39,7 +28,7 @@ function createSmrData(description, lowerValue, upperValue, result, status) {
 const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [LstActLog, setLstActLog] = useState(null);
+  const [LstActLog, setLstActLog] = useState({});
   const [ActDetailById, setActDetailById] = useState(null);
   const [smrData, setSmrData] = useState([]);
 
@@ -56,7 +45,7 @@ const TraceabilityStatus = () => {
     fetchData();
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [LstActLog]);
 
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
@@ -91,6 +80,8 @@ const TraceabilityStatus = () => {
   }, [LstActLog]);
 
   console.log(ActDetailById);
+  console.log(LstActLog);
+  
 
   return (
     <>
@@ -106,6 +97,22 @@ const TraceabilityStatus = () => {
                   <span className="text-red-600 font-bold">X-X-X-X-X</span>
                 </p>
               </div>
+              <StatusBox
+                  name="AcousticTest"
+                  status={2}
+                />
+              <StatusBox
+                  name="AcousticTest"
+                  status={1}
+                />
+              <StatusBox
+                  name="AcousticTest"
+                  status={3}
+                />
+              <StatusBox
+                  name="AcousticTest"
+                  status={0}
+                />
               <Loading text="Data Not Found . . ." />
             </>
           ) : error ? (
