@@ -12,7 +12,7 @@ const LoginPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      navigate("/Console/Content_TRC/Status");
+      navigate("/Console/Content_ACT/AutoRun");
     }
   }, [navigate]);
 
@@ -38,7 +38,7 @@ const LoginPage = () => {
           icon: "success",
           title: `Logging in ${login_msg}`,
         });
-        navigate("/Console/Content_TRC/Status");
+        navigate("/Console/Content_ACT/AutoRun");
       } else {
         Toast.fire({
           icon: "error",

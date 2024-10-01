@@ -7,7 +7,7 @@ const RedirectIfLoggedIn = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/Console/Content_TRC/Status");
+      navigate("/Console/Content_ACT/AutoRun");
     } else {
       navigate("/auth/Login");
     }
