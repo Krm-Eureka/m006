@@ -377,9 +377,9 @@ const TraceabilityReport = () => {
                           style={{
                             color:
                               row[column.id] === 0
-                                ? "yellow"
+                                ? "red"
                                 : row[column.id] === 1
-                                ? "blue"
+                                ? "red"
                                 : row[column.id] === 2
                                 ? "green"
                                 : row[column.id] === 3
@@ -391,9 +391,9 @@ const TraceabilityReport = () => {
                           column.id === "creationDate"
                             ? formatDateTime(row[column.id])
                             : row[column.id] === 0
-                            ? "Exception"
+                            ? "red"
                             : row[column.id] === 1
-                            ? "Exception"
+                            ? "red"
                             : row[column.id] === 2
                             ? "OK"
                             : row[column.id] === 3
