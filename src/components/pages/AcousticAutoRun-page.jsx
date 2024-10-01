@@ -94,7 +94,7 @@ const TraceabilityStatus = () => {
 
   return (
     <>
-      <HeaderLayout page="Acoustic Auto Run" />
+      <HeaderLayout page="Acoustic AutoRun" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           {loading ? (
@@ -218,11 +218,13 @@ const TraceabilityStatus = () => {
                           <TableCell align="center" component="th" scope="row">
                             {row.status.toLowerCase() === "failed" ? (
                               <p className="text-red-700 font-semibold">
-                                {row.status}
+                                {/* {row.status} */}
+                                FAIL
                               </p>
                             ) : row.status.toLowerCase() === "passed" ? (
                               <p className="text-green-700 font-semibold">
-                                {row.status}
+                                {/* {row.status} */}
+                                PASS
                               </p>
                             ) :  row.status.toLowerCase() === "" ? (
                               <p className="font-semibold text-yellow-500">Exception</p>
