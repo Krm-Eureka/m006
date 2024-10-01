@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import HeaderLayout from "../Header-component";
 import Swal from "sweetalert2";
-import { formatDate } from "../../services/formatTimeStamp";
+import { useNavigate } from "react-router-dom";
+import { formatDateForSetting } from "../../services/formatTimeStamp";
 import CardSetting from "../card-setting";
 import {
   GetMasterSetting,
   PutDMCSetting,
   PutParameterSetting,
 } from "../../services/api-service/parameterSetting";
+import AuthLogin from "../../services/auth-sv";
 import Loading from "../loadingComponent";
 
 const MasterSetting = () => {
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [modify, setModify] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [minLimitCurrent, setMinLimitCurrent] = useState("");
   const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
   // const [minLimitSensitivity, setMinLimitSensitivity] = useState("");
@@ -28,12 +31,13 @@ const MasterSetting = () => {
   const [masterData, setMasterData] = useState({
     plmReference: "",
     ebomReference: "",
-    manufacturingDateFormat: "",
+    // manufacturingDateFormat,
+    lastRunningDate:"",
     eoltRefCode: "",
     serialNumber: "",
   });
 
-  const correctPassword = "123456";
+  // const correctPassword = "123456";
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -47,15 +51,14 @@ const MasterSetting = () => {
   });
 
   useEffect(() => {
-    // if (!isAuthenticated) return;
+    if (!isAuthenticated) return;
     const fetchData = async () => {
-      // setLoading(true);
+      setLoading(true);
       try {
         await GetMasterSetting("1", "1", setMasterData, setLoading);
       } catch (error) {
         setError(error.message);
-      }
-       finally {
+      } finally {
         setLoading(false);
       }
       //   const intervalId = setInterval(fetchData, 2000);
@@ -63,50 +66,80 @@ const MasterSetting = () => {
     };
 
     fetchData();
-  // }, [isAuthenticated]);
-  }, []);
+    }, [isAuthenticated]);
 
-  const handleSubmit = (e) => {
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (password === correctPassword) {
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     Toast.fire({
+  //       icon: "error",
+  //       title: "Incorrect password. Please try again.",
+  //     });
+  //   }
+  // };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === correctPassword) {
-      setIsAuthenticated(true);
-    } else {
+    try {
+      const { success, token, login_msg } = await AuthLogin(email, password);
+      if (success) {
+        localStorage.setItem("authToken", token);
+        Toast.fire({
+          icon: "success",
+          title: `Authorization in ${login_msg}`,
+        });
+        setIsAuthenticated(true);
+      } else {
+        Toast.fire({
+          icon: "error",
+          title: "Authorization Fail",
+        });
+        navigate("/Console/Content_ACT/AutoRun");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       Toast.fire({
         icon: "error",
-        title: "Incorrect password. Please try again.",
-      });
+        title: "Authorization Fail",
+      });///////////////////////////////////////////////////////////////test
+      // navigate("/Console/Content_ACT/AutoRun");
+      setIsAuthenticated(true);
     }
   };
 
-  const handleModify = async() => {
+  const handleModify = async () => {
     setModify((prev) => !prev);
-      try {
-        await GetMasterSetting("1", "1", setMasterData, setLoading);
-      } catch (error) {
-        setError(error.message);
-      }
-       finally {
-        setLoading(false);
-      }
+    try {
+      await GetMasterSetting("1", "1", setMasterData, setLoading);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDMCUpdate = async () => {
     const {
       plmReference,
       ebomReference,
-      manufacturingDateFormat,
+      // manufacturingDateFormat,
+      lastRunningDate,
       eoltRefCode,
     } = masterData;
     if (
       plmReference &&
       ebomReference &&
-      manufacturingDateFormat &&
+      // manufacturingDateFormat &&
+      lastRunningDate &&
       eoltRefCode
     ) {
       const data = {
         plmReference,
         ebomReference,
-        manufacturingDateFormat,
+        // manufacturingDateFormat,
+        lastRunningDate,
         eoltRefCode,
       };
       try {
@@ -155,32 +188,39 @@ const MasterSetting = () => {
       });
     }
   };
-  // if (!isAuthenticated) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <div className="bg-gray-200 p-6 rounded-md shadow-lg">
-  //         <h1 className="text-xl font-semibold text-gray-700 mb-4">
-  //           Enter Password
-  //         </h1>
-  //         <form onSubmit={handleSubmit}>
-  //           <input
-  //             type="password"
-  //             className="w-full p-2 mb-4 border rounded-lg text-gray-700"
-  //             placeholder="••••••••"
-  //             value={password}
-  //             onChange={(e) => setPassword(e.target.value)}
-  //           />
-  //           <button
-  //             type="submit"
-  //             className="w-full bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
-  //           >
-  //             Submit
-  //           </button>
-  //         </form>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!isAuthenticated) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="bg-gray-200 p-6 rounded-md shadow-lg">
+          <h1 className="text-xl font-semibold text-gray-700 mb-4">
+            Authorization
+          </h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className="w-full p-2 mb-4 border rounded-lg text-gray-700"
+              placeholder="email | userName"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              className="w-full p-2 mb-4 border rounded-lg text-gray-700"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -264,39 +304,40 @@ const MasterSetting = () => {
                 <p className="text-xs pl-4 pb-4 font-bold">
                   {masterData.plmReference &&
                   masterData.ebomReference &&
-                  masterData.manufacturingDateFormat &&
+                   // masterData.manufacturingDateFormat &&
+                   masterData.lastRunningDate &&
                   masterData.eoltRefCode
                     ? // &&
                       // serialNumber
                       `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDate(masterData.manufacturingDateFormat)}-${
+                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
                         masterData.eoltRefCode
                       }-*****`
                     : masterData.plmReference &&
                       masterData.ebomReference &&
-                      masterData.manufacturingDateFormat &&
+                      // masterData.manufacturingDateFormat &&
+                      masterData.lastRunningDate &&
                       masterData.eoltRefCode
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDate(masterData.manufacturingDateFormat)}-${
+                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
                         masterData.eoltRefCode
                       }-*****`
                     : masterData.plmReference &&
                       masterData.ebomReference &&
-                      masterData.manufacturingDateFormat
+                       // masterData.manufacturingDateFormat &&
+                       masterData.lastRunningDate
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDate(
-                        masterData.manufacturingDateFormat
-                      )}-S-*****`
+                      }-${formatDateForSetting(masterData.lastRunningDate)}-S-*****`
                     : masterData.plmReference && masterData.ebomReference
-                    ? `Example : ${masterData.plmReference}-${masterData.ebomReference}-DDMMYY-S-*****`
+                    ? `Example : ${masterData.plmReference}-${masterData.ebomReference}-YYMMDD-S-*****`
                     : masterData.plmReference
-                    ? `Example : ${masterData.plmReference}-yyyyyyyyyy-DDMMYY-S-*****`
-                    : `Example : xxxxxxxxxx-yyyyyyyyyy-DDMMYY-S-*****`}
+                    ? `Example : ${masterData.plmReference}-yyyyyyyyyy-YYMMDD-S-*****`
+                    : `Example : xxxxxxxxxx-yyyyyyyyyy-YYMMDD-S-*****`}
                 </p>
-               
+
                 <button
                   onClick={handleDMCUpdate}
                   disabled={!modify}

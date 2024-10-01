@@ -4,164 +4,165 @@ import MRK from "../assets/svg/map-pin-solid.svg";
 import MIC from "../assets/svg/microphone-solid.svg";
 import QR from "../assets/svg/qrcode-solid.svg";
 import BOX from "../assets/svg/border-all-solid.svg";
-
+import { setStatus } from '../services/setter';
 const StatusBox = ({ name, status }) => {
   console.log("Rendering StatusBox:", name, status);
-  const getStatusTextAndClass = (name, status) => {
-    console.log("Name:", name);
-    console.log("Status:", status);
-    switch (name.toLowerCase()) {
-      case "acoustictest":
-        switch (status) {
-          case 0:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 1:
-            return {
-              text: "Testing",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 2:
-            return {
-              text: "PASS",
-              className: "bg-green-500 text-white font-semibold",
-            };
-          case 3:
-            return {
-              text: "FAIL",
-              className: "bg-red-500 text-white font-semibold",
-            };
-          default:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-        }
+  // const getStatusTextAndClass = (name, status) => {
+  //   console.log("Name:", name);
+  //   console.log("Status:", status);
+  //   switch (name.toLowerCase()) {
+  //     case "acoustictest":
+  //       switch (status) {
+  //         case 0:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 1:
+  //           return {
+  //             text: "Testing",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 2:
+  //           return {
+  //             text: "PASS",
+  //             className: "bg-green-500 text-white font-semibold",
+  //           };
+  //         case 3:
+  //           return {
+  //             text: "FAIL",
+  //             className: "bg-red-500 text-white font-semibold",
+  //           };
+  //         default:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //       }
 
-      case "lasermark":
-        switch (status) {
-          case 0:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 1:
-            return {
-              text: "Marking",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 2:
-            return {
-              text: "PASS",
-              className: "bg-green-500 text-white font-semibold",
-            };
-          case 3:
-            return {
-              text: "FAIL",
-              className: "bg-red-500 text-white font-semibold",
-            };
-          default:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-        }
+  //     case "lasermark":
+  //       switch (status) {
+  //         case 0:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 1:
+  //           return {
+  //             text: "Marking",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 2:
+  //           return {
+  //             text: "PASS",
+  //             className: "bg-green-500 text-white font-semibold",
+  //           };
+  //         case 3:
+  //           return {
+  //             text: "FAIL",
+  //             className: "bg-red-500 text-white font-semibold",
+  //           };
+  //         default:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //       }
 
-      case "qrcode":
-        switch (status) {
-          case 0:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 1:
-            return {
-              text: "Reading",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 2:
-            return {
-              text: "PASS",
-              className: "bg-green-500 text-white font-semibold",
-            };
-          case 3:
-            return {
-              text: "FAIL",
-              className: "bg-red-500 text-white font-semibold",
-            };
-          default:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-        }
-      case "totalstatus":
-        switch (status) {
-          case 0:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 1:
-            return {
-              text: "Reading",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 2:
-            return {
-              text: "PASS",
-              className: "bg-green-500 text-white font-semibold",
-            };
-          case 3:
-            return {
-              text: "FAIL",
-              className: "bg-red-500 text-white font-semibold",
-            };
-          default:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-        }
-      case "current":
-        switch (status) {
-          case 0:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 1:
-            return {
-              text: "Reading",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-          case 2:
-            return {
-              text: "PASS",
-              className: "bg-green-500 text-white font-semibold",
-            };
-          case 3:
-            return {
-              text: "FAIL",
-              className: "bg-red-500 text-white font-semibold",
-            };
-          default:
-            return {
-              text: "Exception",
-              className: "bg-yellow-400 text-white font-semibold",
-            };
-        }
-      default:
-        return {
-          text: "Unknown",
-          className: "bg-gray-400 text-white font-semibold",
-        };
-    }
-  };
+  //     case "qrcode":
+  //       switch (status) {
+  //         case 0:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 1:
+  //           return {
+  //             text: "Reading",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 2:
+  //           return {
+  //             text: "PASS",
+  //             className: "bg-green-500 text-white font-semibold",
+  //           };
+  //         case 3:
+  //           return {
+  //             text: "FAIL",
+  //             className: "bg-red-500 text-white font-semibold",
+  //           };
+  //         default:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //       }
+  //     case "totalstatus":
+  //       switch (status) {
+  //         case 0:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 1:
+  //           return {
+  //             text: "Reading",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 2:
+  //           return {
+  //             text: "PASS",
+  //             className: "bg-green-500 text-white font-semibold",
+  //           };
+  //         case 3:
+  //           return {
+  //             text: "FAIL",
+  //             className: "bg-red-500 text-white font-semibold",
+  //           };
+  //         default:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //       }
+  //     case "current":
+  //       switch (status) {
+  //         case 0:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 1:
+  //           return {
+  //             text: "Reading",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //         case 2:
+  //           return {
+  //             text: "PASS",
+  //             className: "bg-green-500 text-white font-semibold",
+  //           };
+  //         case 3:
+  //           return {
+  //             text: "FAIL",
+  //             className: "bg-red-500 text-white font-semibold",
+  //           };
+  //         default:
+  //           return {
+  //             text: "Exception",
+  //             className: "bg-yellow-400 text-white font-semibold",
+  //           };
+  //       }
+  //     default:
+  //       return {
+  //         text: "Unknown",
+  //         className: "bg-gray-400 text-white font-semibold",
+  //       };
+  //   }
+  // };
 
-  const { text, className } = getStatusTextAndClass(name, status);
+  // const { text, className } = getStatusTextAndClass(name, status);
+  const { text, className } = setStatus(status);
 
   const icon =
     typeof name === "string"
