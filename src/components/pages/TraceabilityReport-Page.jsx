@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -49,15 +49,66 @@ const columns = [
   },
   {
     id: "tracReportStatus",
-    label: "Status",
+    label: "TraceabilityStatus",
+    sortable: true,
+    aln: "center",
+  },
+  { id: "currentDetail", label: "CurrentDetail", aln: "center" },
+  { id: "currentMin", label: "CurrentMin", sortable: true, aln: "center" },
+  { id: "currentMax", label: "CurrentMax", sortable: true, aln: "center" },
+  {
+    id: "currentMeasured",
+    label: "currentResult",
+    sortable: true,
+    aln: "center",
+  },
+  { id: "currentJud", label: "CurrentStatus", sortable: true, aln: "center" },
+  {
+    id: "sensitivityDetail",
+    label: "SensitivityDetail",
     sortable: true,
     aln: "center",
   },
   {
-    id: "tracReporJudgementtResult",
-    label: "Judgement",
-    aln: "center",
+    id: "sensitivityMin",
+    label: "SensitivityMin",
     sortable: true,
+    aln: "center",
+  },
+  {
+    id: "sensitivityMax",
+    label: "SensitivityMax",
+    sortable: true,
+    aln: "center",
+  },
+  {
+    id: "sensitivityResult",
+    label: "SensitivityResult",
+    sortable: true,
+    aln: "center",
+  },
+  {
+    id: "sensitivityJud",
+    label: "SensitivityStatus",
+    sortable: true,
+    aln: "center",
+  },
+  { id: "thdDetail", label: "THD Detail", sortable: true, aln: "center" },
+  { id: "thdMin", label: "THD Min", sortable: true, aln: "center" },
+  { id: "thdMax", label: "THD Max", sortable: true, aln: "center" },
+  { id: "thdResult", label: "THD Result", sortable: true, aln: "center" },
+  { id: "thdJud", label: "THD Status", sortable: true, aln: "center" },
+  {
+    id: "frequencyDetail",
+    label: "FrequencyDetail",
+    sortable: true,
+    aln: "center",
+  },
+  {
+    id: "frequencyJud",
+    label: "FrequencyStatus",
+    sortable: true,
+    aln: "center",
   },
   // { id: "SensitivityJud", label: "SensitivityJudgment", sortable: true },
   {
@@ -73,6 +124,12 @@ const columns = [
     sortable: true,
   },
   { id: "qrStatus", label: "QrStatus", w: 100, aln: "center", sortable: true },
+  {
+    id: "tracReporJudgementtResult",
+    label: "Judgement",
+    aln: "center",
+    sortable: true,
+  },
   {
     id: "creationDate",
     label: "CreateDate",
@@ -99,6 +156,7 @@ const TraceabilityReport = () => {
   const [fromDate, setFromDate] = useState(today);
   const [rows, setRows] = useState([]);
   const [toDate, setToDate] = useState(today);
+  const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -124,10 +182,22 @@ const TraceabilityReport = () => {
         : -1;
     });
   };
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+  const mapStatus = (value) => {
+    if (value === 0 || value === 1) return "NOK";
+    if (value === 2) return "PASS";
+    if (value === 3) return "FAIL";
+    return value;
   };
+  
+  const getColor = (value) => {
+    if (value === 0 || value === 1) return "red";
+    if (value === 2) return "green";
+    if (value === 3) return "red";
+    return "inherit";
+  };
+  // const handleSearchChange = (event) => {
+  //   setSearchTerm(event.target.value);
+  // };
 
   const handleFromDateChange = (event) => {
     setFromDate(event.target.value);
@@ -144,7 +214,13 @@ const TraceabilityReport = () => {
   };
   const searchWithDate = async () => {
     try {
-      await getTraceabilityDataWithDate("1", fromDate, toDate, setRows);
+      await getTraceabilityDataWithDate(
+        "1",
+        fromDate,
+        toDate,
+        serialNumber,
+        setRows
+      );
     } catch (err) {
       setError(err);
     }
@@ -178,8 +254,8 @@ const TraceabilityReport = () => {
     const csvRows = sortedRows.map((row) => {
       return columns
         .map((column) => {
-          const value = row[column.id] ;
-          
+          const value = row[column.id];
+
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
             : value;
@@ -231,9 +307,12 @@ const TraceabilityReport = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  if (error) return <p>Error loading data: {error.message}</p>;
-
+  {error && (
+    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong className="font-bold">Error: </strong>
+      <span className="block sm:inline">{error.message}</span>
+    </div>
+  )}
   return (
     <>
       <HeaderLayout page="Traceability Report" />
@@ -256,12 +335,12 @@ const TraceabilityReport = () => {
                   id="serialNumber"
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
                   placeholder="Serial Number..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
+                  value={serialNumber}
+                  onChange={(e) => setSerialNumber(e.target.value)}
                 />
               </>
             ) : (
-            ''
+              ""
             )}
           </div>
           <div className="mx-2 mb-2">
@@ -371,35 +450,15 @@ const TraceabilityReport = () => {
                   .map((row) => (
                     <StyledTableRow key={row.id}>
                       {columns.map((column) => (
-                        <StyledTableCell
-                          key={column.id}
-                          align={column.aln || "left"}
-                          style={{
-                            color:
-                              row[column.id] === 0
-                                ? "red"
-                                : row[column.id] === 1
-                                ? "red"
-                                : row[column.id] === 2
-                                ? "green"
-                                : row[column.id] === 3
-                                ? "red"
-                                : "inherit",
-                          }}
-                        >
-                          {column.id === "lastUpdateDate" ||
-                          column.id === "creationDate"
-                            ? formatDateTime(row[column.id])
-                            : row[column.id] === 0
-                            ? "NOK"
-                            : row[column.id] === 1
-                            ? "NOK"
-                            : row[column.id] === 2
-                            ? "PASS"
-                            : row[column.id] === 3
-                            ? "FAIL"
-                            : row[column.id]}
-                        </StyledTableCell>
+                       <StyledTableCell
+                       key={column.id}
+                       align={column.aln || "left"}
+                       style={{ color: getColor(row[column.id]) }}
+                     >
+                       {column.id === "lastUpdateDate" || column.id === "creationDate"
+                         ? formatDateTime(row[column.id])
+                         : mapStatus(row[column.id])}
+                     </StyledTableCell>
                       ))}
                     </StyledTableRow>
                   ))}
