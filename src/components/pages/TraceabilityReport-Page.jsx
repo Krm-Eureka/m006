@@ -53,7 +53,7 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  { id: "currentDetail", label: "CurrentDetail", aln: "center" },
+  // { id: "currentDetail", label: "CurrentDetail", aln: "center" },
   { id: "currentMin", label: "CurrentMin", sortable: true, aln: "center" },
   { id: "currentMax", label: "CurrentMax", sortable: true, aln: "center" },
   {
@@ -63,12 +63,12 @@ const columns = [
     aln: "center",
   },
   { id: "currentJud", label: "CurrentStatus", sortable: true, aln: "center" },
-  {
-    id: "sensitivityDetail",
-    label: "SensitivityDetail",
-    sortable: true,
-    aln: "center",
-  },
+  // {
+  //   id: "sensitivityDetail",
+  //   label: "SensitivityDetail",
+  //   sortable: true,
+  //   aln: "center",
+  // },
   {
     id: "sensitivityMin",
     label: "SensitivityMin",
@@ -93,17 +93,17 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  { id: "thdDetail", label: "THD Detail", sortable: true, aln: "center" },
+  // { id: "thdDetail", label: "THD Detail", sortable: true, aln: "center" },
   { id: "thdMin", label: "THD Min", sortable: true, aln: "center" },
   { id: "thdMax", label: "THD Max", sortable: true, aln: "center" },
   { id: "thdResult", label: "THD Result", sortable: true, aln: "center" },
   { id: "thdJud", label: "THD Status", sortable: true, aln: "center" },
-  {
-    id: "frequencyDetail",
-    label: "FrequencyDetail",
-    sortable: true,
-    aln: "center",
-  },
+  // {
+  //   id: "frequencyDetail",
+  //   label: "FrequencyDetail",
+  //   sortable: true,
+  //   aln: "center",
+  // },
   {
     id: "frequencyJud",
     label: "FrequencyStatus",
