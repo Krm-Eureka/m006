@@ -35,16 +35,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const columns = [
   {
+    id: "id",
+    label: "SerialNo",
+    sortable: true,
+    aln: "center",
+  },
+  {
     id: "productionLineName",
     label: "Production",
     sortable: true,
     aln: "center",
   },
   {
+    id: "modelType",
+    label: "Model",
+    sortable: true,
+    aln: "center",
+  },
+  {
+    id: "tracReporJudgementtResult",
+    label: "TotalJud",
+    aln: "center",
+    sortable: true,
+  },
+  {
     id: "serialCode",
-    label: "SerialNumber",
+    label: "LaserMarking",
     sortable: true,
     w: 340,
+    aln: "center",
+  },
+  {
+    id: "qrCode",
+    label: "QrCode",
+    sortable: true,
+    w: 340,
+    aln: "center",
+  },
+  {
+    id: "qrJudgement",
+    label: "QrJud",
+    sortable: true,
     aln: "center",
   },
   {
@@ -54,11 +85,11 @@ const columns = [
     aln: "center",
   },
   // { id: "currentDetail", label: "CurrentDetail", aln: "center" },
-  { id: "currentMin", label: "CurrentMin", sortable: true, aln: "center" },
-  { id: "currentMax", label: "CurrentMax", sortable: true, aln: "center" },
+  { id: "currentMin", label: "CurrentMin(mA)", sortable: true, aln: "center" },
+  { id: "currentMax", label: "CurrentMax(mA)", sortable: true, aln: "center" },
   {
     id: "currentMeasured",
-    label: "currentResult",
+    label: "currentResult(mA)",
     sortable: true,
     aln: "center",
   },
@@ -124,12 +155,7 @@ const columns = [
     sortable: true,
   },
   { id: "qrStatus", label: "QrStatus", w: 100, aln: "center", sortable: true },
-  {
-    id: "tracReporJudgementtResult",
-    label: "Judgement",
-    aln: "center",
-    sortable: true,
-  },
+
   {
     id: "creationDate",
     label: "CreateDate",
@@ -195,9 +221,9 @@ const TraceabilityReport = () => {
     if (value === 3) return "red";
     return "inherit";
   };
-  // const handleSearchChange = (event) => {
-  //   setSearchTerm(event.target.value);
-  // };
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleFromDateChange = (event) => {
     setFromDate(event.target.value);
@@ -298,7 +324,7 @@ const TraceabilityReport = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
-
+  // handleSearchChange
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -335,8 +361,8 @@ const TraceabilityReport = () => {
                   id="serialNumber"
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
                   placeholder="Serial Number..."
-                  value={serialNumber}
-                  onChange={(e) => setSerialNumber(e.target.value)}
+                  value={searchTerm}
+                  onChange={handleSearchChange}
                 />
               </>
             ) : (
