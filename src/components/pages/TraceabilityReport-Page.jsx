@@ -274,48 +274,39 @@ const TraceabilityReport = () => {
   });
 
   const sortedRows = sortRows(filteredRows, order, orderBy);
-
   const exportToCSV = () => {
     const headers = columns.map((column) => column.label).join(",");
-    const csvRows = sortedRows.map((row) => {
+    const csvRows = rows.map((row) => {
       return columns
         .map((column) => {
-          const value = row[column.id];
-
+          let value = row[column.id];
+  
+          if (column.id === "lastUpdateDate" || column.id === "creationDate") {
+            value = formatDateTime(value); 
+          }
+          if (column.id === "currentJud" || column.id.includes("Jud") || column.id.includes("Status")) {
+            return column.id.includes('Jud') || column.id.includes('Status') ? mapStatus(value) : value;
+          }
+         
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
-            : value;
+            : value || ""; 
         })
         .join(",");
     });
-
-    const fromData = new Date(fromDate);
-    const toData = new Date(toDate);
+  
     const today = new Date();
     const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
       today.getMonth() + 1
     ).padStart(2, "0")}-${today.getFullYear()}`;
-    const formattedFromDate = `${String(fromData.getDate()).padStart(
-      2,
-      "0"
-    )}-${String(fromData.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${fromData.getFullYear()}`;
-    const formattedToDate = `${String(toData.getDate()).padStart(
-      2,
-      "0"
-    )}-${String(toData.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${toData.getFullYear()}`;
-
+  
     const csvContent = [
-      `DATE : ${formattedFromDate} To ${formattedToDate}`,
+      `DATE : ${fromDate} To ${toDate}`,
       "",
       headers,
       ...csvRows,
     ].join("\n");
+    
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -324,6 +315,57 @@ const TraceabilityReport = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
+  
+  
+  // const exportToCSV = () => {
+  //   const headers = columns.map((column) => column.label).join(",");
+  //   const csvRows = sortedRows.map((row) => {
+  //     return columns
+  //       .map((column) => {
+  //         const value = row[column.id];
+
+  //         return typeof value === "string"
+  //           ? `"${value.replace(/"/g, '""')}"`
+  //           : value;
+  //       })
+  //       .join(",");
+  //   });
+
+  //   const fromData = new Date(fromDate);
+  //   const toData = new Date(toDate);
+  //   const today = new Date();
+  //   const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
+  //     today.getMonth() + 1
+  //   ).padStart(2, "0")}-${today.getFullYear()}`;
+  //   const formattedFromDate = `${String(fromData.getDate()).padStart(
+  //     2,
+  //     "0"
+  //   )}-${String(fromData.getMonth() + 1).padStart(
+  //     2,
+  //     "0"
+  //   )}-${fromData.getFullYear()}`;
+  //   const formattedToDate = `${String(toData.getDate()).padStart(
+  //     2,
+  //     "0"
+  //   )}-${String(toData.getMonth() + 1).padStart(
+  //     2,
+  //     "0"
+  //   )}-${toData.getFullYear()}`;
+
+  //   const csvContent = [
+  //     `DATE : ${formattedFromDate} To ${formattedToDate}`,
+  //     "",
+  //     headers,
+  //     ...csvRows,
+  //   ].join("\n");
+  //   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  //   const url = URL.createObjectURL(blob);
+  //   const a = document.createElement("a");
+  //   a.href = url;
+  //   a.download = `TRC_report_${formattedDate}.csv`;
+  //   a.click();
+  //   URL.revokeObjectURL(url);
+  // };
   // handleSearchChange
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
