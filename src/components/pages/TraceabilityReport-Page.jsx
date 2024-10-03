@@ -85,8 +85,20 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  { id: "currentMin", label: "Current Min(mA)", sortable: true,w: 180, aln: "center" },
-  { id: "currentMax", label: "Current Max(mA)", sortable: true,w: 180, aln: "center" },
+  {
+    id: "currentMin",
+    label: "Current Min(mA)",
+    sortable: true,
+    w: 180,
+    aln: "center",
+  },
+  {
+    id: "currentMax",
+    label: "Current Max(mA)",
+    sortable: true,
+    w: 180,
+    aln: "center",
+  },
   {
     id: "currentMeasured",
     label: "Current Measured(mA)",
@@ -287,7 +299,16 @@ const TraceabilityReport = () => {
   });
 
   const sortedRows = sortRows(filteredRows, order, orderBy);
-
+  const toFixedTwo = (value) => {
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue)) {
+      console.log(numericValue.toFixed(2));
+      return (value = numericValue.toFixed(2));
+    } else {
+      console.warn(`Cannot convert to number: ${value}`);
+      return value;
+    }
+  };
   const exportToCSV = () => {
     const headers = columns.map((column) => `"${column.label}"`).join(",");
 
@@ -298,6 +319,9 @@ const TraceabilityReport = () => {
 
           if (column.id === "lastUpdateDate" || column.id === "creationDate") {
             value = formatDateTimeSlash(value);
+          }
+          if (column.id === "sensitivityResult" || column.id === "thdResult") {
+            value = toFixedTwo(value);
           }
           if (
             column.id === "currentJud" ||
@@ -486,7 +510,7 @@ const TraceabilityReport = () => {
                     <StyledTableCell
                       key={column.id}
                       sx={{ minWidth: column.w }}
-                      align={column.aln || 'center'}
+                      align={column.aln || "center"}
                       sortDirection={orderBy === column.id ? order : false}
                     >
                       {column.sortable ? (
@@ -533,6 +557,9 @@ const TraceabilityReport = () => {
                           {column.id === "lastUpdateDate" ||
                           column.id === "creationDate"
                             ? formatDateTimeSlash(row[column.id])
+                            : column.id === "sensitivityResult" ||
+                              column.id === "thdResult"
+                            ? toFixedTwo(row[column.id])
                             : mapStatus(row[column.id])}
                         </StyledTableCell>
                       ))}
