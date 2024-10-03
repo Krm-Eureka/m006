@@ -85,8 +85,8 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  { id: "currentMin", label: "Current Min(mA)", sortable: true, aln: "center" },
-  { id: "currentMax", label: "Current Max(mA)", sortable: true, aln: "center" },
+  { id: "currentMin", label: "Current Min(mA)", sortable: true,w: 180, aln: "center" },
+  { id: "currentMax", label: "Current Max(mA)", sortable: true,w: 180, aln: "center" },
   {
     id: "currentMeasured",
     label: "Current Measured(mA)",
@@ -486,7 +486,7 @@ const TraceabilityReport = () => {
                     <StyledTableCell
                       key={column.id}
                       sx={{ minWidth: column.w }}
-                      align={column.aln || "left"}
+                      align={column.aln || 'center'}
                       sortDirection={orderBy === column.id ? order : false}
                     >
                       {column.sortable ? (
