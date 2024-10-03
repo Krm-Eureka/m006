@@ -270,7 +270,7 @@ const TraceabilityStatus = () => {
                     <TableBody>
                       {sortedStatus.slice(0*5,0*5+5).map((row) => (
                         <TableRow
-                          key={row.SerialCode}
+                          key={row.id}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
