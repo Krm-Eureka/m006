@@ -244,6 +244,7 @@ const TraceabilityReport = () => {
   };
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    setSerialNumber(event.target.value);
   };
 
   const handleFromDateChange = (event) => {

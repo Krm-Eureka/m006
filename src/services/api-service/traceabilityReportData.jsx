@@ -14,7 +14,6 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
     
     try {
       const res = await endpoint.get(url);
-      // console.log(res.data.data);
       console.log(res.data.data);
       SET(res.data.data);
     } catch (error) {
