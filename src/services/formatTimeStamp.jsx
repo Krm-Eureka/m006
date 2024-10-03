@@ -84,3 +84,24 @@ export function formatDateTime(dateTimeString) {
     const time = timeFormatter.format(date);
     return `${day}-${month}-${year} ${time}`;
 }
+export function formatDateTimeSlash(dateTimeString) {
+    if (!dateTimeString) {
+        return "Invalid Date";
+    }
+    const date = new Date(dateTimeString);
+    if (isNaN(date.getTime())) {
+        return "Invalid Date";
+    }
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+    
+    const time = timeFormatter.format(date);
+    return `${year}/${month}/${day} ${time}`;
+}

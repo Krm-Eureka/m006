@@ -11,7 +11,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
 import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
-import { formatDateTime } from "../../services/formatTimeStamp";
+import {
+  formatDateTime,
+  formatDateTimeSlash,
+} from "../../services/formatTimeStamp";
 import { TableSortLabel } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -36,13 +39,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const columns = [
   {
     id: "id",
-    label: "SerialNo",
-    sortable: true,
-    aln: "center",
-  },
-  {
-    id: "productionLineName",
-    label: "Production",
+    label: "Serial No",
     sortable: true,
     aln: "center",
   },
@@ -53,95 +50,114 @@ const columns = [
     aln: "center",
   },
   {
+    id: "lastUpdateDate",
+    label: "Date & Time",
+    w: 250,
+    sortable: true,
+    aln: "center",
+  },
+  {
     id: "tracReporJudgementtResult",
-    label: "TotalJud",
+    label: "Total Jud",
+    w: 200,
     aln: "center",
     sortable: true,
   },
+
   {
     id: "serialCode",
-    label: "LaserMarking",
+    label: "Laser Marking",
     sortable: true,
     w: 340,
     aln: "center",
   },
   {
     id: "qrCode",
-    label: "QrCode",
+    label: "Qr Code",
     sortable: true,
     w: 340,
     aln: "center",
   },
   {
     id: "qrJudgement",
-    label: "QrJud",
+    label: "Qr Code Jud",
+    w: 200,
     sortable: true,
     aln: "center",
   },
-  {
-    id: "tracReportStatus",
-    label: "TraceabilityStatus",
-    sortable: true,
-    aln: "center",
-  },
-  // { id: "currentDetail", label: "CurrentDetail", aln: "center" },
-  { id: "currentMin", label: "CurrentMin(mA)", sortable: true, aln: "center" },
-  { id: "currentMax", label: "CurrentMax(mA)", sortable: true, aln: "center" },
+  { id: "currentMin", label: "Current Min(mA)", sortable: true, aln: "center" },
+  { id: "currentMax", label: "Current Max(mA)", sortable: true, aln: "center" },
   {
     id: "currentMeasured",
-    label: "currentResult(mA)",
+    label: "Current Measured(mA)",
+    w: 250,
     sortable: true,
     aln: "center",
   },
-  { id: "currentJud", label: "CurrentStatus", sortable: true, aln: "center" },
-  // {
-  //   id: "sensitivityDetail",
-  //   label: "SensitivityDetail",
-  //   sortable: true,
-  //   aln: "center",
-  // },
+  {
+    id: "currentJud",
+    label: "Current Jud",
+    sortable: true,
+    w: 200,
+    aln: "center",
+  },
   {
     id: "sensitivityMin",
-    label: "SensitivityMin",
+    label: "Sensitivity Min(dBV/Pa)",
+    w: 250,
     sortable: true,
     aln: "center",
   },
   {
     id: "sensitivityMax",
-    label: "SensitivityMax",
+    label: "Sensitivity Max(dBV/Pa)",
+    w: 250,
     sortable: true,
     aln: "center",
   },
   {
     id: "sensitivityResult",
-    label: "SensitivityResult",
+    label: "Sensitivity Measured(dBV/Pa)",
+    w: 250,
     sortable: true,
     aln: "center",
   },
   {
     id: "sensitivityJud",
-    label: "SensitivityStatus",
+    label: "Sensitivity Jud",
+    w: 200,
     sortable: true,
     aln: "center",
   },
-  // { id: "thdDetail", label: "THD Detail", sortable: true, aln: "center" },
-  { id: "thdMin", label: "THD Min", sortable: true, aln: "center" },
-  { id: "thdMax", label: "THD Max", sortable: true, aln: "center" },
-  { id: "thdResult", label: "THD Result", sortable: true, aln: "center" },
-  { id: "thdJud", label: "THD Status", sortable: true, aln: "center" },
-  // {
-  //   id: "frequencyDetail",
-  //   label: "FrequencyDetail",
-  //   sortable: true,
-  //   aln: "center",
-  // },
+  { id: "thdMin", label: "THD Min(%)", sortable: true, w: 150, aln: "center" },
+  { id: "thdMax", label: "THD Max(%)", sortable: true, w: 150, aln: "center" },
+  {
+    id: "thdResult",
+    label: "THD Measured(%)",
+    sortable: true,
+    w: 200,
+    aln: "center",
+  },
+  { id: "thdJud", label: "THD Jud", sortable: true, w: 200, aln: "center" },
   {
     id: "frequencyJud",
-    label: "FrequencyStatus",
+    label: "Frequency Jud",
+    w: 200,
     sortable: true,
     aln: "center",
   },
-  // { id: "SensitivityJud", label: "SensitivityJudgment", sortable: true },
+  {
+    id: "productionLineName",
+    label: "Production",
+    sortable: true,
+    aln: "center",
+  },
+
+  {
+    id: "tracReportStatus",
+    label: "TraceabilityStatus",
+    aln: "center",
+  },
   {
     id: "acousticStatus",
     label: "AcousticStatus",
@@ -158,15 +174,8 @@ const columns = [
 
   {
     id: "creationDate",
-    label: "CreateDate",
-    w: 100,
-    sortable: true,
-    aln: "center",
-  },
-  {
-    id: "lastUpdateDate",
-    label: "LastUpdateDate",
-    w: 100,
+    label: "Create Date",
+    w: 250,
     sortable: true,
     aln: "center",
   },
@@ -209,16 +218,16 @@ const TraceabilityReport = () => {
     });
   };
   const mapStatus = (value) => {
-    if (value === 0 || value === 1) return "NOK";
+    if (value === 0 || value === 1) return "FAIL";
     if (value === 2) return "PASS";
     if (value === 3) return "FAIL";
     return value;
   };
-  
+
   const getColor = (value) => {
-    if (value === 0 || value === 1) return "red";
-    if (value === 2) return "green";
-    if (value === 3) return "red";
+    if (value === 0 || value === 1 || value === 'FAIL') return "red";
+    if (value === 2 || value === 'PASS') return "green";
+    if (value === 3 || value === 'FAIL') return "red";
     return "inherit";
   };
   const handleSearchChange = (event) => {
@@ -275,22 +284,31 @@ const TraceabilityReport = () => {
 
   const sortedRows = sortRows(filteredRows, order, orderBy);
   const exportToCSV = () => {
-    const headers = columns.map((column) => column.label).join(",");
+    const headers = columns
+      .map((column) => `"${column.label}"`) 
+      .join(",");
+  
     const csvRows = rows.map((row) => {
       return columns
         .map((column) => {
           let value = row[column.id];
   
           if (column.id === "lastUpdateDate" || column.id === "creationDate") {
-            value = formatDateTime(value); 
+            value = formatDateTimeSlash(value);
           }
-          if (column.id === "currentJud" || column.id.includes("Jud") || column.id.includes("Status")) {
-            return column.id.includes('Jud') || column.id.includes('Status') ? mapStatus(value) : value;
+          if (
+            column.id === "currentJud" ||
+            column.id.includes("Jud") ||
+            column.id.includes("Status")
+          ) {
+            return column.id.includes("Jud") || column.id.includes("Status")
+              ? mapStatus(value)
+              : value;
           }
-         
+  
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
-            : value || ""; 
+            : value || "";
         })
         .join(",");
     });
@@ -301,12 +319,14 @@ const TraceabilityReport = () => {
     ).padStart(2, "0")}-${today.getFullYear()}`;
   
     const csvContent = [
-      `DATE : ${fromDate} To ${toDate}`,
+      `"Traceability Report"`,
+      `"Date From : ${fromDate}" `,
+      `"Date To   : ${toDate}"`,
       "",
       headers,
       ...csvRows,
     ].join("\n");
-    
+  
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -316,57 +336,6 @@ const TraceabilityReport = () => {
     URL.revokeObjectURL(url);
   };
   
-  
-  // const exportToCSV = () => {
-  //   const headers = columns.map((column) => column.label).join(",");
-  //   const csvRows = sortedRows.map((row) => {
-  //     return columns
-  //       .map((column) => {
-  //         const value = row[column.id];
-
-  //         return typeof value === "string"
-  //           ? `"${value.replace(/"/g, '""')}"`
-  //           : value;
-  //       })
-  //       .join(",");
-  //   });
-
-  //   const fromData = new Date(fromDate);
-  //   const toData = new Date(toDate);
-  //   const today = new Date();
-  //   const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
-  //     today.getMonth() + 1
-  //   ).padStart(2, "0")}-${today.getFullYear()}`;
-  //   const formattedFromDate = `${String(fromData.getDate()).padStart(
-  //     2,
-  //     "0"
-  //   )}-${String(fromData.getMonth() + 1).padStart(
-  //     2,
-  //     "0"
-  //   )}-${fromData.getFullYear()}`;
-  //   const formattedToDate = `${String(toData.getDate()).padStart(
-  //     2,
-  //     "0"
-  //   )}-${String(toData.getMonth() + 1).padStart(
-  //     2,
-  //     "0"
-  //   )}-${toData.getFullYear()}`;
-
-  //   const csvContent = [
-  //     `DATE : ${formattedFromDate} To ${formattedToDate}`,
-  //     "",
-  //     headers,
-  //     ...csvRows,
-  //   ].join("\n");
-  //   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  //   const url = URL.createObjectURL(blob);
-  //   const a = document.createElement("a");
-  //   a.href = url;
-  //   a.download = `TRC_report_${formattedDate}.csv`;
-  //   a.click();
-  //   URL.revokeObjectURL(url);
-  // };
-  // handleSearchChange
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -375,12 +344,17 @@ const TraceabilityReport = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  {error && (
-    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong className="font-bold">Error: </strong>
-      <span className="block sm:inline">{error.message}</span>
-    </div>
-  )}
+  {
+    error && (
+      <div
+        className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <strong className="font-bold">Error: </strong>
+        <span className="block sm:inline">{error.message}</span>
+      </div>
+    );
+  }
   return (
     <>
       <HeaderLayout page="Traceability Report" />
@@ -518,15 +492,31 @@ const TraceabilityReport = () => {
                   .map((row) => (
                     <StyledTableRow key={row.id}>
                       {columns.map((column) => (
-                       <StyledTableCell
-                       key={column.id}
-                       align={column.aln || "left"}
-                       style={{ color: getColor(row[column.id]) }}
-                     >
-                       {column.id === "lastUpdateDate" || column.id === "creationDate"
-                         ? formatDateTime(row[column.id])
-                         : mapStatus(row[column.id])}
-                     </StyledTableCell>
+                        <StyledTableCell
+                          key={column.id}
+                          align={column.aln || "left"}
+                          style={{
+                            color:
+                              column.id === "thdJud" ||
+                              column.id === "frequencyJud" ||
+                              column.id === "sensitivityJud" ||
+                              column.id === "laserMarkStatus" ||
+                              column.id === "creationDate" ||
+                              column.id === "qrJudgement" ||
+                              column.id === "currentJud" ||
+                              column.id === "tracReportStatus" ||
+                              column.id === "tracReporJudgementtResult" ||
+                              column.id === "qrStatus" ||
+                              column.id === "acousticStatus"
+                                ? getColor(row[column.id])
+                                : "inherit",
+                          }}
+                        >
+                          {column.id === "lastUpdateDate" ||
+                          column.id === "creationDate"
+                            ? formatDateTimeSlash(row[column.id])
+                            : mapStatus(row[column.id])}
+                        </StyledTableCell>
                       ))}
                     </StyledTableRow>
                   ))}
