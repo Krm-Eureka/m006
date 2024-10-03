@@ -146,39 +146,39 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  {
-    id: "productionLineName",
-    label: "Production",
-    sortable: true,
-    aln: "center",
-  },
+  // {
+  //   id: "productionLineName",
+  //   label: "Production",
+  //   sortable: true,
+  //   aln: "center",
+  // },
 
-  {
-    id: "tracReportStatus",
-    label: "TraceabilityStatus",
-    aln: "center",
-  },
-  {
-    id: "acousticStatus",
-    label: "AcousticStatus",
-    aln: "center",
-    sortable: true,
-  },
-  {
-    id: "laserMarkStatus",
-    label: "LaserMarkStatus",
-    aln: "center",
-    sortable: true,
-  },
-  { id: "qrStatus", label: "QrStatus", w: 100, aln: "center", sortable: true },
+  // {
+  //   id: "tracReportStatus",
+  //   label: "TraceabilityStatus",
+  //   aln: "center",
+  // },
+  // {
+  //   id: "acousticStatus",
+  //   label: "AcousticStatus",
+  //   aln: "center",
+  //   sortable: true,
+  // },
+  // {
+  //   id: "laserMarkStatus",
+  //   label: "LaserMarkStatus",
+  //   aln: "center",
+  //   sortable: true,
+  // },
+  // { id: "qrStatus", label: "QrStatus", w: 100, aln: "center", sortable: true },
 
-  {
-    id: "creationDate",
-    label: "Create Date",
-    w: 250,
-    sortable: true,
-    aln: "center",
-  },
+  // {
+  //   id: "creationDate",
+  //   label: "Create Date",
+  //   w: 250,
+  //   sortable: true,
+  //   aln: "center",
+  // },
 ];
 
 const TraceabilityReport = () => {
@@ -225,9 +225,9 @@ const TraceabilityReport = () => {
   };
 
   const getColor = (value) => {
-    if (value === 0 || value === 1 || value === 'FAIL') return "red";
-    if (value === 2 || value === 'PASS') return "green";
-    if (value === 3 || value === 'FAIL') return "red";
+    if (value === 0 || value === 1 || value === "FAIL") return "red";
+    if (value === 2 || value === "PASS") return "green";
+    if (value === 3 || value === "FAIL") return "red";
     return "inherit";
   };
   const handleSearchChange = (event) => {
@@ -243,6 +243,7 @@ const TraceabilityReport = () => {
   };
 
   const handleClear = () => {
+    setRows([]);
     setSearchTerm("");
     setFromDate("");
     setToDate("");
@@ -272,27 +273,29 @@ const TraceabilityReport = () => {
     if (to) {
       to.setHours(23, 59, 59, 999);
     }
+
     const isDateInRange = (!from || rowDate >= from) && (!to || rowDate <= to);
     const isSearchMatch =
       searchTerm === "" ||
       Object.values(row).some((value) =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
       );
+    const isSerialMatch =
+      !serialNumber || row.serialCode.includes(serialNumber);
 
-    return isDateInRange && isSearchMatch;
+    return isDateInRange && isSearchMatch && isSerialMatch;
   });
 
   const sortedRows = sortRows(filteredRows, order, orderBy);
+
   const exportToCSV = () => {
-    const headers = columns
-      .map((column) => `"${column.label}"`) 
-      .join(",");
-  
-    const csvRows = rows.map((row) => {
+    const headers = columns.map((column) => `"${column.label}"`).join(",");
+
+    const csvRows = filteredRows.map((row) => {
       return columns
         .map((column) => {
           let value = row[column.id];
-  
+
           if (column.id === "lastUpdateDate" || column.id === "creationDate") {
             value = formatDateTimeSlash(value);
           }
@@ -305,19 +308,30 @@ const TraceabilityReport = () => {
               ? mapStatus(value)
               : value;
           }
-  
+
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
             : value || "";
         })
         .join(",");
     });
-  
+
     const today = new Date();
-    const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
-      today.getMonth() + 1
-    ).padStart(2, "0")}-${today.getFullYear()}`;
-  
+
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const year = today.getFullYear();
+
+    let hours = today.getHours();
+    const minutes = String(today.getMinutes()).padStart(2, "0");
+    const seconds = String(today.getSeconds()).padStart(2, "0");
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? String(hours).padStart(2, "0") : "12";
+
+    const formattedDate = `${day}_${month}_${year}_${hours}_${minutes}_${seconds} ${ampm}`;
+
     const csvContent = [
       `"Traceability Report"`,
       `"Date From : ${fromDate}" `,
@@ -326,16 +340,15 @@ const TraceabilityReport = () => {
       headers,
       ...csvRows,
     ].join("\n");
-  
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `TRC_report_${formattedDate}.csv`;
+    a.download = `TraceabilityReport_${formattedDate}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
-  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -420,23 +433,28 @@ const TraceabilityReport = () => {
             >
               CLEAR
             </button>
-            <button
-              onClick={exportToCSV}
-              className={`mx-2 my-1 py-1 px-2 ${
-                !searchTerm ? "hidden" : ""
-              } bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
-            >
-              EXPORT
-            </button>
-
-            <button
-              onClick={exportToCSV}
-              className={`mx-2 my-1 py-1 px-2 ${
-                searchTerm ? "hidden" : ""
-              } bg-blue-500 hover:bg-blue-600 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
-            >
-              EXPORT ALL
-            </button>
+            {rows && rows.length > 0 ? (
+              <>
+                <button
+                  onClick={exportToCSV}
+                  className={`mx-2 my-1 py-1 px-2 ${
+                    !searchTerm ? "hidden" : ""
+                  } bg-blue-500 hover:bg-blue-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
+                >
+                  EXPORT
+                </button>
+                <button
+                  onClick={exportToCSV}
+                  className={`mx-2 my-1 py-1 px-2 ${
+                    searchTerm ? "hidden" : ""
+                  } bg-blue-500 hover:bg-blue-600 text-gray-900 hover:text-white h-fit w-fit border rounded-btn`}
+                >
+                  EXPORT ALL
+                </button>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
 
