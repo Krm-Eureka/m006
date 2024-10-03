@@ -14,17 +14,23 @@ import {
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 
-// function createLstStatus(SerialCode, Result) {
-//   return { SerialCode, Result };
-// }
+function createLstStatus(id, SerialCode, Result) {
+  return { id, SerialCode, Result };
+}
 
-// const lstStatus = [
-//   createLstStatus("EOLT-A-382315929117", "PASS"),
-//   createLstStatus("EOLT-A-120885838401", "PASS"),
-//   createLstStatus("EOLT-A-554779049699", "PASS"),
-//   createLstStatus("EOLT-A-37003047849", "Fail"),
-//   createLstStatus("EOLT-A-529520075944", "PASS"),
-// ];
+const lstStatus = [
+  createLstStatus(1, "EOLT-A-382315929117", "PASS"),
+  createLstStatus(2, "EOLT-A-120885838401", "PASS"),
+  createLstStatus(3, "EOLT-A-554779049699", "PASS"),
+  createLstStatus(4, "EOLT-A-37003047849", "Fail"),
+  createLstStatus(5, "EOLT-A-529520075944", "PASS"),
+  createLstStatus(6, "EOLT-A-554779049699", "PASS"),
+  createLstStatus(7, "EOLT-A-37003047849", "Fail"),
+  createLstStatus(8, "EOLT-A-529520075944", "PASS"),
+  createLstStatus(9, "EOLT-A-554779049699", "PASS"),
+  createLstStatus(10, "EOLT-A-37003047849", "Fail"),
+  createLstStatus(11, "EOLT-A-529520075944", "PASS"),
+];
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
   return {
@@ -90,7 +96,7 @@ const TraceabilityStatus = () => {
   }, [LstActLog]);
 
   console.log(ActDetailById);
-
+  const sortedStatus = [...lstStatus].sort((a, b) => b.id - a.id);
   return (
     <>
       <HeaderLayout page="Traceability Status" />
@@ -150,7 +156,7 @@ const TraceabilityStatus = () => {
               <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
-                    sx={{ width: 1000, overflowX: "auto" }}
+                    sx={{ width: 800, overflowX: "auto" }}
                     aria-label="simple table"
                   >
                     <TableHead>
@@ -237,7 +243,7 @@ const TraceabilityStatus = () => {
               </div>
             </div>
           </div>
-          {/* <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+          <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
@@ -245,31 +251,35 @@ const TraceabilityStatus = () => {
               <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
-                    sx={{ minWidth: 400, maxWidth: 700, overflowX: "auto" }}
+                    sx={{ minWidth: 500, maxWidth: 700, overflowX: "auto" }}
                     aria-label="simple table"
                   >
                     <TableHead>
-                      <TableRow>
-                        <TableCell align="left">
+                      <TableRow >
+                        <TableCell align="center">
                           <p className="font-semibold">Serial_Code</p>
                         </TableCell>
                         <TableCell align="center">
                           <p className="font-semibold">Result</p>
                         </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">ID</p>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {lstStatus.map((row) => (
+                      {sortedStatus.slice(0*5,0*5+5).map((row) => (
                         <TableRow
                           key={row.SerialCode}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
+                          
                         >
-                          <TableCell component="th" scope="row">
+                          <TableCell component="th" scope="row" align={"left"}>
                             <p className="font-semibold">{row.SerialCode}</p>
                           </TableCell>
-                          <TableCell align="left">
+                          <TableCell align="center">
                             {row.Result === "Fail" ? (
                               <p className="text-red-700 font-semibold">
                                 {row.Result}
@@ -280,6 +290,9 @@ const TraceabilityStatus = () => {
                               </p>
                             )}
                           </TableCell>
+                          <TableCell align="center">
+                            <p className="font-semibold">{row.id}</p>
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -287,7 +300,7 @@ const TraceabilityStatus = () => {
                 </TableContainer>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </>
