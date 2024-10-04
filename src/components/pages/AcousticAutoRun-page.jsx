@@ -15,9 +15,6 @@ import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 
-// function createLstStatus(id, SerialCode, Result) {
-//   return { id, SerialCode, Result };
-// }
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
   return {
@@ -90,8 +87,8 @@ const TraceabilityStatus = () => {
     }
   }, [LstActLog]);
   const mapStatus = (value) => {
-    if (value === 0) return "EXCEPTION";
-    if (value === 1) return "Testing";
+    if (value === 0) return "FAIL";
+    if (value === 1) return "TESTING";
     if (value === 2) return "PASS";
     if (value === 3) return "FAIL";
     return value;
