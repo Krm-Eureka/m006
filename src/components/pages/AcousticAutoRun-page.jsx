@@ -33,6 +33,10 @@ const TraceabilityStatus = () => {
   const [LstStatusLog, setLstStatusLog] = useState(null);
   const [ActDetailById, setActDetailById] = useState(null);
   const [smrData, setSmrData] = useState([]);
+  const today = new Date();
+  const yesterday = new Date(today.getTime() - 86400000)
+  const startDate = today.toISOString().split('T')[0];
+  const endDate = yesterday.toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,8 +44,8 @@ const TraceabilityStatus = () => {
         await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
         await getTraceabilityDataWithDate(
           "1",
-          "2024-10-01",
-          "2024-10-03",
+          startDate,
+          endDate,
           null,
           setLstStatusLog
         );
