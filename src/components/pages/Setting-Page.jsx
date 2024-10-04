@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import HeaderLayout from "../Header-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { formatDateForSetting } from "../../services/formatTimeStamp";
-import CardSetting from "../card-setting";
+import {
+  formatDateForSetting,
+  formatDate,
+} from "../../services/formatTimeStamp";
+// import CardSetting from "../card-setting";
 import {
   GetMasterSetting,
-  PutDMCSetting,
-  PutParameterSetting,
+  PutSetting,
 } from "../../services/api-service/parameterSetting";
 import AuthLogin from "../../services/auth-sv";
 import Loading from "../loadingComponent";
@@ -20,8 +22,9 @@ const MasterSetting = () => {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [minLimitCurrent, setMinLimitCurrent] = useState("");
-  const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
+  // const [minLimitCurrent, setMinLimitCurrent] = useState("");
+  // const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
+  // const [productionLineName, setProductionLineName] = useState("");
   // const [minLimitSensitivity, setMinLimitSensitivity] = useState("");
   // const [maxLimitSensitivity, setMaxLimitSensitivity] = useState("");
   // const [minLimitTHD, setMinLimitTHD] = useState("");
@@ -29,12 +32,17 @@ const MasterSetting = () => {
   // const [minLimitFrequency, setMinLimitFrequency] = useState("");
   // const [maxLimitFrequency, setMaxLimitFrequency] = useState("");
   const [masterData, setMasterData] = useState({
+    id: 0,
+    ProductionLineName: "",
+    manufacturingDateFormat: "",
     plmReference: "",
     ebomReference: "",
-    // manufacturingDateFormat,
-    lastRunningDate:"",
+    // lastRunningDate: "",
     eoltRefCode: "",
-    serialNumber: "",
+    runningNo: "",
+    runningMin: "",
+    runningMax: "",
+    enableFlag: true,
   });
 
   // const correctPassword = "123456";
@@ -66,8 +74,7 @@ const MasterSetting = () => {
     };
 
     fetchData();
-    }, [isAuthenticated]);
-
+  }, [isAuthenticated]);
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -81,6 +88,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
+    // setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -97,6 +105,7 @@ const MasterSetting = () => {
           title: "Authorization Fail",
         });
         navigate("/Console/Content_ACT/AutoRun");
+        // setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -104,7 +113,7 @@ const MasterSetting = () => {
         icon: "error",
         title: "Authorization Fail",
       });
-      navigate("/Console/Content_ACT/AutoRun");
+      // navigate("/Console/Content_ACT/AutoRun");
       // setIsAuthenticated(true);
     }
   };
@@ -119,31 +128,51 @@ const MasterSetting = () => {
       setLoading(false);
     }
   };
-
-  const handleDMCUpdate = async () => {
+  const handleParameterUpdate = async () => {
     const {
+      id,
+      ProductionLineName,
       plmReference,
       ebomReference,
-      // manufacturingDateFormat,
-      lastRunningDate,
+      // lastRunningDate,
+      manufacturingDateFormat,
       eoltRefCode,
+      runningMin,
+      runningMax,
+      enableFlag,
     } = masterData;
+    // console.log(lastRunningDate);
+    const date = new Date(manufacturingDateFormat);
+    // const date = new Date(lastRunningDate);
+    const LastDate = date.toISOString();
     if (
+      (id,
+      ProductionLineName,
       plmReference &&
-      ebomReference &&
-      // manufacturingDateFormat &&
-      lastRunningDate &&
-      eoltRefCode
+        ebomReference &&
+        manufacturingDateFormat &&
+        // lastRunningDate &&
+        LastDate &&
+        eoltRefCode &&
+        runningMin &&
+        runningMax &&
+        enableFlag)
     ) {
       const data = {
+        id,
+        ProductionLineName: "LINE A",
         plmReference,
         ebomReference,
-        // manufacturingDateFormat,
-        lastRunningDate,
+        manufacturingDateFormat: formatDateForSetting(LastDate),
+        // lastRunningDate: LastDate,
         eoltRefCode,
+        runningMin,
+        runningMax,
+        enableFlag,
       };
       try {
-        await PutDMCSetting("1", "1", data);
+        console.log("Data to be sent:", data);
+        await PutSetting("1", "1", data);
         Toast.fire({
           icon: "success",
           title: "DMC settings updated successfully!",
@@ -152,7 +181,7 @@ const MasterSetting = () => {
         Toast.fire({
           icon: "error",
           title: "Failed to update DMC settings.",
-          error,
+          text: error.message,
         });
       }
     } else {
@@ -162,32 +191,7 @@ const MasterSetting = () => {
       });
     }
   };
-  const handleUpdateParam = async () => {
-    const data = {
-      runningMin: minLimitCurrent,
-      runningMax: maxLimitCurrent,
-    };
-    if ((minLimitCurrent, maxLimitCurrent)) {
-      try {
-        await PutParameterSetting("1", "1", data);
-        Toast.fire({
-          icon: "success",
-          title: "DMC settings updated successfully!",
-        });
-      } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title: "Failed to update DMC settings.",
-          error,
-        });
-      }
-    } else {
-      Toast.fire({
-        icon: "warning",
-        title: "Please fill in all required Parameter fields.",
-      });
-    }
-  };
+
   if (!isAuthenticated) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -256,25 +260,17 @@ const MasterSetting = () => {
                         })),
                     },
                     {
-                      label: "Manufacturing Date",
+                      label: "Last Running Date",
                       type: "date",
-                      value: formatDateForSetting(masterData.lastRunningDate),
+                      value: masterData.manufacturingDateFormat
+                        ? masterData.manufacturingDateFormat
+                        : "",
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          lastRunningDate: value,
+                          manufacturingDateFormat: value,
                         })),
                     },
-                    // {
-                    //   label: "Manufacturing Date",
-                    //   type: "date",
-                    //   value: masterData.manufacturingDateFormat,
-                    //   setter: (value) =>
-                    //     setMasterData((prev) => ({
-                    //       ...prev,
-                    //       manufacturingDateFormat: value,
-                    //     })),
-                    // },
                     {
                       label: "EOLT Reference A/B",
                       type: "text",
@@ -287,9 +283,15 @@ const MasterSetting = () => {
                     },
                     {
                       label: "Serial Number",
-                      value: masterData.serialNumber,
-                      setter: () => {},
-                      disabled: true,
+                      value: masterData.runningNo
+                        ? String(masterData.runningNo).padStart(5, "0")
+                        : "",
+                      setter: (value) =>
+                        setMasterData((prev) => ({
+                          ...prev,
+                          runningNo: value,
+                        })),
+                      // disabled: true,
                     },
                   ].map(({ label, value, setter, type }) => (
                     <div className="mr-4 mb-2" key={label}>
@@ -300,7 +302,6 @@ const MasterSetting = () => {
                         disabled={!modify || label === "Serial Number"}
                         required={label !== "Serial Number"}
                         type={type}
-                        // value={value}
                         value={loading ? "" : value}
                         className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         placeholder={label}
@@ -314,105 +315,129 @@ const MasterSetting = () => {
                 <p className="text-xs pl-4 pb-4 font-bold">
                   {masterData.plmReference &&
                   masterData.ebomReference &&
-                   // masterData.manufacturingDateFormat &&
-                   masterData.lastRunningDate &&
+                  masterData.manufacturingDateFormat &&
                   masterData.eoltRefCode
-                    ? // &&
-                      // serialNumber
-                      `Example : ${masterData.plmReference}-${
+                    ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
+                      }-${formatDateForSetting(masterData.manufacturingDateFormat)}-${
                         masterData.eoltRefCode
-                      }-*****`
+                      }-${
+                        masterData.runningNo
+                          ? String(masterData.runningNo).padStart(5, "0")
+                          : "00000"
+                      }`
                     : masterData.plmReference &&
                       masterData.ebomReference &&
-                      // masterData.manufacturingDateFormat &&
                       masterData.lastRunningDate &&
                       masterData.eoltRefCode
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
+                      }-${formatDateForSetting(masterData.manufacturingDateFormat)}-${
                         masterData.eoltRefCode
-                      }-*****`
+                      }-${
+                        masterData.runningNo
+                          ? String(masterData.runningNo).padStart(5, "0")
+                          : "00000"
+                      }`
                     : masterData.plmReference &&
                       masterData.ebomReference &&
-                       // masterData.manufacturingDateFormat &&
-                       masterData.lastRunningDate
+                      masterData.lastRunningDate
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDateForSetting(masterData.lastRunningDate)}-S-*****`
+                      }-${formatDateForSetting(masterData.manufacturingDateFormat)}-S-${
+                        masterData.runningNo
+                          ? String(masterData.runningNo).padStart(5, "0")
+                          : "00000"
+                      }`
                     : masterData.plmReference && masterData.ebomReference
-                    ? `Example : ${masterData.plmReference}-${masterData.ebomReference}-YYMMDD-S-*****`
+                    ? `Example : ${masterData.plmReference}-${
+                        masterData.ebomReference
+                      }-YYMMDD-S-${
+                        masterData.runningNo
+                          ? String(masterData.runningNo).padStart(5, "0")
+                          : "00000"
+                      }`
                     : masterData.plmReference
-                    ? `Example : ${masterData.plmReference}-yyyyyyyyyy-YYMMDD-S-*****`
-                    : `Example : xxxxxxxxxx-yyyyyyyyyy-YYMMDD-S-*****`}
+                    ? `Example : ${
+                        masterData.plmReference
+                      }-yyyyyyyyyy-YYMMDD-S-${
+                        masterData.runningNo
+                          ? String(masterData.runningNo).padStart(5, "0")
+                          : "00000"
+                      }`
+                    : `Example : xxxxxxxxxx-yyyyyyyyyy-YYMMDD-S-00000`}
                 </p>
-
-                <button
-                  onClick={handleDMCUpdate}
-                  disabled={!modify}
-                  className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
-                    !modify ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  UPDATE DMC
-                </button>
               </div>
             </div>
-            <div className="flex flex-col items-center">
-              <div className="flex flex-wrap justify-start">
-                {[
-                  {
-                    id: 0,
-                    title: "Current",
-                    minValue: minLimitCurrent,
-                    maxValue: maxLimitCurrent,
-                    setMinValue: setMinLimitCurrent,
-                    setMaxValue: setMaxLimitCurrent,
-                  },
-                  // {
-                  //   id: 1,
-                  //   title: "Sensitivity",
-                  //   minValue: minLimitSensitivity,
-                  //   maxValue: maxLimitSensitivity,
-                  //   setMinValue: setMinLimitSensitivity,
-                  //   setMaxValue: setMaxLimitSensitivity,
-                  // },
-                  // {
-                  //   id: 2,
-                  //   title: "THD",
-                  //   minValue: minLimitTHD,
-                  //   maxValue: maxLimitTHD,
-                  //   setMinValue: setMinLimitTHD,
-                  //   setMaxValue: setMaxLimitTHD,
-                  // },
-                  // {
-                  //   id: 3,
-                  //   title: "Frequency",
-                  //   minValue: minLimitFrequency,
-                  //   maxValue: maxLimitFrequency,
-                  //   setMinValue: setMinLimitFrequency,
-                  //   setMaxValue: setMaxLimitFrequency,
-                  // },
-                ].map((props) => (
-                  <CardSetting key={props.id} disable={!modify} {...props} />
-                ))}
+            <div className="card-content bg-gray-200 m-2 rounded-md w-96 h-fit">
+              <div className="title bg-green-500 p-2 rounded-t-md font-bold text-gray-700">
+                <p>CURRENT SETTING</p>
               </div>
-              <div>
-                <button
-                  disabled={!modify}
-                  onClick={handleUpdateParam}
-                  className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
-                    !modify ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  UPDATE PARAMETER
-                </button>
+              <div className="content px-8 py-2 items-center min-w-96">
+                <div className="flex flex-wrap justify-start">
+                  {[
+                    {
+                      id: 0,
+                      label: "Current Min",
+                      value: masterData.minLimitCurrent,
+                      type: "number",
+                      setter: (value) =>
+                        setMasterData((prev) => ({
+                          ...prev,
+                          runningMin: value,
+                        })),
+                    },
+                    {
+                      id: 1,
+                      label: "Current Max",
+                      value: masterData.maxLimitCurrent,
+                      type: "number",
+                      setter: (value) =>
+                        setMasterData((prev) => ({
+                          ...prev,
+                          runningMax: value,
+                        })),
+                    },
+                  ].map(({ label, value, setter, type }) => (
+                    <>
+                      <div className="mr-4 mb-2" key={label}>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                          {label} <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                          disabled={!modify || label === "Serial Number"}
+                          required={label !== "Serial Number"}
+                          type={type}
+                          value={loading ? "" : value}
+                          className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                          placeholder={label}
+                          onChange={(e) => setter(e.target.value)}
+                        />
+                      </div>
+                    </>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className="items-center">
+          {modify ? (
+            <>
+              {" "}
+              <button
+                onClick={handleParameterUpdate}
+                disabled={!modify}
+                className={`mx-4 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg ${
+                  !modify ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                UPDATE PARAMETER
+              </button>
+            </>
+          ) : (
+            ""
+          )}
           <button
             onClick={handleModify}
             className={`mx-4 ${
@@ -421,7 +446,7 @@ const MasterSetting = () => {
                 : "bg-blue-500 hover:bg-blue-700"
             } text-gray-900 hover:text-white font-semibold py-2 px-4 border rounded-lg`}
           >
-            {modify ? "CANCEL" : "Modify"}
+            {modify ? "CANCEL" : "MODIFY"}
           </button>
         </div>
       </div>

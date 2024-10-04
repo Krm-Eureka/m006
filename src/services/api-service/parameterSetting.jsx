@@ -6,7 +6,7 @@ const GetMasterSetting = async (version, productionLineID, SET, LOADING) => {
     const res = await endpoint.get(
       `/api/v${version}/ProductionLine/${productionLineID}`
     );
-    // console.log(`MasterData ${productionLineID} : `, res.data);
+    console.log(`MasterData ${productionLineID} : `, res.data);
     SET(res.data.data);
     {
       res.data.succeeded && res.data.succeeded === true
@@ -31,8 +31,15 @@ const GetMasterSetting = async (version, productionLineID, SET, LOADING) => {
 //     throw err;
 //   }
 // };
-const PutDMCSetting = async (version, id, data) => {
-  console.log("API Version: ", version, "  Production Line ID: ", id, "   Data: ", data);
+const PutSetting = async (version, id, data) => {
+  console.log(
+    "API Version: ",
+    version,
+    "  Production Line ID: ",
+    id,
+    "   Data: ",
+    data
+  );
 
   try {
     const authToken = localStorage.getItem("authToken");
@@ -56,7 +63,6 @@ const PutDMCSetting = async (version, id, data) => {
   }
 };
 
-
 // const PutParameterSetting = async (version, id, data) => {
 //   console.log('v: ', version, '  id: ', id, '   data: ', data);
 
@@ -68,31 +74,30 @@ const PutDMCSetting = async (version, id, data) => {
 //     throw err;
 //   }
 // };
-const PutParameterSetting = async (version, id, data) => {
-  console.log("v: ", version, "  id: ", id, "   data: ", data);
+// const PutParameterSetting = async (version, id, data) => {
+//   console.log("v: ", version, "  id: ", id, "   data: ", data);
 
-  try {
-    const authToken = localStorage.getItem("authToken");
-    if (!authToken) {
-      throw new Error("No auth token found");
-    }
+//   try {
+//     const authToken = localStorage.getItem("authToken");
+//     if (!authToken) {
+//       throw new Error("No auth token found");
+//     }
 
-    const res = await endpoint.put(
-      `/api/v${version}/ProductionLine/${id}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
+//     const res = await endpoint.put(
+//       `/api/v${version}/ProductionLine/${id}`,
+//       data,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${authToken}`,
+//         },
+//       }
+//     );
 
-    return res.data;
-  } catch (err) {
-    console.error("Error updating DMC Setting : ", err);
-    throw err;
-  }
-};
+//     return res.data;
+//   } catch (err) {
+//     console.error("Error updating DMC Setting : ", err);
+//     throw err;
+//   }
+// };
 
-
-export { GetMasterSetting, PutDMCSetting, PutParameterSetting };
+export { GetMasterSetting, PutSetting };
