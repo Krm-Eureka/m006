@@ -14,7 +14,7 @@ export async function GetLastAcousticTraceLog(
       `/api/v${version}/AcousticTraceLog/GetLastAcousticTraceLog/${productionLineID}`
     );
 
-    console.log(`LastActTrace ${productionLineID} : `, res.data);
+    // console.log(`LastActTrace ${productionLineID} : `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {
@@ -32,7 +32,7 @@ export async function GetAcousticTraceDetailById(
     const res = await endpoint.get(
       `/api/v${version}/AcousticTraceDetail/GetByAcousticLogId/${acousticTraceId}`
     );
-    console.log(`AcousticTraceDetail ${acousticTraceId} : `, res.data);
+    // console.log(`AcousticTraceDetail ${acousticTraceId} : `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {

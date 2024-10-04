@@ -2,7 +2,7 @@ import endpoint from "../axios";
 
 const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
   const getData = async () => {
-    const url = SN
+    const url = SN !== null
       ? `/api/v${version}/AcousticTraceLog/GetByDateRange?startDate=${encodeURIComponent(
           start
         )}&endDate=${encodeURIComponent(end)}&serialCode=${encodeURIComponent(SN)}`
@@ -14,7 +14,7 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
     
     try {
       const res = await endpoint.get(url);
-      console.log(res.data.data);
+      // console.log(res.data.data);
       SET(res.data.data);
     } catch (error) {
       console.error("Failed to fetch Data:", error);

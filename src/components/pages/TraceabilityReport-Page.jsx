@@ -303,7 +303,7 @@ const TraceabilityReport = () => {
   const toFixedTwo = (value) => {
     const numericValue = parseFloat(value);
     if (!isNaN(numericValue)) {
-      console.log(numericValue.toFixed(2));
+      // console.log(numericValue.toFixed(2));
       return (value = numericValue.toFixed(2));
     } else {
       console.warn(`Cannot convert to number: ${value}`);

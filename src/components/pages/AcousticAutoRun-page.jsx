@@ -13,24 +13,11 @@ import {
 } from "../../services/api-service/stationData";
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
+import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 
-function createLstStatus(id, SerialCode, Result) {
-  return { id, SerialCode, Result };
-}
-
-const lstStatus = [
-  createLstStatus(1, "EOLT-A-382315929117", "PASS"),
-  createLstStatus(2, "EOLT-A-120885838401", "PASS"),
-  createLstStatus(3, "EOLT-A-554779049699", "PASS"),
-  createLstStatus(4, "EOLT-A-37003047849", "Fail"),
-  createLstStatus(5, "EOLT-A-529520075944", "PASS"),
-  createLstStatus(6, "EOLT-A-554779049699", "PASS"),
-  createLstStatus(7, "EOLT-A-37003047849", "Fail"),
-  createLstStatus(8, "EOLT-A-529520075944", "PASS"),
-  createLstStatus(9, "EOLT-A-554779049699", "PASS"),
-  createLstStatus(10, "EOLT-A-37003047849", "Fail"),
-  createLstStatus(11, "EOLT-A-529520075944", "PASS"),
-];
+// function createLstStatus(id, SerialCode, Result) {
+//   return { id, SerialCode, Result };
+// }
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
   return {
@@ -46,6 +33,7 @@ const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [LstActLog, setLstActLog] = useState(null);
+  const [LstStatusLog, setLstStatusLog] = useState(null);
   const [ActDetailById, setActDetailById] = useState(null);
   const [smrData, setSmrData] = useState([]);
 
@@ -53,6 +41,13 @@ const TraceabilityStatus = () => {
     const fetchData = async () => {
       try {
         await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
+        await getTraceabilityDataWithDate(
+          "1",
+          "2024-10-01",
+          "2024-10-03",
+          null,
+          setLstStatusLog
+        );
       } catch (error) {
         setError(error.message);
       }
@@ -70,10 +65,10 @@ const TraceabilityStatus = () => {
           await GetAcousticTraceDetailById(
             "1",
             LstActLog.id,
-            (response) => {
-              setActDetailById(response);
+            (res) => {
+              setActDetailById(res);
 
-              const updatedSmrData = response.map((item) =>
+              const updatedSmrData = res.map((item) =>
                 createSmrData(
                   item.description,
                   item.lowerValue,
@@ -94,9 +89,18 @@ const TraceabilityStatus = () => {
       fetchDetails();
     }
   }, [LstActLog]);
+  const mapStatus = (value) => {
+    if (value === 0) return "EXCEPTION";
+    if (value === 1) return "Testing";
+    if (value === 2) return "PASS";
+    if (value === 3) return "FAIL";
+    return value;
+  };
+  // console.log(ActDetailById);
+  // console.log("Lst Log : ", LstStatusLog);
 
-  console.log(ActDetailById);
-  const sortedStatus = [...lstStatus].sort((a, b) => b.id - a.id);
+  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
+
   return (
     <>
       <HeaderLayout page="Traceability Status" />
@@ -111,7 +115,10 @@ const TraceabilityStatus = () => {
                   <span className="text-red-600 font-bold">X-X-X-X-X</span>
                 </p>
               </div>
-              <Loading text="Data Not Found . . ." />
+              <div className="items-center justify-center text-center p-4">
+                <p className="text-gray-600 font-semibold">No data available</p>
+                <Loading text="Data Not Found . . ." />
+              </div>
             </>
           ) : error ? (
             <p className="text-red-600">{error}</p>
@@ -137,7 +144,6 @@ const TraceabilityStatus = () => {
                   status={LstActLog.laserMarkStatus}
                 />
                 <StatusBox name="QRCode" status={LstActLog.qrStatus} />
-
                 <StatusBox
                   name="TotalStatus"
                   status={LstActLog.tracReporJudgementtResult}
@@ -179,70 +185,98 @@ const TraceabilityStatus = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.map((row, index) => (
-                        <TableRow
-                          key={row.description + index}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.description}</p>
-                          </TableCell>
-                          <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.lowerValue}</p>
-                          </TableCell>
-                          <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.upperValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            {row.result === "Fail" ? (
-                              <p className="text-red-700 font-semibold">
-                                {row.result}
-                              </p>
-                            ) : row.description.toLowerCase() ===
-                              "sensitivity" ? (
-                              parseFloat(row.result) >=
-                                parseFloat(row.lowerValue) &&
-                              parseFloat(row.result) <=
-                                parseFloat(row.upperValue) ? (
-                                <p className="text-green-700 font-semibold">
-                                  {row.result}
-                                </p>
-                              ) : (
+                      {smrData && smrData.length > 0 ? (
+                        smrData.map((row, index) => (
+                          <TableRow
+                            key={row.description + index}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell align="left" component="th" scope="row">
+                              <p className="font-semibold">{row.description}</p>
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              component="th"
+                              scope="row"
+                            >
+                              <p className="font-semibold">{row.lowerValue}</p>
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              component="th"
+                              scope="row"
+                            >
+                              <p className="font-semibold">{row.upperValue}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.result === "Fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   {row.result}
                                 </p>
-                              )
-                            ) : (
-                              <p className="text-green-700 font-semibold">
-                                {row.result}
+                              ) : row.description.toLowerCase() ===
+                                "sensitivity" ? (
+                                parseFloat(row.result) >=
+                                  parseFloat(row.lowerValue) &&
+                                parseFloat(row.result) <=
+                                  parseFloat(row.upperValue) ? (
+                                  <p className="text-green-700 font-semibold">
+                                    {row.result}
+                                  </p>
+                                ) : (
+                                  <p className="text-red-700 font-semibold">
+                                    {row.result}
+                                  </p>
+                                )
+                              ) : (
+                                <p className="text-green-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              )}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              component="th"
+                              scope="row"
+                            >
+                              {row.status.toLowerCase() === "failed" ? (
+                                <p className="text-red-700 font-semibold">
+                                  FAIL
+                                </p>
+                              ) : row.status.toLowerCase() === "passed" ? (
+                                <p className="text-green-700 font-semibold">
+                                  PASS
+                                </p>
+                              ) : row.status.toLowerCase() === "" ? (
+                                <p className="font-semibold text-yellow-500">
+                                  Exception
+                                </p>
+                              ) : (
+                                ""
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={5} align="center">
+                            <div className="items-center justify-center text-center p-4">
+                              <p className="text-gray-600 font-semibold">
+                                No data available
                               </p>
-                            )}
-                          </TableCell>
-                          <TableCell align="center" component="th" scope="row">
-                            {row.status.toLowerCase() === "failed" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "passed" ? (
-                              <p className="text-green-700 font-semibold">
-                                PASS
-                              </p>
-                            ) : row.status.toLowerCase() === "" ? (
-                              <p className="font-semibold text-yellow-500">
-                                Exception
-                              </p>
-                            ) : (
-                              ""
-                            )}
+                              <Loading text="Data Not Found . . ." />
+                            </div>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>
               </div>
             </div>
           </div>
+
           <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
@@ -255,46 +289,66 @@ const TraceabilityStatus = () => {
                     aria-label="simple table"
                   >
                     <TableHead>
-                      <TableRow >
+                      <TableRow>
+                        <TableCell align="center">
+                          <p className="font-semibold">ID</p>
+                        </TableCell>
                         <TableCell align="center">
                           <p className="font-semibold">Serial_Code</p>
                         </TableCell>
                         <TableCell align="center">
                           <p className="font-semibold">Result</p>
                         </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">ID</p>
-                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {sortedStatus.slice(0*5,0*5+5).map((row) => (
-                        <TableRow
-                          key={row.id}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                          
-                        >
-                          <TableCell component="th" scope="row" align={"left"}>
-                            <p className="font-semibold">{row.SerialCode}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            {row.Result === "Fail" ? (
-                              <p className="text-red-700 font-semibold">
-                                {row.Result}
+                      {LstStatusLog && LstStatusLog.length > 0 ? (
+                        sortedStatus.slice(0 * 5, 0 * 5 + 5).map((row) => (
+                          <TableRow
+                            key={row.id}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell align="center">
+                              <p className="font-semibold">{row.id}</p>
+                            </TableCell>
+                            <TableCell component="th" scope="row" align="left">
+                              <p className="font-semibold">{row.serialCode}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.totalJudgement === 1 ? (
+                                <p className="text-blue-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : row.totalJudgement === 3 ? (
+                                <p className="text-red-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : row.totalJudgement === 2 ? (
+                                <p className="text-green-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : (
+                                <p className="text-yellow-500 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={3} align="center">
+                            <div className="items-center justify-center text-center p-4">
+                              <p className="text-gray-600 font-semibold">
+                                No data available
                               </p>
-                            ) : (
-                              <p className="text-green-700 font-semibold">
-                                {row.Result}
-                              </p>
-                            )}
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.id}</p>
+                              <Loading text="Data Not Found . . ." />
+                            </div>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>

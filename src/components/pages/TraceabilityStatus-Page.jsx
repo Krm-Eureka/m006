@@ -90,7 +90,7 @@ const TraceabilityStatus = () => {
     }
   }, [LstActLog]);
 
-  console.log(ActDetailById);
+  // console.log(ActDetailById);
 
   return (
     <>
