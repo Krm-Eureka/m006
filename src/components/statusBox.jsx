@@ -12,36 +12,44 @@ const StatusBox = ({ name, status }) => {
       1: { text: "Testing", className: "bg-blue-500" },
       2: { text: "PASS", className: "bg-green-500" },
       3: { text: "FAIL", className: "bg-red-500" },
+      4: { text: "Unknown Status", className: "bg-gray-400" },
     },
     lasermark: {
       0: { text: "Exception", className: "bg-yellow-400" },
       1: { text: "Marking", className: "bg-blue-500" },
       2: { text: "PASS", className: "bg-green-500" },
       3: { text: "FAIL", className: "bg-red-500" },
+      4: { text: "Unknown Status", className: "bg-gray-400" },
     },
     qrcode: {
       0: { text: "Exception", className: "bg-yellow-400" },
       1: { text: "Reading", className: "bg-blue-500" },
       2: { text: "PASS", className: "bg-green-500" },
       3: { text: "FAIL", className: "bg-red-500" },
+      4: { text: "Unknown Status", className: "bg-gray-400" },
     },
     totalstatus: {
       0: { text: "Exception", className: "bg-yellow-400" },
       1: { text: "Reading", className: "bg-blue-500" },
       2: { text: "OK", className: "bg-green-500" },
       3: { text: "FAIL", className: "bg-red-500" },
+      4: { text: "Unknown Status", className: "bg-gray-400" },
     },
     current: {
       0: { text: "Exception", className: "bg-yellow-400" },
       1: { text: "Reading", className: "bg-blue-500" },
       2: { text: "OK", className: "bg-green-500" },
       3: { text: "FAIL", className: "bg-red-500" },
+      4: { text: "Unknown Status", className: "bg-gray-400" },
     },
   };
 
-  const defaultStatus = { text: "Unknown Status", className: "bg-gray-400" };
-
-  const { text, className } = statusMap[name.toLowerCase()]?.[status] || defaultStatus;
+  const statusValue = (status >= 0 && status <= 4) ? status : 4;
+  const statusData = statusMap[name.toLowerCase()]?.[statusValue] || {
+    text: "Unknown Status",
+    className: "bg-gray-400",
+  };
+  const { text, className } = statusData;
 
   const iconMap = {
     current: CRR,
@@ -55,7 +63,9 @@ const StatusBox = ({ name, status }) => {
 
   return (
     <div className="m-4 justify-start">
-      <div className={`box flex ${className} text-white font-semibold p-4 rounded-lg w-64`}>
+      <div
+        className={`box flex ${className} text-white font-semibold p-4 rounded-lg w-64`}
+      >
         {icon && (
           <img
             src={icon}
@@ -75,6 +85,10 @@ const StatusBox = ({ name, status }) => {
 StatusBox.propTypes = {
   name: PropTypes.string.isRequired,
   status: PropTypes.number.isRequired,
+};
+
+StatusBox.defaultProps = {
+  status: 4, 
 };
 
 export default StatusBox;
