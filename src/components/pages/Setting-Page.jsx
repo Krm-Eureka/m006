@@ -88,7 +88,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
-    // setIsAuthenticated(true);
+    setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -105,7 +105,7 @@ const MasterSetting = () => {
           title: "Authorization Fail",
         });
         navigate("/Console/Content_ACT/AutoRun");
-        // setIsAuthenticated(true);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -114,7 +114,7 @@ const MasterSetting = () => {
         title: "Authorization Fail",
       });
       // navigate("/Console/Content_ACT/AutoRun");
-      // setIsAuthenticated(true);
+      setIsAuthenticated(true);
     }
   };
 
@@ -163,8 +163,7 @@ const MasterSetting = () => {
         ProductionLineName: "LINE A",
         plmReference,
         ebomReference,
-        manufacturingDateFormat: formatDateForSetting(LastDate),
-        // lastRunningDate: LastDate,
+        // manufacturingDateFormat: formatDateForSetting(LastDate),
         eoltRefCode,
         runningMin,
         runningMax,
@@ -291,7 +290,7 @@ const MasterSetting = () => {
                           ...prev,
                           runningNo: value,
                         })),
-                      // disabled: true,
+
                     },
                   ].map(({ label, value, setter, type }) => (
                     <div className="mr-4 mb-2" key={label}>
@@ -379,7 +378,7 @@ const MasterSetting = () => {
                     {
                       id: 0,
                       label: "Current Min",
-                      value: masterData.minLimitCurrent,
+                      value: masterData.runningMin,
                       type: "number",
                       setter: (value) =>
                         setMasterData((prev) => ({
@@ -390,7 +389,7 @@ const MasterSetting = () => {
                     {
                       id: 1,
                       label: "Current Max",
-                      value: masterData.maxLimitCurrent,
+                      value: masterData.runningMax,
                       type: "number",
                       setter: (value) =>
                         setMasterData((prev) => ({
