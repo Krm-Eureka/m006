@@ -34,9 +34,9 @@ const TraceabilityStatus = () => {
   const [ActDetailById, setActDetailById] = useState(null);
   const [smrData, setSmrData] = useState([]);
   const today = new Date();
-  const yesterday = new Date(today.getTime() - 86400000)
-  const startDate = today.toISOString().split('T')[0];
-  const endDate = yesterday.toISOString().split('T')[0];
+  const yesterday = new Date(today.getTime() - 86400000);
+  const startDate = today.toISOString().split("T")[0];
+  const endDate = yesterday.toISOString().split("T")[0];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -304,7 +304,7 @@ const TraceabilityStatus = () => {
                     </TableHead>
                     <TableBody>
                       {LstStatusLog && LstStatusLog.length > 0 ? (
-                        sortedStatus.slice(0 * 5, 0 * 5 + 5).map((row) => (
+                        sortedStatus.slice(0, 5).map((row) => (
                           <TableRow
                             key={row.id}
                             sx={{
