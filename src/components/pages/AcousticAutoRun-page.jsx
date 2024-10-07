@@ -96,12 +96,19 @@ const TraceabilityStatus = () => {
     }
   }, [LstActLog]);
   const mapStatus = (value) => {
-    if (value === 0) return "FAIL";
-    if (value === 1) return "TESTING";
-    if (value === 2) return "PASS";
-    if (value === 3) return "FAIL";
-    return value;
+    switch (value) {
+      case 0:
+      case 3:
+        return "FAIL";
+      case 1:
+        return "TESTING";
+      case 2:
+        return "PASS";
+      default:
+        return value;
+    }
   };
+
   // console.log(ActDetailById);
   // console.log("Lst Log : ", LstStatusLog);
 
