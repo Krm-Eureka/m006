@@ -32,10 +32,11 @@ const TraceabilityStatus = () => {
   const [LstActLog, setLstActLog] = useState(null);
   const [LstStatusLog, setLstStatusLog] = useState(null);
   const [ActDetailById, setActDetailById] = useState(null);
+  const [currentDescp, setCurrentDescp] = useState(null);
   const [smrData, setSmrData] = useState([]);
   const today = new Date();
-  const yesterday = new Date(today.getTime() - 86400000);
-  const startDate = yesterday.toISOString().split("T")[0];
+  const fiveLast = new Date(today.getTime() - (86400000*5));
+  const startDate = fiveLast.toISOString().split("T")[0];
   const endDate = today.toISOString().split("T")[0];
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const TraceabilityStatus = () => {
     };
 
     fetchData();
+
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
@@ -82,7 +84,12 @@ const TraceabilityStatus = () => {
                   ])
                 ).values()
               );
+              const currentDescp = res.find(
+                (item) => item.description === "Current"
+              );
+              console.log(currentDescp);
 
+              setCurrentDescp(currentDescp);
               setSmrData(uniqueSmrData);
               setLoading(false);
             },
@@ -151,7 +158,19 @@ const TraceabilityStatus = () => {
                   name="AcousticTest"
                   status={LstActLog.acousticStatus}
                 />
-                <StatusBox name="Current" status={LstActLog.currentStatus} />
+                {currentDescp !== null ? <StatusBox
+                  name="Current"
+                  status={
+                    currentDescp.status === "FAIL"
+                      ? 3
+                      : currentDescp.status === "PASS"
+                        ? 1
+                        : 4
+                  }
+                /> : <StatusBox
+                  name="Current"
+
+                />}
                 <StatusBox
                   name="LaserMark"
                   status={LstActLog.laserMarkStatus}
@@ -223,7 +242,7 @@ const TraceabilityStatus = () => {
                               "sensitivity" ? (
                               parseFloat(row.result) >=
                                 parseFloat(row.lowerValue) &&
-                              parseFloat(row.result) <=
+                                parseFloat(row.result) <=
                                 parseFloat(row.upperValue) ? (
                                 <p className="text-green-700 font-semibold">
                                   {row.result}
