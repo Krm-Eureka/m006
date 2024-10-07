@@ -7,13 +7,22 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
+import StatusBox from "../statusBox";
 
 function createLstStatus(SerialCode, Result) {
   return { SerialCode, Result };
 }
-function createSmrData(Name, Lower, Upper, smrResult, Status) {
-  return { Name, Lower, Upper, smrResult, Status };
+function createSmrData(description, lowerValue, upperValue, result, status) {
+  const formattedResult = parseFloat(result).toFixed(2);
+  return {
+    description,
+    lowerValue,
+    upperValue,
+    result: formattedResult,
+    status,
+  };
 }
+
 const lstStatus = [
   createLstStatus("EOLT-A-382315929117", "PASS"),
   createLstStatus("EOLT-A-120885838401", "PASS"),
@@ -27,15 +36,24 @@ const smrData = [
   createSmrData("THD", "-", "-", "-", "-"),
   createSmrData("Frequency", "-", "-", "-", "-"),
 ];
-const test = {
-  pass: "PASS",
-  fail: "FAIL",
-  err: "Exception",
-};
+
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [serialRun, setSerialRun] = useState("");
 
+  const mapStatus = (value) => {
+    switch (value) {
+      case 0:
+      case 3:
+        return "FAIL";
+      case 1:
+        return "TESTING";
+      case 2:
+        return "PASS";
+      default:
+        return value;
+    }
+  };
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
   };
@@ -55,8 +73,8 @@ const AcousticManualRun = () => {
               <span className="text-red-600 font-semibold">{serialRun}</span>
             </p>
           </div>
-          <div className="m-4">
-            <label htmlFor="SN">Serial Number :</label>
+          <div className="mb-2 mt-4 mx-6 font-semibold">
+            <label htmlFor="SN" >Serial Number :</label>
             <input
               id="SN"
               className="mx-2 p-2 rounded-md w-96"
@@ -66,94 +84,19 @@ const AcousticManualRun = () => {
               onChange={handleInputChange}
             />
             <button
-              className={`mx-2 my-1 py-1 px-4 bg-blue-500 hover:bg-blue-700 text-white hover:text-white h-fit w-fit border rounded-btn`}
+              className={`mx-2 my-1 py-2 px-4 font-semibold bg-blue-500 hover:bg-blue-700 text-white hover:text-white h-fit w-fit border rounded-btn`}
               onClick={handleRunClick}
             >
               Run
             </button>
           </div>
           <div className="content flex flex-wrap flex-between p-4 items-center">
-            <div className="m-2 flex flex-wrap justify-start">
-              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                <i className="fa-solid fa-microphone mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>AcousticTest</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-            <div className="m-2 justify-start">
-              <div
-                className={`box flex bg-gray-400 ${
-                  test.err === "PASS" || test.err === "pass"
-                    ? "bg-green-500 text-white font-semibold"
-                    : test.err === "FAIL"
-                    ? "bg-red-500 text-white font-semibold"
-                    : test.err === "Exception"
-                    ? "bg-yellow-400 text-white font-semibold"
-                    : {}
-                } p-4  rounded-lg w-40 text-black`}
-              >
-                {" "}
-                <i className="fa-solid fa-bolt mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>Current</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-            <div className="m-2 justify-start">
-              <div
-                className={`box flex bg-gray-400 ${
-                  test.fail === "PASS"
-                    ? "bg-green-500 text-white font-semibold"
-                    : test.fail === "FAIL"
-                    ? "bg-red-500 text-white font-semibold"
-                    : test.fail === "FAIL"
-                    ? "bg-yellow-400 text-white font-semibold"
-                    : {}
-                } p-4  rounded-lg w-40 text-black`}
-              >
-                <i className="fa-solid fa-map-pin mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>LaserMark</p>
-                  <p>PASS</p>
-                  {/* {status == "PASS" ? (
-                    <p className="text-green-700 font-semibold">PASS</p>
-                  ) : (
-                    <p className="text-red-700 font-semibold">FAIL</p>
-                  )} */}
-                </div>
-              </div>
-            </div>
-            <div className=" m-2 justify-start">
-              <div
-                className={`box flex bg-gray-400 ${
-                  test.pass === "PASS"
-                    ? "bg-green-500 text-white font-semibold"
-                    : test.fail === "FAIL"
-                    ? "bg-red-500"
-                    : test.err === "FAIL"
-                    ? "bg-yellow-400"
-                    : {}
-                } p-4  rounded-lg w-40 text-black`}
-              >
-                <i className="fa-solid fa-qrcode mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>QRCode</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
-            <div className=" m-2 justify-start">
-              <div className="box flex bg-gray-400 p-4  rounded-lg w-40 text-black">
-                <i className="fa-solid fa-border-all mr-4 text-3xl justify-center mt-2"></i>
-                <div className="flex flex-col text-center align-middle">
-                  <p>Total Status</p>
-                  <p>PASS</p>
-                </div>
-              </div>
-            </div>
+            <StatusBox name="test" status={0}/>
+            <StatusBox name="test" status={1}/>
+            <StatusBox name="test" status={2}/>
+            <StatusBox name="test" status={3}/>
+            <StatusBox name="test" status={4}/>
+           
           </div>
         </div>
         <div className="flex mx-2 md:flex-wrap ">

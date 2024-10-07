@@ -205,9 +205,7 @@ const TraceabilityReport = () => {
   const [toDate, setToDate] = useState(today);
   const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
- 
- 
- 
+
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -233,12 +231,7 @@ const TraceabilityReport = () => {
   };
 
   const mapStatus = (value) => {
-    if (
-      value === 0 ||
-      value === 1 ||
-      value === "FAIL" ||
-      value === "FAILED"
-    )
+    if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2) return "PASS";
     if (value === 3) return "FAIL";
@@ -246,12 +239,7 @@ const TraceabilityReport = () => {
   };
 
   const getColor = (value) => {
-    if (
-      value === 0 ||
-      value === 1 ||
-      value === "FAIL" ||
-      value === "FAILED"
-    )
+    if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "red";
     if (value === 2 || value === "PASS") return "green";
     if (value === 3 || value === "FAIL") return "red";
@@ -309,7 +297,7 @@ const TraceabilityReport = () => {
       Object.values(row).some((value) =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
       );
-      
+
     const isSerialMatch =
       !serialNumber || row.serialCode.includes(serialNumber);
     return isDateInRange && isSearchMatch && isSerialMatch;
@@ -389,8 +377,9 @@ const TraceabilityReport = () => {
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
+    const fileName = `TraceabilityReport_${formattedDate}.csv`;
     a.href = url;
-    a.download = `TraceabilityReport_${formattedDate}.csv`;
+    a.download = fileName;
     a.click();
     URL.revokeObjectURL(url);
   };
