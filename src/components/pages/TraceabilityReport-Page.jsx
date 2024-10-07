@@ -234,8 +234,8 @@ const TraceabilityReport = () => {
     if (
       value === 0 ||
       value === 1 ||
-      value === "fail" ||
-      value === "failed"
+      value === "FAIL" ||
+      value === "FAILED"
     )
       return "FAIL";
     if (value === 2) return "PASS";
@@ -247,8 +247,8 @@ const TraceabilityReport = () => {
     if (
       value === 0 ||
       value === 1 ||
-      value === "fail" ||
-      value === "failed"
+      value === "FAIL" ||
+      value === "FAILED"
     )
       return "red";
     if (value === 2 || value === "PASS") return "green";

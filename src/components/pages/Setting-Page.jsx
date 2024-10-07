@@ -157,17 +157,18 @@ const MasterSetting = () => {
     // const date = new Date(manufacturingDateFormat);
     // const date = new Date(lastRunningDate);
     // const LastDate = date.toISOString();
-    console.log(plmReference &&
-      ebomReference &&
-      // manufacturingDateFormat &&
-      lastRunningDate &&
-      // LastDate &&
-      eoltRefCode &&
+    console.log(
+      plmReference &&
+        ebomReference &&
+        // manufacturingDateFormat &&
+        lastRunningDate &&
+        // LastDate &&
+        eoltRefCode &&
+        runningMin &&
+        runningMax &&
+        enableFlag
+    );
 
-      runningMin &&
-      runningMax &&
-      enableFlag);
-    
     if (
       (id,
       // ProductionLineName,
@@ -177,7 +178,7 @@ const MasterSetting = () => {
         lastRunningDate &&
         // LastDate &&
         eoltRefCode &&
-        runningNo&&
+        runningNo &&
         runningMin &&
         runningMax &&
         enableFlag)
@@ -188,7 +189,7 @@ const MasterSetting = () => {
         plmReference,
         ebomReference,
         // manufacturingDateFormat: formatDateForSetting(LastDate),
-        manufacturingDateFormat: 'yyMMdd',
+        manufacturingDateFormat: "yyMMdd",
         eoltRefCode,
         runningNo,
         runningMin,
@@ -216,7 +217,9 @@ const MasterSetting = () => {
       });
     }
   };
-  const lastRunDate = masterData.lastRunningDate ? masterData.lastRunningDate.split("T")[0] : "";
+  const lastRunDate = masterData.lastRunningDate
+    ? masterData.lastRunningDate.split("T")[0]
+    : "";
   if (!isAuthenticated) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -300,8 +303,11 @@ const MasterSetting = () => {
                       label: "Last Running Date",
                       type: "date",
                       value: lastRunDate,
-                      setter: (value) => setMasterData(prev => ({ ...prev, lastRunningDate: value })),
-                      
+                      setter: (value) =>
+                        setMasterData((prev) => ({
+                          ...prev,
+                          lastRunningDate: value,
+                        })),
                     },
                     {
                       label: "EOLT Reference A/B",
@@ -323,15 +329,18 @@ const MasterSetting = () => {
                           ...prev,
                           runningNo: value,
                         })),
-
                     },
-                  ].map(({id, label, value, setter, type }) => (
+                  ].map(({ id, label, value, setter, type }) => (
                     <div className="mr-4 mb-2" key={id}>
                       <label className="block mb-2 text-sm font-medium text-gray-700">
                         {label} <span className="text-red-600">*</span>
                       </label>
                       <input
-                        disabled={!modify || label === "Serial Number" || label === "Last Running Date"}
+                        disabled={
+                          !modify ||
+                          label === "Serial Number" ||
+                          label === "Last Running Date"
+                        }
                         required={label !== "Serial Number"}
                         type={type}
                         value={loading ? "" : value}
@@ -430,7 +439,7 @@ const MasterSetting = () => {
                           runningMax: parseInt(value),
                         })),
                     },
-                  ].map(({id, label, value, setter, type }) => (
+                  ].map(({ id, label, value, setter, type }) => (
                     <>
                       <div className="mr-4 mb-2" key={id}>
                         <label className="block mb-2 text-sm font-medium text-gray-700">
