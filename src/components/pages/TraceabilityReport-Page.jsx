@@ -257,7 +257,7 @@ const TraceabilityReport = () => {
     if (value === 3 || value === "FAIL") return "red";
     return "inherit";
   };
-  
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setSerialNumber(event.target.value);
@@ -309,9 +309,9 @@ const TraceabilityReport = () => {
       Object.values(row).some((value) =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
       );
+      
     const isSerialMatch =
       !serialNumber || row.serialCode.includes(serialNumber);
-
     return isDateInRange && isSearchMatch && isSerialMatch;
   });
 
