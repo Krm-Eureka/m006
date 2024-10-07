@@ -35,7 +35,7 @@ const TraceabilityStatus = () => {
   const [currentDescp, setCurrentDescp] = useState(null);
   const [smrData, setSmrData] = useState([]);
   const today = new Date();
-  const fiveLast = new Date(today.getTime() - (86400000*5));
+  const fiveLast = new Date(today.getTime() - 86400000 * 5);
   const startDate = fiveLast.toISOString().split("T")[0];
   const endDate = today.toISOString().split("T")[0];
 
@@ -158,19 +158,20 @@ const TraceabilityStatus = () => {
                   name="AcousticTest"
                   status={LstActLog.acousticStatus}
                 />
-                {currentDescp !== null ? <StatusBox
-                  name="Current"
-                  status={
-                    currentDescp.status === "FAIL"
-                      ? 3
-                      : currentDescp.status === "PASS"
+                {currentDescp ? (
+                  <StatusBox
+                    name="Current"
+                    status={
+                      currentDescp.status === "FAIL"
+                        ? 3
+                        : currentDescp.status === "PASS"
                         ? 1
                         : 4
-                  }
-                /> : <StatusBox
-                  name="Current"
-
-                />}
+                    }
+                  />
+                ) : (
+                  <StatusBox name="Current" />
+                )}
                 <StatusBox
                   name="LaserMark"
                   status={LstActLog.laserMarkStatus}
@@ -242,7 +243,7 @@ const TraceabilityStatus = () => {
                               "sensitivity" ? (
                               parseFloat(row.result) >=
                                 parseFloat(row.lowerValue) &&
-                                parseFloat(row.result) <=
+                              parseFloat(row.result) <=
                                 parseFloat(row.upperValue) ? (
                                 <p className="text-green-700 font-semibold">
                                   {row.result}
