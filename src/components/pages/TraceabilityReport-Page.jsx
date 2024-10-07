@@ -230,12 +230,12 @@ const TraceabilityReport = () => {
     });
   };
   const mapStatus = (value) => {
-    const strValue = typeof value === 'string' ? value.toLowerCase() : String(value);
+    
     if (
       value === 0 ||
       value === 1 ||
-      strValue === "fail" ||
-      strValue === "failed"
+      value === "fail" ||
+      value === "failed"
     )
       return "FAIL";
     if (value === 2) return "PASS";
@@ -247,8 +247,8 @@ const TraceabilityReport = () => {
     if (
       value === 0 ||
       value === 1 ||
-      value.toLowerCase() === "fail" ||
-      value.toLowerCase() === "failed"
+      value === "fail" ||
+      value === "failed"
     )
       return "red";
     if (value === 2 || value === "PASS") return "green";
