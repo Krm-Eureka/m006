@@ -113,7 +113,7 @@ const MasterSetting = () => {
         icon: "error",
         title: "Authorization Fail",
       });
-      // navigate("/Console/Content_ACT/AutoRun");
+      navigate("/Console/Content_ACT/AutoRun");
       // setIsAuthenticated(true);
     }
   };
@@ -325,8 +325,8 @@ const MasterSetting = () => {
                         })),
 
                     },
-                  ].map(({ label, value, setter, type }) => (
-                    <div className="mr-4 mb-2" key={label}>
+                  ].map(({id, label, value, setter, type }) => (
+                    <div className="mr-4 mb-2" key={id}>
                       <label className="block mb-2 text-sm font-medium text-gray-700">
                         {label} <span className="text-red-600">*</span>
                       </label>
@@ -416,7 +416,7 @@ const MasterSetting = () => {
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMin: value,
+                          runningMin: parseInt(value),
                         })),
                     },
                     {
@@ -427,7 +427,7 @@ const MasterSetting = () => {
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMax: value,
+                          runningMax: parseInt(value),
                         })),
                     },
                   ].map(({id, label, value, setter, type }) => (
