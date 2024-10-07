@@ -230,14 +230,26 @@ const TraceabilityReport = () => {
     });
   };
   const mapStatus = (value) => {
-    if (value === 0 || value === 1) return "FAIL";
+    if (
+      value === 0 ||
+      value === 1 ||
+      value.toLowerCase() === "fail" ||
+      value.toLowerCase() === "failed"
+    )
+      return "FAIL";
     if (value === 2) return "PASS";
     if (value === 3) return "FAIL";
     return value;
   };
 
   const getColor = (value) => {
-    if (value === 0 || value === 1 || value === "FAIL") return "red";
+    if (
+      value === 0 ||
+      value === 1 ||
+      value.toLowerCase() === "fail" ||
+      value.toLowerCase() === "failed"
+    )
+      return "red";
     if (value === 2 || value === "PASS") return "green";
     if (value === 3 || value === "FAIL") return "red";
     return "inherit";
@@ -321,7 +333,11 @@ const TraceabilityReport = () => {
           if (column.id === "lastUpdateDate" || column.id === "creationDate") {
             value = formatDateTimeSlash(value);
           }
-          if (column.id === "sensitivityResult" || column.id === "thdResult") {
+          if (
+            column.id === "sensitivityResult" ||
+            column.id === "thdResult" ||
+            column.id === "currentMeasured"
+          ) {
             value = toFixedTwo(value);
           }
           if (
@@ -559,7 +575,8 @@ const TraceabilityReport = () => {
                           column.id === "creationDate"
                             ? formatDateTimeSlash(row[column.id])
                             : column.id === "sensitivityResult" ||
-                              column.id === "thdResult"
+                              column.id === "thdResult" ||
+                              column.id === "currentMeasured"
                             ? toFixedTwo(row[column.id])
                             : mapStatus(row[column.id])}
                         </StyledTableCell>
