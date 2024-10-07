@@ -33,11 +33,11 @@ const MasterSetting = () => {
   // const [maxLimitFrequency, setMaxLimitFrequency] = useState("");
   const [masterData, setMasterData] = useState({
     id: 0,
-    ProductionLineName: "",
+    productionLineName: "",
     manufacturingDateFormat: "",
     plmReference: "",
     ebomReference: "",
-    // lastRunningDate: "",
+    lastRunningDate: "",
     eoltRefCode: "",
     runningNo: "",
     runningMin: "",
@@ -88,7 +88,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
-    setIsAuthenticated(true);
+    // setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -105,7 +105,7 @@ const MasterSetting = () => {
           title: "Authorization Fail",
         });
         navigate("/Console/Content_ACT/AutoRun");
-        setIsAuthenticated(true);
+        // setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -114,7 +114,7 @@ const MasterSetting = () => {
         title: "Authorization Fail",
       });
       // navigate("/Console/Content_ACT/AutoRun");
-      setIsAuthenticated(true);
+      // setIsAuthenticated(true);
     }
   };
 
@@ -134,26 +134,50 @@ const MasterSetting = () => {
       ProductionLineName,
       plmReference,
       ebomReference,
-      // lastRunningDate,
+      lastRunningDate,
       manufacturingDateFormat,
       eoltRefCode,
+      runningNo,
       runningMin,
       runningMax,
       enableFlag,
     } = masterData;
+    console.log("Current Values:");
+    console.log("ID:", id);
+    console.log("Production Line Name:", ProductionLineName);
+    console.log("PLM Reference:", plmReference);
+    console.log("EBOM Reference:", ebomReference);
+    console.log("Manufacturing Date Format:", manufacturingDateFormat);
+    console.log("EOLT Reference Code:", eoltRefCode);
+    console.log("Running No:", runningNo);
+    console.log("Running Min:", runningMin);
+    console.log("Running Max:", runningMax);
+    console.log("Enable Flag:", enableFlag);
     // console.log(lastRunningDate);
-    const date = new Date(manufacturingDateFormat);
+    // const date = new Date(manufacturingDateFormat);
     // const date = new Date(lastRunningDate);
-    const LastDate = date.toISOString();
+    // const LastDate = date.toISOString();
+    console.log(plmReference &&
+      ebomReference &&
+      // manufacturingDateFormat &&
+      lastRunningDate &&
+      // LastDate &&
+      eoltRefCode &&
+
+      runningMin &&
+      runningMax &&
+      enableFlag);
+    
     if (
       (id,
-      ProductionLineName,
+      // ProductionLineName,
       plmReference &&
         ebomReference &&
-        manufacturingDateFormat &&
-        // lastRunningDate &&
-        LastDate &&
+        // manufacturingDateFormat &&
+        lastRunningDate &&
+        // LastDate &&
         eoltRefCode &&
+        runningNo&&
         runningMin &&
         runningMax &&
         enableFlag)
@@ -164,7 +188,9 @@ const MasterSetting = () => {
         plmReference,
         ebomReference,
         // manufacturingDateFormat: formatDateForSetting(LastDate),
+        manufacturingDateFormat: 'yyMMdd',
         eoltRefCode,
+        runningNo,
         runningMin,
         runningMax,
         enableFlag,
@@ -190,7 +216,7 @@ const MasterSetting = () => {
       });
     }
   };
-
+  const lastRunDate = masterData.lastRunningDate ? masterData.lastRunningDate.split("T")[0] : "";
   if (!isAuthenticated) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -258,17 +284,24 @@ const MasterSetting = () => {
                           ebomReference: value,
                         })),
                     },
+                    // {
+                    //   label: "Last Running Date",
+                    //   type: "date",
+                    //   value: masterData.manufacturingDateFormat
+                    //     ? masterData.manufacturingDateFormat
+                    //     : "",
+                    //   setter: (value) =>
+                    //     setMasterData((prev) => ({
+                    //       ...prev,
+                    //       manufacturingDateFormat: value,
+                    //     })),
+                    // },
                     {
                       label: "Last Running Date",
                       type: "date",
-                      value: masterData.manufacturingDateFormat
-                        ? masterData.manufacturingDateFormat
-                        : "",
-                      setter: (value) =>
-                        setMasterData((prev) => ({
-                          ...prev,
-                          manufacturingDateFormat: value,
-                        })),
+                      value: lastRunDate,
+                      setter: (value) => setMasterData(prev => ({ ...prev, lastRunningDate: value })),
+                      
                     },
                     {
                       label: "EOLT Reference A/B",
@@ -298,7 +331,7 @@ const MasterSetting = () => {
                         {label} <span className="text-red-600">*</span>
                       </label>
                       <input
-                        disabled={!modify || label === "Serial Number"}
+                        disabled={!modify || label === "Serial Number" || label === "Last Running Date"}
                         required={label !== "Serial Number"}
                         type={type}
                         value={loading ? "" : value}
@@ -318,7 +351,7 @@ const MasterSetting = () => {
                   masterData.eoltRefCode
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDateForSetting(masterData.manufacturingDateFormat)}-${
+                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
                         masterData.eoltRefCode
                       }-${
                         masterData.runningNo
@@ -331,7 +364,7 @@ const MasterSetting = () => {
                       masterData.eoltRefCode
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDateForSetting(masterData.manufacturingDateFormat)}-${
+                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
                         masterData.eoltRefCode
                       }-${
                         masterData.runningNo
@@ -343,7 +376,7 @@ const MasterSetting = () => {
                       masterData.lastRunningDate
                     ? `Example : ${masterData.plmReference}-${
                         masterData.ebomReference
-                      }-${formatDateForSetting(masterData.manufacturingDateFormat)}-S-${
+                      }-${formatDateForSetting(masterData.lastRunningDate)}-S-${
                         masterData.runningNo
                           ? String(masterData.runningNo).padStart(5, "0")
                           : "00000"
@@ -397,9 +430,9 @@ const MasterSetting = () => {
                           runningMax: value,
                         })),
                     },
-                  ].map(({ label, value, setter, type }) => (
+                  ].map(({id, label, value, setter, type }) => (
                     <>
-                      <div className="mr-4 mb-2" key={label}>
+                      <div className="mr-4 mb-2" key={id}>
                         <label className="block mb-2 text-sm font-medium text-gray-700">
                           {label} <span className="text-red-600">*</span>
                         </label>
