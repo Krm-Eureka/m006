@@ -233,16 +233,16 @@ const TraceabilityReport = () => {
   const mapStatus = (value) => {
     if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "FAIL";
-    if (value === 2) return "PASS";
-    if (value === 3) return "FAIL";
+    if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
+    if (value === 3 || value === "FAILED") return "FAIL";
     return value;
   };
 
   const getColor = (value) => {
     if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "red";
-    if (value === 2 || value === "PASS") return "green";
-    if (value === 3 || value === "FAIL") return "red";
+    if (value === 2 || value === "PASS" || value === "PASSED") return "green";
+    if (value === 3 || value === "FAIL" || value === "FAILED") return "red";
     return "inherit";
   };
 
@@ -571,7 +571,7 @@ const TraceabilityReport = () => {
                               column.id === "thdResult" ||
                               column.id === "currentMeasured"
                             ? toFixedTwo(row[column.id])
-                            : mapStatus(row[column.id])}
+                            :column.id === "id"? row[column.id]: mapStatus(row[column.id])}
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
