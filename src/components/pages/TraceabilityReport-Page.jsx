@@ -205,6 +205,9 @@ const TraceabilityReport = () => {
   const [toDate, setToDate] = useState(today);
   const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
+ 
+ 
+ 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -214,7 +217,6 @@ const TraceabilityReport = () => {
     return rows.slice().sort((a, b) => {
       const valueA = a[orderBy];
       const valueB = b[orderBy];
-
       if (Date.parse(valueA) && Date.parse(valueB)) {
         return order === "asc"
           ? new Date(valueA) - new Date(valueB)
@@ -229,8 +231,8 @@ const TraceabilityReport = () => {
         : -1;
     });
   };
+
   const mapStatus = (value) => {
-    
     if (
       value === 0 ||
       value === 1 ||
@@ -255,6 +257,7 @@ const TraceabilityReport = () => {
     if (value === 3 || value === "FAIL") return "red";
     return "inherit";
   };
+  
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setSerialNumber(event.target.value);
