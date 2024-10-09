@@ -253,12 +253,14 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               )
-                            ) : (
+                            ) : row.description.toLowerCase() === "frequency" &&
+                              parseFloat(row.result) === 0 ? null : (
                               <p className="text-green-700 font-semibold">
                                 {row.result}
                               </p>
                             )}
                           </TableCell>
+
                           <TableCell align="center">
                             {row.status.toLowerCase() === "failed" ? (
                               <p className="text-red-700 font-semibold">FAIL</p>
