@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
 import StatusBox from "../statusBox";
+import Loading from "../loadingComponent";
 
 function createLstStatus(SerialCode, Result) {
   return { SerialCode, Result };
@@ -40,6 +41,8 @@ const smrData = [
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [serialRun, setSerialRun] = useState("");
+  const [LstActLog, setLstActLog] = useState(null);
+  const [LstStatusLog, setLstStatusLog] = useState(null);
 
   const mapStatus = (value) => {
     switch (value) {
@@ -64,6 +67,8 @@ const AcousticManualRun = () => {
     setSerialRun(serialNumber);
     // console.log("Running with Serial Number:", serialNumber);
   };
+
+  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
   return (
     <>
       <HeaderLayout page="Acoustic ManualRun" />
@@ -207,24 +212,23 @@ const AcousticManualRun = () => {
               </div>
             </div>
           </div>
-          <div className=" text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+          <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
             <div className="content p-4 items-center">
-              <div className=" flex flex-between flex-wrap justify-start">
-                {/* <div className="box bg-slate-300 p-4 mr-2 rounded-lg w-40">
-                  <i className="fa-solid fa-microphone mr-4 "></i>
-                  <span>AcousticTest</span>
-                </div> */}
+              <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
-                    sx={{ minWidth: 400, maxWidth: 700, overflowX: "auto" }}
+                    sx={{ minWidth: 500, maxWidth: 700, overflowX: "auto" }}
                     aria-label="simple table"
                   >
                     <TableHead>
                       <TableRow>
-                        <TableCell align="left">
+                        <TableCell align="center">
+                          <p className="font-semibold">ID</p>
+                        </TableCell>
+                        <TableCell align="center">
                           <p className="font-semibold">Serial_Code</p>
                         </TableCell>
                         <TableCell align="center">
@@ -233,29 +237,53 @@ const AcousticManualRun = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {lstStatus.map((row) => (
-                        <TableRow
-                          key={row.SerialCode}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell component="th" scope="row">
-                            <p className="font-semibold">{row.SerialCode}</p>
-                          </TableCell>
-                          <TableCell align="left">
-                            {row.Result == "Fail" ? (
-                              <p className=" text-red-700 font-semibold">
-                                {row.Result}
+                      {LstStatusLog && LstStatusLog.length > 0 ? (
+                        sortedStatus.slice(0, 5).map((row) => (
+                          <TableRow
+                            key={row.id}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell align="center">
+                              <p className="font-semibold">{row.id}</p>
+                            </TableCell>
+                            <TableCell component="th" scope="row" align="left">
+                              <p className="font-semibold">{row.serialCode}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.totalJudgement === 1 ? (
+                                <p className="text-green-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : row.totalJudgement === 3 ? (
+                                <p className="text-red-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : row.totalJudgement === 2 ? (
+                                <p className="text-red-500 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : (
+                                <p className="text-yellow-500 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={3} align="center">
+                            <div className="items-center justify-center text-center p-4">
+                              <p className="text-gray-600 font-semibold">
+                                No data available
                               </p>
-                            ) : (
-                              <p className=" text-green-700 font-semibold">
-                                {row.Result}
-                              </p>
-                            )}
+                              <Loading text="Data Not Found . . ." />
+                            </div>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>
