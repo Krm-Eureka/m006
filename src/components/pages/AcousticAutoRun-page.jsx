@@ -88,7 +88,6 @@ const TraceabilityStatus = () => {
                 (item) => item.description === "Current"
               );
               console.log(currentDescp);
-
               setCurrentDescp(currentDescp);
               setSmrData(uniqueSmrData);
               setLoading(false);
@@ -219,9 +218,9 @@ const TraceabilityStatus = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.map((row, index) => (
+                      {smrData.map((row, idx) => (
                         <TableRow
-                          key={row.description + index}
+                          key={idx}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}

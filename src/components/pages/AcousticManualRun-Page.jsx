@@ -101,16 +101,16 @@ const AcousticManualRun = () => {
            
           </div>
         </div>
-        <div className="flex mx-2 md:flex-wrap ">
-          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md  w-90% h-fit">
+        <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
+          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Show Data Run Summary</p>
             </div>
             <div className="content flex flex-between p-4 items-center">
-              <div className=" flex flex-between flex-wrap justify-start">
+              <div className="flex flex-between flex-wrap justify-start">
                 <TableContainer component={Paper}>
                   <Table
-                    sx={{ minWidth: 500, maxWidth: 800, overflowX: "auto" }}
+                    sx={{ width: 800, overflowX: "auto" }}
                     aria-label="simple table"
                   >
                     <TableHead>
@@ -135,35 +135,71 @@ const AcousticManualRun = () => {
                     <TableBody>
                       {smrData.map((row,idx) => (
                         <TableRow
-                          key={idx}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.Name}</p>
-                          </TableCell>
-                          <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.Lower}</p>
-                          </TableCell>
-                          <TableCell align="center" component="th" scope="row">
-                            <p className="font-semibold">{row.Upper}</p>
-                          </TableCell>
-                          <TableCell align="left">
-                            {row.smrResult == "Fail" ? (
-                              <p className=" text-red-700 font-semibold">
-                                {row.smrResult}
+                        key={idx}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell align="left" component="th" scope="row">
+                          <p className="font-semibold">{row.description}</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">{row.lowerValue}</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">{row.upperValue}</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.result === "Fail" ? (
+                            <p className="text-red-700 font-semibold">
+                              {row.result}
+                            </p>
+                          ) : row.description.toLowerCase() ===
+                            "sensitivity" ? (
+                            row.result !== "" &&
+                            !isNaN(parseFloat(row.result)) &&
+                            row.lowerValue !== "" &&
+                            !isNaN(parseFloat(row.lowerValue)) &&
+                            row.upperValue !== "" &&
+                            !isNaN(parseFloat(row.upperValue)) &&
+                            parseFloat(row.result) >=
+                              parseFloat(row.lowerValue) &&
+                            parseFloat(row.result) <=
+                              parseFloat(row.upperValue) ? (
+                              <p className="text-green-700 font-semibold">
+                                {row.result}
                               </p>
                             ) : (
-                              <p className=" text-green-700 font-semibold">
-                                {row.smrResult}
+                              <p className="text-red-700 font-semibold">
+                                {row.result}
                               </p>
-                            )}
-                          </TableCell>
-                          <TableCell component="th" scope="row">
-                            <p className="font-semibold">{row.Status}</p>
-                          </TableCell>
-                        </TableRow>
+                            )
+                          ) : row.description.toLowerCase() ===
+                            "frequency" ? null : (
+                            <p className="text-green-700 font-semibold">
+                              {row.result}
+                            </p>
+                          )}
+                        </TableCell>
+
+                        <TableCell align="center">
+                          {row.status.toLowerCase() === "failed" ? (
+                            <p className="text-red-700 font-semibold">FAIL</p>
+                          ) : row.status.toLowerCase() === "pass" ? (
+                            <p className="text-green-700 font-semibold">
+                              PASS
+                            </p>
+                          ) : row.status.toLowerCase() === "fail" ? (
+                            <p className="text-red-700 font-semibold">FAIL</p>
+                          ) : row.status.toLowerCase() === "" ? (
+                            <p className="font-semibold text-yellow-500">
+                              Exception
+                            </p>
+                          ) : (
+                            ""
+                          )}
+                        </TableCell>
+                      </TableRow>
                       ))}
                     </TableBody>
                   </Table>

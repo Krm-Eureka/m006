@@ -11,10 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
 import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
-import {
-  formatDateTime,
-  formatDateTimeSlash,
-} from "../../services/formatTimeStamp";
+import { formatDateTimeSlash } from "../../services/formatTimeStamp";
 import { TableSortLabel } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -385,16 +382,16 @@ const TraceabilityReport = () => {
   // };
   const exportToCSV = () => {
     const headers = columns.map((column) => `"${column.label}"`).join(",");
-  
+
     const csvRows = filteredRows.map((row) => {
       return columns
         .map((column) => {
           let value = row[column.id];
-  
+
           if (column.id === "lastUpdateDate" || column.id === "creationDate") {
             value = formatDateTimeSlash(value);
           }
-  
+
           if (
             column.id === "sensitivityResult" ||
             column.id === "thdResult" ||
@@ -402,7 +399,7 @@ const TraceabilityReport = () => {
           ) {
             value = toFixedTwo(value);
           }
-  
+
           if (
             column.id === "currentJud" ||
             column.id.includes("Jud") ||
@@ -413,7 +410,7 @@ const TraceabilityReport = () => {
                 ? mapStatus(value)
                 : value;
           }
-  
+
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""')}"`
             : value != null
@@ -422,23 +419,23 @@ const TraceabilityReport = () => {
         })
         .join(",");
     });
-  
+
     const today = new Date();
-  
+
     const day = String(today.getDate()).padStart(2, "0");
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
-  
+
     let hours = today.getHours();
     const minutes = String(today.getMinutes()).padStart(2, "0");
     const seconds = String(today.getSeconds()).padStart(2, "0");
-  
+
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
     hours = hours ? String(hours).padStart(2, "0") : "12";
-  
+
     const formattedDate = `${day}_${month}_${year}_${hours}_${minutes}_${seconds} ${ampm}`;
-  
+
     const csvContent = [
       `"Traceability Report"`,
       `"Date From : ${fromDate}" `,
@@ -447,19 +444,19 @@ const TraceabilityReport = () => {
       headers,
       ...csvRows,
     ].join("\n");
-  
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     const fileName = `TraceabilityReport_${formattedDate}.csv`;
     a.href = url;
     a.download = fileName;
-  
+
     a.click();
     URL.revokeObjectURL(url);
   };
-  
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -648,7 +645,9 @@ const TraceabilityReport = () => {
                               column.id === "thdResult" ||
                               column.id === "currentMeasured"
                             ? toFixedTwo(row[column.id])
-                            :column.id === "id"? row[column.id]: mapStatus(row[column.id])}
+                            : column.id === "id"
+                            ? row[column.id]
+                            : mapStatus(row[column.id])}
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
