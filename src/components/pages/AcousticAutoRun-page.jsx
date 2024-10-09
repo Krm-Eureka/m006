@@ -105,12 +105,13 @@ const TraceabilityStatus = () => {
   const mapStatus = (value) => {
     switch (value) {
       case 0:
-      case 3:
-        return "FAIL";
+        return "Exception";
       case 1:
-        return "TESTING";
-      case 2:
         return "PASS";
+      case 2:
+        return "FAIL";
+      case 3:
+        return "Unknown";
       default:
         return value;
     }
@@ -179,7 +180,7 @@ const TraceabilityStatus = () => {
                 <StatusBox name="QRCode" status={LstActLog.qrStatus} />
                 <StatusBox
                   name="TotalStatus"
-                  status={LstActLog.tracReporJudgementtResult}
+                  status={LstActLog.totalJudgement}
                 />
               </div>
             </>
@@ -241,6 +242,12 @@ const TraceabilityStatus = () => {
                               </p>
                             ) : row.description.toLowerCase() ===
                               "sensitivity" ? (
+                              row.result !== "" &&
+                              !isNaN(parseFloat(row.result)) &&
+                              row.lowerValue !== "" &&
+                              !isNaN(parseFloat(row.lowerValue)) &&
+                              row.upperValue !== "" &&
+                              !isNaN(parseFloat(row.upperValue)) &&
                               parseFloat(row.result) >=
                                 parseFloat(row.lowerValue) &&
                               parseFloat(row.result) <=
@@ -253,8 +260,7 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               )
-                            ) : row.description.toLowerCase() === "frequency" &&
-                              parseFloat(row.result) === 0 ? null : (
+                            ) : row.description.toLowerCase() === "frequency" ? null : (
                               <p className="text-green-700 font-semibold">
                                 {row.result}
                               </p>
@@ -328,7 +334,7 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.totalJudgement === 1 ? (
-                                <p className="text-blue-700 font-semibold">
+                                <p className="text-green-700 font-semibold">
                                   {mapStatus(row.totalJudgement)}
                                 </p>
                               ) : row.totalJudgement === 3 ? (
@@ -336,7 +342,7 @@ const TraceabilityStatus = () => {
                                   {mapStatus(row.totalJudgement)}
                                 </p>
                               ) : row.totalJudgement === 2 ? (
-                                <p className="text-green-700 font-semibold">
+                                <p className="text-red-500 font-semibold">
                                   {mapStatus(row.totalJudgement)}
                                 </p>
                               ) : (
