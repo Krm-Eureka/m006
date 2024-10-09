@@ -260,7 +260,8 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               )
-                            ) : row.description.toLowerCase() === "frequency" ? null : (
+                            ) : row.description.toLowerCase() ===
+                              "frequency" ? null : (
                               <p className="text-green-700 font-semibold">
                                 {row.result}
                               </p>
