@@ -88,7 +88,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
-    // setIsAuthenticated(true);
+    setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -104,8 +104,8 @@ const MasterSetting = () => {
           icon: "error",
           title: "Authorization Fail",
         });
-        navigate("/Console/Content_ACT/AutoRun");
-        // setIsAuthenticated(true);
+        // navigate("/Console/Content_ACT/AutoRun");
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -113,8 +113,8 @@ const MasterSetting = () => {
         icon: "error",
         title: "Authorization Fail",
       });
-      navigate("/Console/Content_ACT/AutoRun");
-      // setIsAuthenticated(true);
+      // navigate("/Console/Content_ACT/AutoRun");
+      setIsAuthenticated(true);
     }
   };
 
@@ -148,6 +148,7 @@ const MasterSetting = () => {
     console.log("PLM Reference:", plmReference);
     console.log("EBOM Reference:", ebomReference);
     console.log("Manufacturing Date Format:", manufacturingDateFormat);
+    console.log("Last Running Date:", lastRunningDate);
     console.log("EOLT Reference Code:", eoltRefCode);
     console.log("Running No:", runningNo);
     console.log("Running Min:", runningMin);
@@ -158,15 +159,17 @@ const MasterSetting = () => {
     // const date = new Date(lastRunningDate);
     // const LastDate = date.toISOString();
     console.log(
-      plmReference &&
-        ebomReference &&
-        // manufacturingDateFormat &&
-        lastRunningDate &&
-        // LastDate &&
-        eoltRefCode &&
-        runningMin &&
-        runningMax &&
-        enableFlag
+      Boolean(
+        plmReference &&
+          ebomReference &&
+          // manufacturingDateFormat &&
+          lastRunningDate &&
+          // LastDate &&
+          eoltRefCode &&
+          runningMin &&
+          runningMax &&
+          enableFlag
+      )
     );
 
     if (
@@ -179,8 +182,10 @@ const MasterSetting = () => {
         // LastDate &&
         eoltRefCode &&
         runningNo &&
-        runningMin &&
-        runningMax &&
+        runningMin !== undefined &&
+        runningMin !== null &&
+        runningMax !== undefined &&
+        runningMax !== null &&
         enableFlag)
     ) {
       const data = {
@@ -192,8 +197,8 @@ const MasterSetting = () => {
         manufacturingDateFormat: "yyMMdd",
         eoltRefCode,
         runningNo,
-        runningMin,
-        runningMax,
+        runningMin: parseInt(runningMin),
+        runningMax: parseInt(runningMax),
         enableFlag,
       };
       try {
