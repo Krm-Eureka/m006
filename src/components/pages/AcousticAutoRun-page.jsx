@@ -35,8 +35,8 @@ const TraceabilityStatus = () => {
   const [currentDescp, setCurrentDescp] = useState(null);
   const [smrData, setSmrData] = useState([]);
   const today = new Date();
-  const fiveLast = new Date(today.getTime() - 86400000 * 7);
-  const startDate = fiveLast.toISOString().split("T")[0];
+  const lastWeek = new Date(today.getTime() - 86400000 * 7);
+  const startDate = lastWeek.toISOString().split("T")[0];
   const endDate = today.toISOString().split("T")[0];
 
   useEffect(() => {
