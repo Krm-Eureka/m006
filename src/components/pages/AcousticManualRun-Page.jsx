@@ -44,16 +44,18 @@ const AcousticManualRun = () => {
   const mapStatus = (value) => {
     switch (value) {
       case 0:
-      case 3:
-        return "FAIL";
+        return "Exception";
       case 1:
-        return "TESTING";
-      case 2:
         return "PASS";
+      case 2:
+        return "FAIL";
+      case 3:
+        return "Unknown";
       default:
         return value;
     }
   };
+  
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
   };
@@ -131,9 +133,9 @@ const AcousticManualRun = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.map((row) => (
+                      {smrData.map((row,idx) => (
                         <TableRow
-                          key={row.SerialCode}
+                          key={idx}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
