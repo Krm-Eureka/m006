@@ -231,7 +231,7 @@ const TraceabilityReport = () => {
     if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 3 || value === "FAILED") return "FAIL";
+    if (value === 3 || value === "FAIL"|| value === "FAILED") return "FAIL";
     return value;
   };
 
@@ -303,14 +303,9 @@ const TraceabilityReport = () => {
   const sortedRows = sortRows(filteredRows, order, orderBy);
   const toFixedTwo = (value) => {
     const numericValue = parseFloat(value);
-    if (!isNaN(numericValue)) {
-      // console.log(numericValue.toFixed(2));
-      return (value = numericValue.toFixed(2));
-    } else {
-      console.warn(`Cannot convert to number: ${value}`);
-      return value;
-    }
+    return isNaN(numericValue) ? value : numericValue.toFixed(2);
   };
+
   // const exportToCSV = () => {
   //   const headers = columns.map((column) => `"${column.label}"`).join(",");
 
@@ -412,10 +407,8 @@ const TraceabilityReport = () => {
           }
 
           return typeof value === "string"
-            ? `"${value.replace(/"/g, '""')}"`
-            : value != null
-            ? value
-            : "";
+            ? `"${value.replace(/"/g, '""').replace(/,/g, "\\,")}"`
+            : value || "";
         })
         .join(",");
     });
@@ -623,17 +616,20 @@ const TraceabilityReport = () => {
                           align={column.aln || "left"}
                           style={{
                             color:
-                              column.id === "thdJud" ||
-                              column.id === "frequencyJud" ||
-                              column.id === "sensitivityJud" ||
-                              column.id === "laserMarkStatus" ||
-                              column.id === "creationDate" ||
-                              column.id === "qrJudgement" ||
-                              column.id === "currentJud" ||
-                              column.id === "tracReportStatus" ||
-                              column.id === "tracReporJudgementtResult" ||
-                              column.id === "qrStatus" ||
-                              column.id === "acousticStatus"
+                              column.id === "qrJudgement"
+                                ? row[column.id] === 1
+                                  ? "green"
+                                  : "red"
+                                : column.id === "thdJud" ||
+                                  column.id === "frequencyJud" ||
+                                  column.id === "sensitivityJud" ||
+                                  column.id === "laserMarkStatus" ||
+                                  column.id === "creationDate" ||
+                                  column.id === "currentJud" ||
+                                  column.id === "tracReportStatus" ||
+                                  column.id === "tracReporJudgementtResult" ||
+                                  column.id === "qrStatus" ||
+                                  column.id === "acousticStatus"
                                 ? getColor(row[column.id])
                                 : "inherit",
                           }}
@@ -647,6 +643,10 @@ const TraceabilityReport = () => {
                             ? toFixedTwo(row[column.id])
                             : column.id === "id"
                             ? row[column.id]
+                            : column.id === "qrJudgement"
+                            ? row[column.id] === 1
+                              ? "PASS"
+                              : "FAIL"
                             : mapStatus(row[column.id])}
                         </StyledTableCell>
                       ))}
