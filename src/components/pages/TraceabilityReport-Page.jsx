@@ -396,14 +396,14 @@ const TraceabilityReport = () => {
           }
 
           if (
+            column.id === "qrJudgement" ||
             column.id === "currentJud" ||
             column.id.includes("Jud") ||
             column.id.includes("Status")
           ) {
-            value =
-              column.id.includes("Jud") || column.id.includes("Status")
-                ? mapStatus(value)
-                : value;
+            value = column.id === "qrJudgement" 
+              ? (row[column.id] === 1 ? "PASS" : "FAIL") 
+              : mapStatus(value);
           }
 
           return typeof value === "string"
@@ -469,7 +469,7 @@ const TraceabilityReport = () => {
       </div>
     );
   }
-  
+
   return (
     <>
       <HeaderLayout page="Traceability Report" />
