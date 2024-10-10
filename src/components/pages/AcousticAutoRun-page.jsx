@@ -165,7 +165,7 @@ const TraceabilityStatus = () => {
                       currentDescp.status === "FAIL"
                         ? 3
                         : currentDescp.status === "PASS"
-                        ? 1
+                        ? 2
                         : 4
                     }
                   />

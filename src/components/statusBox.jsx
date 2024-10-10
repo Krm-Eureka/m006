@@ -7,6 +7,8 @@ import BOX from "../assets/svg/border-all-solid.svg";
 import TST from "../assets/svg/test.svg";
 
 const StatusBox = ({ name, status = 4 }) => {
+  console.log(name, ":", status);
+
   const statusMap = {
     acoustictest: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
@@ -27,6 +29,7 @@ const StatusBox = ({ name, status = 4 }) => {
       1: { text: "Marking", className: "bg-blue-500 text-black" },
       2: { text: "Mark Completed", className: "bg-green-500 text-black" },
       3: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
     qrcode: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
@@ -40,6 +43,7 @@ const StatusBox = ({ name, status = 4 }) => {
       1: { text: "PASS", className: "bg-green-500 text-black" },
       2: { text: "FAIL", className: "bg-red-500 text-black" },
       3: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
     current: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
