@@ -105,3 +105,17 @@ export function formatDateTimeSlash(dateTimeString) {
     const time = timeFormatter.format(date);
     return `${year}/${month}/${day} ${time}`;
 }
+export function formatDateToSetting(dateTimeString) {
+    if (!dateTimeString) {
+        return "Invalid Date";
+    }
+    const date = new Date(dateTimeString);
+    if (isNaN(date.getTime())) {
+        return "Invalid Date";
+    }
+    const formattedDate = date.toISOString().replace('T', ' ').slice(0, -1);
+    console.log(formatDate);
+    
+    return formattedDate;
+}
+
