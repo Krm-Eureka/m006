@@ -3,7 +3,7 @@ import HeaderLayout from "../Header-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import {
-  formatDateForSetting,
+  formatDateForSetting,formatDateToSetting,
   formatDate,
 } from "../../services/formatTimeStamp";
 // import CardSetting from "../card-setting";
@@ -194,6 +194,7 @@ const MasterSetting = () => {
         plmReference,
         ebomReference,
         // manufacturingDateFormat: formatDateForSetting(LastDate),
+        // lastRunningDate :formatDateToSetting(lastRunningDate),
         manufacturingDateFormat: "yyMMdd",
         eoltRefCode,
         runningNo,

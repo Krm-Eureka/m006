@@ -469,6 +469,7 @@ const TraceabilityReport = () => {
       </div>
     );
   }
+  
   return (
     <>
       <HeaderLayout page="Traceability Report" />
