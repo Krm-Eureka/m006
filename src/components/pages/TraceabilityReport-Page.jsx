@@ -54,7 +54,7 @@ const columns = [
     aln: "center",
   },
   {
-    id: "tracReporJudgementtResult",
+    id: "totalJudgement",
     label: "Total Jud",
     w: 200,
     aln: "center",
@@ -231,7 +231,7 @@ const TraceabilityReport = () => {
     if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 3 || value === "FAIL"|| value === "FAILED") return "FAIL";
+    if (value === 3 || value === "FAIL" || value === "FAILED") return "FAIL";
     return value;
   };
 
@@ -401,9 +401,12 @@ const TraceabilityReport = () => {
             column.id.includes("Jud") ||
             column.id.includes("Status")
           ) {
-            value = column.id === "qrJudgement" 
-              ? (row[column.id] === 1 ? "PASS" : "FAIL") 
-              : mapStatus(value);
+            value =
+              column.id === "totalJudgement" || column.id === "qrJudgement"
+                ? row[column.id] === 1
+                  ? "PASS"
+                  : "FAIL"
+                : mapStatus(value);
           }
 
           return typeof value === "string"
@@ -617,6 +620,7 @@ const TraceabilityReport = () => {
                           align={column.aln || "left"}
                           style={{
                             color:
+                              column.id === "totalJudgement" ||
                               column.id === "qrJudgement"
                                 ? row[column.id] === 1
                                   ? "green"
@@ -628,7 +632,7 @@ const TraceabilityReport = () => {
                                   column.id === "creationDate" ||
                                   column.id === "currentJud" ||
                                   column.id === "tracReportStatus" ||
-                                  column.id === "tracReporJudgementtResult" ||
+                                  // column.id === "totalJudgement" ||
                                   column.id === "qrStatus" ||
                                   column.id === "acousticStatus"
                                 ? getColor(row[column.id])
@@ -644,7 +648,7 @@ const TraceabilityReport = () => {
                             ? toFixedTwo(row[column.id])
                             : column.id === "id"
                             ? row[column.id]
-                            : column.id === "qrJudgement"
+                            :column.id === "totalJudgement" || column.id === "qrJudgement"
                             ? row[column.id] === 1
                               ? "PASS"
                               : "FAIL"
