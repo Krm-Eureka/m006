@@ -7,8 +7,6 @@ import BOX from "../assets/svg/border-all-solid.svg";
 import TST from "../assets/svg/test.svg";
 
 const StatusBox = ({ name, status = 4 }) => {
-  console.log(name, ":", status);
-
   const statusMap = {
     acoustictest: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },

@@ -396,14 +396,21 @@ const TraceabilityReport = () => {
           }
 
           if (
+            column.id === "totalJudgement" ||
             column.id === "qrJudgement" ||
             column.id === "currentJud" ||
-            column.id.includes("Jud") ||
-            column.id.includes("Status")
+            column.id === "sensitivityJud" ||
+            column.id === "thdJud" ||
+            column.id === "frequencyJud"
           ) {
             value =
-              column.id === "totalJudgement" || column.id === "qrJudgement"
-                ? row[column.id] === 1
+              column.id === "totalJudgement" ||
+              column.id === "qrJudgement" ||
+              column.id === "currentJud" ||
+              column.id === "sensitivityJud" ||
+              column.id === "thdJud" ||
+              column.id === "frequencyJud"
+                ? row[column.id] === 1 || row[column.id] === "PASS"
                   ? "PASS"
                   : "FAIL"
                 : mapStatus(value);
@@ -621,16 +628,21 @@ const TraceabilityReport = () => {
                           style={{
                             color:
                               column.id === "totalJudgement" ||
-                              column.id === "qrJudgement"
-                                ? row[column.id] === 1
+                              column.id === "qrJudgement" ||
+                              column.id === "currentJud" ||
+                              column.id === "sensitivityJud" ||
+                              column.id === "thdJud" ||
+                              column.id === "frequencyJud"
+                                ? row[column.id] === 1 ||
+                                  row[column.id] === "PASS"
                                   ? "green"
                                   : "red"
                                 : column.id === "thdJud" ||
-                                  column.id === "frequencyJud" ||
-                                  column.id === "sensitivityJud" ||
+                                  // column.id === "frequencyJud" ||
+                                  // column.id === "sensitivityJud" ||
                                   column.id === "laserMarkStatus" ||
                                   column.id === "creationDate" ||
-                                  column.id === "currentJud" ||
+                                  // column.id === "currentJud" ||
                                   column.id === "tracReportStatus" ||
                                   // column.id === "totalJudgement" ||
                                   column.id === "qrStatus" ||
@@ -648,8 +660,13 @@ const TraceabilityReport = () => {
                             ? toFixedTwo(row[column.id])
                             : column.id === "id"
                             ? row[column.id]
-                            :column.id === "totalJudgement" || column.id === "qrJudgement"
-                            ? row[column.id] === 1
+                            : column.id === "totalJudgement" ||
+                              column.id === "qrJudgement" ||
+                              column.id === "currentJud" ||
+                              column.id === "sensitivityJud" ||
+                              column.id === "thdJud" ||
+                              column.id === "frequencyJud"
+                            ? row[column.id] === 1 || row[column.id] === "PASS"
                               ? "PASS"
                               : "FAIL"
                             : mapStatus(row[column.id])}
