@@ -63,9 +63,19 @@ const AcousticManualRun = () => {
     setSerialNumber(e.target.value);
   };
 
-  const handleRunClick = () => {
+  const handleRunClick = async () => {
     setSerialRun(serialNumber);
     // console.log("Running with Serial Number:", serialNumber);
+    // if (serialNumber) {
+    //   const data = {
+    //     serialNumber,
+    //   };
+    // }
+    // try{
+
+    // }catch{
+
+    // }
   };
 
   const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
@@ -159,9 +169,9 @@ const AcousticManualRun = () => {
                                 {row.result}
                               </p>
                             ) : row.description.toLowerCase() ===
-                            "sensitivity" || row.description.toLowerCase() ===
-                            "current"  || row.description.toLowerCase() ===
-                            "thd" ? (
+                                "sensitivity" ||
+                              row.description.toLowerCase() === "current" ||
+                              row.description.toLowerCase() === "thd" ? (
                               row.result !== "" &&
                               !isNaN(parseFloat(row.result)) &&
                               row.lowerValue !== "" &&
@@ -184,10 +194,10 @@ const AcousticManualRun = () => {
                                 <p className="text-gray-500">{row.result}</p>
                               )
                             ) : row.description.toLowerCase() ===
-                              "frequency" ? null : ( 
+                              "frequency" ? null : (
                               <p className="text-green-700 font-semibold">
                                 {row.result}
-                              </p> 
+                              </p>
                             )}
                           </TableCell>
 
