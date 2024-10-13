@@ -132,10 +132,11 @@ const UserManagement = () => {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>ID</StyledTableCell>
-                    <StyledTableCell>
-                      Name{"    "}
+                    <StyledTableCell sx={{ maxWidth: '100px' }}>
+                      UserName : {"    "}
                       <input
-                        className="rounded-md"
+                       placeholder="username"
+                        className="rounded-md px-4 py-2 text-black"
                         type="text"
                         title="Filter by Username"
                         value={filterUsername}
