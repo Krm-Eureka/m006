@@ -13,7 +13,8 @@ import {
 } from "../../services/api-service/stationData";
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
-import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
+// import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
+import traceabilityService from "../../services/api-service/traceabilityReportData";
 
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
@@ -43,7 +44,7 @@ const TraceabilityStatus = () => {
     const fetchData = async () => {
       try {
         await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
-        await getTraceabilityDataWithDate(
+        await traceabilityService.getTraceabilityDataWithDate(
           "1",
           startDate,
           endDate,
