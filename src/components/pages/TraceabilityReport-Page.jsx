@@ -510,7 +510,7 @@ const TraceabilityReport = () => {
               ""
             )}
             {dropDown === "date" ? (
-              <>
+              <div className="flex">
                 <div className="mx-2 mb-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
                     From Date
@@ -533,7 +533,7 @@ const TraceabilityReport = () => {
                     onChange={handleToDateChange}
                   />
                 </div>
-              </>
+              </div>
             ) : (
               <>
                 <label
