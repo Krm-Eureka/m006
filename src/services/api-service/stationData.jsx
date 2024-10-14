@@ -33,7 +33,7 @@ export async function GetLastRetestAcoustic(version, SET, LOADING) {
       `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
     );
 
-    // console.log(`LastActTrace ${productionLineID} : `, res.data);
+    console.log(`GetLastRetestAcoustic: `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {
