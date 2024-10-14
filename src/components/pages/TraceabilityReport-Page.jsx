@@ -10,7 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
-import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
+import traceabilityService from "../../services/api-service/traceabilityReportData";
 import { formatDateTimeSlash } from "../../services/formatTimeStamp";
 import { TableSortLabel } from "@mui/material";
 
@@ -202,7 +202,14 @@ const TraceabilityReport = () => {
   const [toDate, setToDate] = useState(today);
   const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropDown, setDropDown] = useState("");
 
+  const toggleDropdown = () => {
+    console.log(dropDown);
+
+    setDropdownOpen(!dropdownOpen);
+  };
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -264,7 +271,7 @@ const TraceabilityReport = () => {
   };
   const searchWithDate = async () => {
     try {
-      await getTraceabilityDataWithDate(
+      await traceabilityService.getTraceabilityDataWithDate(
         "1",
         fromDate,
         toDate,
@@ -394,7 +401,17 @@ const TraceabilityReport = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  const handleSearchBySerial = async () => {
+    try {
+      await traceabilityService.getTraceabilityDataWithSerial(
+        "1",
+        searchTerm,
+        setRows
+      );
+    } catch (err) {
+      setError(err);
+    }
+  };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -419,6 +436,58 @@ const TraceabilityReport = () => {
           <p>Traceability Report of EOLTStation</p>
         </div>
         <div className="flex flex-wrap mx-4 py-2 h-fit items-center justify-center">
+          <>
+            <button
+              onClick={toggleDropdown}
+              className=" text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center"
+              type="button"
+            >
+              {dropDown === "" || null ? "Filter Options" : dropDown}
+
+              <svg
+                className="w-2.5 h-2.5 ml-3"
+                aria-hidden="true"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 4 4 4-4"
+                />
+              </svg>
+            </button>
+            {dropdownOpen && (
+              <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                <ul className="py-2 text-sm text-gray-700">
+                  <li>
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => {
+                        setDropDown("date");
+                        toggleDropdown();
+                      }}
+                    >
+                      By Date
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => {
+                        setDropDown("serial");
+                        toggleDropdown();
+                      }}
+                    >
+                      By Serial Code
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </>
           <div className="mx-2 mb-2">
             {rows && rows.length > 0 ? (
               <>
@@ -440,29 +509,51 @@ const TraceabilityReport = () => {
             ) : (
               ""
             )}
+            {dropDown === "date" ? (
+              <>
+                <div className="mx-2 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+                    From Date
+                  </label>
+                  <input
+                    type="date"
+                    className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                    value={fromDate}
+                    onChange={handleFromDateChange}
+                  />
+                </div>
+                <div className="mx-2 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+                    To Date
+                  </label>
+                  <input
+                    type="date"
+                    className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                    value={toDate}
+                    onChange={handleToDateChange}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <label
+                  htmlFor="serialNumber"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-800"
+                >
+                  Serial Number
+                </label>
+                <input
+                  type="text"
+                  id="serialNumber"
+                  className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                  placeholder="Serial Number..."
+                  value={searchTerm}
+                  onChange={handleSearchBySerial}
+                />
+              </>
+            )}
           </div>
-          <div className="mx-2 mb-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-              From Date
-            </label>
-            <input
-              type="date"
-              className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-              value={fromDate}
-              onChange={handleFromDateChange}
-            />
-          </div>
-          <div className="mx-2 mb-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-              To Date
-            </label>
-            <input
-              type="date"
-              className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-              value={toDate}
-              onChange={handleToDateChange}
-            />
-          </div>
+
           <div className="justify-items-center mx-2 mt-3">
             <button
               onClick={searchWithDate}

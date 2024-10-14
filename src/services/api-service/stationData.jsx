@@ -7,11 +7,30 @@ export async function GetLastAcousticTraceLog(
   SET,
   LOADING
 ) {
-  console.log(`/api/v${version}/AcousticTraceLog/GetLastAcousticTraceLog/${productionLineID}`);
-  
+  console.log(
+    `/api/v${version}/AcousticTraceLog/GetLastAcousticTraceLog/${productionLineID}`
+  );
+
   try {
     const res = await endpoint.get(
       `/api/v${version}/AcousticTraceLog/GetLastAcousticTraceLog/${productionLineID}`
+    );
+
+    // console.log(`LastActTrace ${productionLineID} : `, res.data);
+    SET(res.data.data);
+    LOADING(!res.data.succeeded);
+  } catch (error) {
+    console.error("Failed to fetch Data:", error);
+  }
+}
+export async function GetLastRetestAcoustic(version, SET, LOADING) {
+  console.log(
+    `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
+  );
+
+  try {
+    const res = await endpoint.get(
+      `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
     );
 
     // console.log(`LastActTrace ${productionLineID} : `, res.data);
@@ -32,7 +51,6 @@ export async function GetAcousticTraceDetailById(
     const res = await endpoint.get(
       `/api/v${version}/AcousticTraceDetail/GetByAcousticLogId/${acousticTraceId}`
     );
-    // console.log(`AcousticTraceDetail ${acousticTraceId} : `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {

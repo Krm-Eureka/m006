@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,40 +9,48 @@ import Paper from "@mui/material/Paper";
 import HeaderLayout from "../Header-component";
 import StatusBox from "../statusBox";
 import Loading from "../loadingComponent";
+import traceabilityService from "../../services/api-service/traceabilityReportData";
+import {
+  GetAcousticTraceDetailById,
+  GetLastRetestAcoustic,
+} from "../../services/api-service/stationData";
 
-function createLstStatus(SerialCode, Result) {
-  return { SerialCode, Result };
-}
 function createSmrData(description, lowerValue, upperValue, result, status) {
-  const formattedResult = parseFloat(result).toFixed(2);
   return {
     description,
     lowerValue,
     upperValue,
-    result: formattedResult,
+    result: parseFloat(result).toFixed(2),
     status,
   };
 }
 
-const lstStatus = [
-  createLstStatus("EOLT-A-382315929117", "PASS"),
-  createLstStatus("EOLT-A-120885838401", "PASS"),
-  createLstStatus("EOLT-A-554779049699", "PASS"),
-  createLstStatus("EOLT-A-37003047849", "Fail"),
-  createLstStatus("EOLT-A-529520075944", "PASS"),
-];
-const smrData = [
-  createSmrData("Current", "-", "-", "-", "-"),
-  createSmrData("Sensitivity", "-", "-", "-", "-"),
-  createSmrData("THD", "-", "-", "-", "-"),
-  createSmrData("Frequency", "-", "-", "-", "-"),
-];
-
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
+  const [dataBySerial, setDataBySerial] = useState(null);
+  const [LstRetest, setLstRetest] = useState(null);
+  const [error, setError] = useState("");
   const [serialRun, setSerialRun] = useState("");
-  const [LstActLog, setLstActLog] = useState(null);
-  const [LstStatusLog, setLstStatusLog] = useState(null);
+  const [LstStatusLog, setLstStatusLog] = useState([]);
+  const [smrData, setSmrData] = useState([]);
+  const [currentDescp, setCurrentDescp] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [ActDetailById, setActDetailById] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await GetLastRetestAcoustic("1", setLstRetest, setLoading);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 2000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   const mapStatus = (value) => {
     switch (value) {
@@ -63,31 +71,100 @@ const AcousticManualRun = () => {
     setSerialNumber(e.target.value);
   };
 
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (!dataBySerial || !dataBySerial.id) return;
+
+      setLoading(true);
+      try {
+        const res = await GetAcousticTraceDetailById(
+          "1",
+          dataBySerial.id,
+          setActDetailById,
+          setLoading
+        );
+
+        const uniqueSmrData = Array.from(
+          new Map(
+            res.map((item) => [
+              item.description,
+              createSmrData(
+                item.description,
+                item.lowerValue,
+                item.upperValue,
+                item.result,
+                item.status
+              ),
+            ])
+          ).values()
+        );
+
+        const currentDescp = res.find((item) => item.description === "Current");
+        setCurrentDescp(currentDescp);
+        setSmrData(uniqueSmrData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetails();
+  }, [dataBySerial]);
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const handleRunClick = async () => {
     setSerialRun(serialNumber);
-    // console.log("Running with Serial Number:", serialNumber);
-    // if (serialNumber) {
-    //   const data = {
-    //     serialNumber,
-    //   };
-    // }
-    // try{
+    setLoading(true);
 
-    // }catch{
+    try {
+      const dataSerial =
+        await traceabilityService.getTraceabilityDataWithSerial(
+          "1",
+          serialNumber,
+          setDataBySerial
+        );
+      setDataBySerial(dataSerial);
+      await delay(2000);
+      if (dataSerial) {
+        await delay(1000);
+        if (dataSerial.id) {
+          console.log({ id: dataSerial.id });
 
-    // }
+          await traceabilityService.retestById("1", { id: dataSerial.id });
+          console.log("Retest called with ID:", dataSerial.id);
+          await delay(500);
+        } else {
+          console.error("Data fetched but ID is missing.");
+          setError("Data fetched but ID is missing.");
+          await delay(500);
+        }
+      } else {
+        console.error("Failed to fetch valid data.");
+        setError("Failed to fetch valid data.");
+      }
+
+      console.log("Data fetched successfully:", dataSerial.id);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching traceability data:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
+  const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
+
   return (
     <>
       <HeaderLayout page="Acoustic ManualRun" />
       <div className="content h-screen">
-        <div className=" text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+        <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
               Show Process Current of Manual EOLTStation {">>>"}{" "}
-              <span className="text-red-600 font-semibold">{serialRun}</span>
+              <span className="text-red-600 font-semibold">
+                {dataBySerial?.serialCode || "N/A"}
+              </span>
             </p>
           </div>
           <div className="mb-2 mt-4 mx-6 font-semibold">
@@ -101,18 +178,27 @@ const AcousticManualRun = () => {
               onChange={handleInputChange}
             />
             <button
-              className={`mx-2 my-1 py-2 px-4 font-semibold bg-blue-500 hover:bg-blue-700 text-white hover:text-white h-fit w-fit border rounded-btn`}
+              className="mx-2 my-1 py-2 px-4 font-semibold bg-blue-500 hover:bg-blue-700 text-white h-fit w-fit border rounded-btn"
               onClick={handleRunClick}
             >
               Run
             </button>
           </div>
           <div className="content flex flex-wrap flex-between p-4 items-center">
-            <StatusBox name="test" status={0} />
-            <StatusBox name="test" status={1} />
-            <StatusBox name="test" status={2} />
-            <StatusBox name="test" status={3} />
-            <StatusBox name="test" status={4} />
+            <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
+            <StatusBox
+              name="Current"
+              status={
+                currentDescp
+                  ? currentDescp.status === "FAIL"
+                    ? 3
+                    : 2
+                  : undefined
+              }
+            />
+            <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
+            <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
+            <StatusBox name="TotalStatus" status={LstRetest?.totalJudgement} />
           </div>
         </div>
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
@@ -121,109 +207,97 @@ const AcousticManualRun = () => {
               <p>Show Data Run Summary</p>
             </div>
             <div className="content flex flex-between p-4 items-center">
-              <div className="flex flex-between flex-wrap justify-start">
-                <TableContainer component={Paper}>
-                  <Table
-                    sx={{ width: 800, overflowX: "auto" }}
-                    aria-label="simple table"
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="left">
-                          <p className="font-semibold">Name</p>
+              <TableContainer component={Paper}>
+                <Table
+                  sx={{ width: 800, overflowX: "auto" }}
+                  aria-label="summary table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">
+                        <p className="font-semibold">Name</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Lower</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Upper</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Result</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Status</p>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {smrData.map((row, idx) => (
+                      <TableRow
+                        key={idx}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell align="left" component="th" scope="row">
+                          <p className="font-semibold">{row.description}</p>
                         </TableCell>
                         <TableCell align="center">
-                          <p className="font-semibold">Lower</p>
+                          <p className="font-semibold">{row.lowerValue}</p>
                         </TableCell>
                         <TableCell align="center">
-                          <p className="font-semibold">Upper</p>
+                          <p className="font-semibold">{row.upperValue}</p>
                         </TableCell>
                         <TableCell align="center">
-                          <p className="font-semibold">Result</p>
-                        </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">Status</p>
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {smrData.map((row, idx) => (
-                        <TableRow
-                          key={idx}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.description}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.lowerValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.upperValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            {row.result === "Fail" ? (
-                              <p className="text-red-700 font-semibold">
-                                {row.result}
-                              </p>
-                            ) : row.description.toLowerCase() ===
-                                "sensitivity" ||
-                              row.description.toLowerCase() === "current" ||
-                              row.description.toLowerCase() === "thd" ? (
-                              row.result !== "" &&
-                              !isNaN(parseFloat(row.result)) &&
-                              row.lowerValue !== "" &&
-                              !isNaN(parseFloat(row.lowerValue)) &&
-                              row.upperValue !== "" &&
-                              !isNaN(parseFloat(row.upperValue)) ? (
+                          {row.result === "Fail" ? (
+                            <p className="text-red-700 font-semibold">
+                              {row.result}
+                            </p>
+                          ) : (
+                            <p
+                              className={`font-semibold ${
+                                row.result &&
+                                !isNaN(row.result) &&
+                                row.lowerValue &&
+                                !isNaN(row.lowerValue) &&
+                                row.upperValue &&
+                                !isNaN(row.upperValue) &&
                                 parseFloat(row.result) >=
                                   parseFloat(row.lowerValue) &&
                                 parseFloat(row.result) <=
-                                  parseFloat(row.upperValue) ? (
-                                  <p className="text-green-700 font-semibold">
-                                    {row.result}
-                                  </p>
-                                ) : (
-                                  <p className="text-red-700 font-semibold">
-                                    {row.result}
-                                  </p>
-                                )
-                              ) : (
-                                <p className="text-gray-500">{row.result}</p>
-                              )
-                            ) : row.description.toLowerCase() ===
-                              "frequency" ? null : (
-                              <p className="text-green-700 font-semibold">
-                                {row.result}
-                              </p>
-                            )}
-                          </TableCell>
-
-                          <TableCell align="center">
-                            {row.status.toLowerCase() === "failed" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "pass" ? (
-                              <p className="text-green-700 font-semibold">
-                                PASS
-                              </p>
-                            ) : row.status.toLowerCase() === "fail" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "" ? (
-                              <p className="font-semibold text-yellow-500">
-                                Exception
-                              </p>
-                            ) : (
-                              ""
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
+                                  parseFloat(row.upperValue)
+                                  ? "text-green-700"
+                                  : "text-red-700"
+                              }`}
+                            >
+                              {row.result || (
+                                <span className="text-gray-500">N/A</span>
+                              )}
+                            </p>
+                          )}
+                        </TableCell>
+                        <TableCell align="center">
+                          <p
+                            className={`font-semibold ${
+                              row.status.toLowerCase() === "failed"
+                                ? "text-red-700"
+                                : row.status.toLowerCase() === "pass"
+                                ? "text-green-700"
+                                : row.status.toLowerCase() === ""
+                                ? "text-yellow-500"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {row.status.toLowerCase() === ""
+                              ? "Exception"
+                              : row.status}
+                          </p>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </div>
           <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
@@ -231,80 +305,63 @@ const AcousticManualRun = () => {
               <p>Last Data Status</p>
             </div>
             <div className="content p-4 items-center">
-              <div className="flex flex-between flex-wrap justify-start">
-                <TableContainer component={Paper}>
-                  <Table
-                    sx={{ minWidth: 500, maxWidth: 700, overflowX: "auto" }}
-                    aria-label="simple table"
-                  >
-                    <TableHead>
-                      <TableRow>
+              <TableContainer component={Paper}>
+                <Table
+                  sx={{ minWidth: 500, maxHeight: 300, overflowY: "auto" }}
+                  aria-label="status table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">
+                        <p className="font-semibold">ID</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Serial_Code</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Result</p>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {sortedStatus.map((row) => (
+                      <TableRow key={row.id}>
                         <TableCell align="center">
-                          <p className="font-semibold">ID</p>
+                          <p className="font-semibold">{row.id}</p>
+                        </TableCell>
+                        <TableCell component="th" scope="row" align="left">
+                          <p className="font-semibold">{row.serialCode}</p>
                         </TableCell>
                         <TableCell align="center">
-                          <p className="font-semibold">Serial_Code</p>
+                          {row.totalJudgement === 1 ? (
+                            <p className="text-green-700 font-semibold">
+                              {mapStatus(row.totalJudgement)}
+                            </p>
+                          ) : row.totalJudgement === 3 ? (
+                            <p className="text-red-700 font-semibold">
+                              {mapStatus(row.totalJudgement)}
+                            </p>
+                          ) : row.totalJudgement === 2 ? (
+                            <p className="text-red-500 font-semibold">
+                              {mapStatus(row.totalJudgement)}
+                            </p>
+                          ) : (
+                            <p className="text-yellow-500 font-semibold">
+                              {mapStatus(row.totalJudgement)}
+                            </p>
+                          )}
                         </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">Result</p>
-                        </TableCell>
+                        <TableCell align="center">{row.time}</TableCell>
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {LstStatusLog && LstStatusLog.length > 0 ? (
-                        sortedStatus.slice(0, 5).map((row) => (
-                          <TableRow
-                            key={row.id}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
-                          >
-                            <TableCell align="center">
-                              <p className="font-semibold">{row.id}</p>
-                            </TableCell>
-                            <TableCell component="th" scope="row" align="left">
-                              <p className="font-semibold">{row.serialCode}</p>
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.totalJudgement === 1 ? (
-                                <p className="text-green-700 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              ) : row.totalJudgement === 3 ? (
-                                <p className="text-red-700 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              ) : row.totalJudgement === 2 ? (
-                                <p className="text-red-500 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              ) : (
-                                <p className="text-yellow-500 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={3} align="center">
-                            <div className="items-center justify-center text-center p-4">
-                              <p className="text-gray-600 font-semibold">
-                                No data available
-                              </p>
-                              <Loading text="Data Not Found . . ." />
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </div>
         </div>
+        {loading && <Loading />}
+        {error && <div className="text-red-600">{error}</div>}
       </div>
     </>
   );
