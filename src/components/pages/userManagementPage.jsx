@@ -133,7 +133,7 @@ const UserManagement = () => {
                   <TableRow>
                     <StyledTableCell>ID</StyledTableCell>
                     <StyledTableCell sx={{ maxWidth: '100px' }}>
-                      UserName : {"    "}
+                      UserName {''}
                       <input
                        placeholder="username"
                         className="rounded-md px-4 py-2 text-black"
