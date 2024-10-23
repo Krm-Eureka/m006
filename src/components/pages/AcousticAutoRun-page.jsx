@@ -30,8 +30,8 @@ function createSmrData(description, lowerValue, upperValue, result, status) {
 const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [LstActLog, setLstActLog] = useState(null);
-  const [LstStatusLog, setLstStatusLog] = useState(null);
+  const [LstActLog, setLstActLog] = useState([]);
+  const [LstStatusLog, setLstStatusLog] = useState([]);
   const [ActDetailById, setActDetailById] = useState(null);
   const [currentDescp, setCurrentDescp] = useState(null);
   const [smrData, setSmrData] = useState([]);
@@ -51,6 +51,7 @@ const TraceabilityStatus = () => {
           null,
           setLstStatusLog
         );
+        console.log(LstActLog);
       } catch (error) {
         setError(error.message);
       }
@@ -60,7 +61,7 @@ const TraceabilityStatus = () => {
 
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, LstActLog]);
 
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
@@ -127,7 +128,7 @@ const TraceabilityStatus = () => {
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          {loading ? (
+          {loading || (Array.isArray(LstActLog) && LstActLog.length <= 0) ? (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
@@ -219,74 +220,90 @@ const TraceabilityStatus = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.map((row, idx) => (
-                        <TableRow
-                          key={idx}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.description}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.lowerValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.upperValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            {row.result === "Fail" ? (
-                              <p className="text-red-700 font-semibold">
-                                {row.result}
+                      {smrData.length <= 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={3} align="center">
+                            <div className="items-center justify-center text-center p-4 pl-60">
+                              <p className="text-gray-600 font-semibold">
+                                No data available
                               </p>
-                            ) : row.description.toLowerCase() ===
-                              "sensitivity" ? (
-                              row.result !== "" &&
-                              !isNaN(parseFloat(row.result)) &&
-                              row.lowerValue !== "" &&
-                              !isNaN(parseFloat(row.lowerValue)) &&
-                              row.upperValue !== "" &&
-                              !isNaN(parseFloat(row.upperValue)) &&
-                              parseFloat(row.result) >=
-                                parseFloat(row.lowerValue) &&
-                              parseFloat(row.result) <=
-                                parseFloat(row.upperValue) ? (
-                                <p className="text-green-700 font-semibold">
-                                  {row.result}
-                                </p>
-                              ) : (
+                              <Loading text="Data Not Found . . ." />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        smrData.map((row, idx) => (
+                          <TableRow
+                            key={idx}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell align="left" component="th" scope="row">
+                              <p className="font-semibold">{row.description}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              <p className="font-semibold">{row.lowerValue}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              <p className="font-semibold">{row.upperValue}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.result === "Fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   {row.result}
                                 </p>
-                              )
-                            ) : row.description.toLowerCase() ===
-                              "frequency" ? null : (
-                              <p className="text-green-700 font-semibold">
-                                {row.result}
-                              </p>
-                            )}
-                          </TableCell>
-
-                          <TableCell align="center">
-                            {row.status.toLowerCase() === "failed" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "pass" ? (
-                              <p className="text-green-700 font-semibold">
-                                PASS
-                              </p>
-                            ) : row.status.toLowerCase() === "fail" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "" ? (
-                              <p className="font-semibold text-yellow-500">
-                                Exception
-                              </p>
-                            ) : (
-                              ""
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                              ) : row.description.toLowerCase() ===
+                                "sensitivity" ? (
+                                row.result !== "" &&
+                                !isNaN(parseFloat(row.result)) &&
+                                row.lowerValue !== "" &&
+                                !isNaN(parseFloat(row.lowerValue)) &&
+                                row.upperValue !== "" &&
+                                !isNaN(parseFloat(row.upperValue)) &&
+                                parseFloat(row.result) >=
+                                  parseFloat(row.lowerValue) &&
+                                parseFloat(row.result) <=
+                                  parseFloat(row.upperValue) ? (
+                                  <p className="text-green-700 font-semibold">
+                                    {row.result}
+                                  </p>
+                                ) : (
+                                  <p className="text-red-700 font-semibold">
+                                    {row.result}
+                                  </p>
+                                )
+                              ) : row.description.toLowerCase() ===
+                                "frequency" ? null : (
+                                <p className="text-green-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.status.toLowerCase() === "failed" ? (
+                                <p className="text-red-700 font-semibold">
+                                  FAIL
+                                </p>
+                              ) : row.status.toLowerCase() === "pass" ? (
+                                <p className="text-green-700 font-semibold">
+                                  PASS
+                                </p>
+                              ) : row.status.toLowerCase() === "fail" ? (
+                                <p className="text-red-700 font-semibold">
+                                  FAIL
+                                </p>
+                              ) : row.status.toLowerCase() === "" ? (
+                                <p className="font-semibold text-yellow-500">
+                                  Exception
+                                </p>
+                              ) : (
+                                ""
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>
