@@ -341,13 +341,7 @@ const TraceabilityReport = () => {
             column.id === "thdJud" ||
             column.id === "frequencyJud"
           ) {
-            value =
-              column.id === "totalJudgement" ||
-              column.id === "qrJudgement" ||
-              column.id === "currentJud" ||
-              column.id === "sensitivityJud" ||
-              column.id === "thdJud" ||
-              column.id === "frequencyJud"
+            value =  column.id === "totalJudgement" ||column.id === "qrJudgement" ||column.id === "currentJud" ||column.id === "sensitivityJud" ||column.id === "thdJud" ||column.id === "frequencyJud"
                 ? row[column.id] === 1 || row[column.id] === "PASS"
                   ? "PASS"
                   : "FAIL"
