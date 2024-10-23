@@ -14,6 +14,8 @@ export function formatDate(dateTimeString) {
     return `${day}${month}${year}`;
 }
 export function formatDateForSetting(dateTimeString) {
+    console.log(dateTimeString);
+    
     if (!dateTimeString) {
         return "Invalid Date"; 
     }
@@ -104,6 +106,20 @@ export function formatDateTimeSlash(dateTimeString) {
     
     const time = timeFormatter.format(date);
     return `${year}/${month}/${day} ${time}`;
+}
+export function yyMMdd(dateTimeString) {
+    if (!dateTimeString) {
+        return "Invalid Date";
+    }
+    const date = new Date(dateTimeString);
+    if (isNaN(date.getTime())) {
+        return "Invalid Date";
+    }
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${year}/${month}/${day}`;
 }
 export function formatDateToSetting(dateTimeString) {
     if (!dateTimeString) {
