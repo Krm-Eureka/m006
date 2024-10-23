@@ -238,7 +238,7 @@ const TraceabilityReport = () => {
     if (value === 1 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 0) return null;
+    if (value === 0) return null ;
     return value;
   };
 
