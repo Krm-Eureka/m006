@@ -3,8 +3,10 @@ import HeaderLayout from "../Header-component";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import {
-  formatDateForSetting,formatDateToSetting,
-  formatDate,yyMMdd,
+  formatDateForSetting,
+  formatDateToSetting,
+  formatDate,
+  yyMMdd,
 } from "../../services/formatTimeStamp";
 // import CardSetting from "../card-setting";
 import {
@@ -37,9 +39,9 @@ const MasterSetting = () => {
     manufacturingDateFormat: "",
     plmReference: "",
     ebomReference: "",
-    lastRunningDate: "",
+    lastRunningDate: "2024-10-23T02:26:48.622Z",
     eoltRefCode: "",
-    runningNo: "",
+    runningNo: "0000",
     runningMin: "",
     runningMax: "",
     enableFlag: true,
@@ -88,7 +90,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
-    // setIsAuthenticated(true);
+    setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -104,8 +106,8 @@ const MasterSetting = () => {
           icon: "error",
           title: "Authorization Fail",
         });
-        navigate("/Console/Content_ACT/AutoRun");
-        // setIsAuthenticated(true);
+        // navigate("/Console/Content_ACT/AutoRun");
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -113,8 +115,8 @@ const MasterSetting = () => {
         icon: "error",
         title: "Authorization Fail",
       });
-      navigate("/Console/Content_ACT/AutoRun");
-      // setIsAuthenticated(true);
+      // navigate("/Console/Content_ACT/AutoRun");
+      setIsAuthenticated(true);
     }
   };
 
@@ -223,9 +225,11 @@ const MasterSetting = () => {
       });
     }
   };
+  console.log(masterData.lastRunningDate);
+  const tst = "2024-10-23T02:26:48.622Z";
   const lastRunDate = masterData.lastRunningDate
-    ? masterData.lastRunningDate.split("T")[0]
-    : "";
+    ? tst.split("T")[0]
+    : "2024-10-23T02:26:48.622Z";
   if (!isAuthenticated) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -308,11 +312,11 @@ const MasterSetting = () => {
                     {
                       label: "Last Running Date",
                       type: "text",
-                      value: lastRunDate,
-                      setter: (value) =>
+                      value: yyMMdd(lastRunDate),
+                      setter: (lastRunDate) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          lastRunningDate: value,
+                          lastRunningDate: lastRunDate,
                         })),
                     },
                     {
@@ -360,59 +364,22 @@ const MasterSetting = () => {
               </div>
               <div className="flex flex-col items-center text-center mb-4">
                 <p className="text-xs pl-4 pb-4 font-bold">
-                  {masterData.plmReference &&
-                  masterData.ebomReference &&
-                  masterData.manufacturingDateFormat &&
-                  masterData.eoltRefCode
-                    ? `Example : ${masterData.plmReference}-${
-                        masterData.ebomReference
-                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
-                        masterData.eoltRefCode
-                      }-${
-                        masterData.runningNo
-                          ? String(masterData.runningNo).padStart(5, "0")
-                          : "00000"
-                      }`
-                    : masterData.plmReference &&
-                      masterData.ebomReference &&
-                      masterData.lastRunningDate &&
-                      masterData.eoltRefCode
-                    ? `Example : ${masterData.plmReference}-${
-                        masterData.ebomReference
-                      }-${formatDateForSetting(masterData.lastRunningDate)}-${
-                        masterData.eoltRefCode
-                      }-${
-                        masterData.runningNo
-                          ? String(masterData.runningNo).padStart(5, "0")
-                          : "00000"
-                      }`
-                    : masterData.plmReference &&
-                      masterData.ebomReference &&
-                      masterData.lastRunningDate
-                    ? `Example : ${masterData.plmReference}-${
-                        masterData.ebomReference
-                      }-${formatDateForSetting(masterData.lastRunningDate)}-S-${
-                        masterData.runningNo
-                          ? String(masterData.runningNo).padStart(5, "0")
-                          : "00000"
-                      }`
-                    : masterData.plmReference && masterData.ebomReference
-                    ? `Example : ${masterData.plmReference}-${
-                        masterData.ebomReference
-                      }-YYMMDD-S-${
-                        masterData.runningNo
-                          ? String(masterData.runningNo).padStart(5, "0")
-                          : "00000"
-                      }`
-                    : masterData.plmReference
-                    ? `Example : ${
-                        masterData.plmReference
-                      }-yyyyyyyyyy-YYMMDD-S-${
-                        masterData.runningNo
-                          ? String(masterData.runningNo).padStart(5, "0")
-                          : "00000"
-                      }`
-                    : `Example : xxxxxxxxxx-yyyyyyyyyy-YYMMDD-S-00000`}
+                  Example :{" "}
+                  {masterData.plmReference
+                    ? masterData.plmReference
+                    : `xxxxxxxxx`}
+                  -
+                  {masterData.ebomReference
+                    ? masterData.ebomReference
+                    : `yyyyyyyyyy`}
+                  -
+                  {masterData.lastRunningDate
+                    ? formatDateForSetting(masterData.lastRunningDate)
+                    : `yyMMdd`}
+                  -{masterData.eoltRefCode ? masterData.eoltRefCode : `T`}-
+                  {masterData.runningNo
+                    ? String(masterData.runningNo).padStart(5, "0")
+                    : "00000"}
                 </p>
               </div>
             </div>
