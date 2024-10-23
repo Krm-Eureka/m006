@@ -6,14 +6,14 @@ import QR from "../assets/svg/qrcode-solid.svg";
 import BOX from "../assets/svg/border-all-solid.svg";
 import TST from "../assets/svg/test.svg";
 
-const StatusBox = ({ name, status = 4 }) => {
+const StatusBox = ({ name, status = 7 }) => {
   const statusMap = {
     acoustictest: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
       1: { text: "Testing", className: "bg-blue-500 text-black" },
       2: { text: "PASS", className: "bg-green-500 text-black" },
       3: { text: "FAIL", className: "bg-red-500 text-black" },
-      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      7: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
     test: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
@@ -27,32 +27,34 @@ const StatusBox = ({ name, status = 4 }) => {
       1: { text: "Marking", className: "bg-blue-500 text-black" },
       2: { text: "Mark Completed", className: "bg-green-500 text-black" },
       3: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
-      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      7: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
     qrcode: {
-      0: { text: "Exception", className: "bg-yellow-400 text-black" },
-      1: { text: "Reading", className: "bg-blue-500 text-black" },
-      2: { text: "PASS", className: "bg-green-500 text-black" },
-      3: { text: "FAIL", className: "bg-red-500 text-black" },
-      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      1: { text: "OK", className: "bg-blue-500 text-black" },
+      5: { text: "NG", className: "bg-red-500 text-black" },
+      // 0: { text: "Exception", className: "bg-yellow-400 text-black" },
+      // 1: { text: "Reading", className: "bg-blue-500 text-black" },/*  */
+      // 2: { text: "PASS", className: "bg-green-500 text-black" },
+      // 3: { text: "FAIL", className: "bg-red-500 text-black" },
+      // 7: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
     totalstatus: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
       1: { text: "PASS", className: "bg-green-500 text-black" },
       2: { text: "FAIL", className: "bg-red-500 text-black" },
       3: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
-      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      7: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
     current: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
       1: { text: "Reading", className: "bg-blue-500 text-black" },
       2: { text: "PASS", className: "bg-green-500 text-black" },
       3: { text: "FAIL", className: "bg-red-500 text-black" },
-      4: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
+      7: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
     },
   };
 
-  const statusValue = status >= 0 && status <= 4 ? status : 4;
+  const statusValue = status >= 0 && status <= 7 ? status : 7;
   const statusData = statusMap[name.toLowerCase()]?.[statusValue] || {
     text: "Unknown Status",
     className: "bg-gray-400 text-gray-600",

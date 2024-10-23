@@ -168,7 +168,7 @@ const TraceabilityStatus = () => {
                         ? 3
                         : currentDescp.status === "PASS"
                         ? 2
-                        : 4
+                        : 7
                     }
                   />
                 ) : (
