@@ -203,7 +203,7 @@ const TraceabilityReport = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dropDown, setDropDown] = useState("");
+  // const [dropDown, setDropDown] = useState("");
 
   const toggleDropdown = () => {
     console.log(dropDown);
@@ -235,10 +235,10 @@ const TraceabilityReport = () => {
   };
 
   const mapStatus = (value) => {
-    if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
+    if (value === 1 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 3 || value === "FAIL" || value === "FAILED") return "FAIL";
+    if (value === 0) return null;
     return value;
   };
 
@@ -341,10 +341,23 @@ const TraceabilityReport = () => {
             column.id === "thdJud" ||
             column.id === "frequencyJud"
           ) {
-            value =  column.id === "totalJudgement" ||column.id === "qrJudgement" ||column.id === "currentJud" ||column.id === "sensitivityJud" ||column.id === "thdJud" ||column.id === "frequencyJud"
-                ? row[column.id] === 1 || row[column.id] === "PASS"
+            value =
+              column.id === "totalJudgement" ||
+              column.id === "qrJudgement" ||
+              column.id === "currentJud" ||
+              column.id === "sensitivityJud" ||
+              column.id === "thdJud" ||
+              column.id === "frequencyJud"
+                ? row[column.id] === 2 ||
+                  row[column.id] === "PASS" ||
+                  row[column.id] === "PASSED"
                   ? "PASS"
-                  : "FAIL"
+                  : row[column.id] === 1 ||
+                    row[column.id] === 3 ||
+                    row[column.id] === "FAIL" ||
+                    row[column.id] === "FAILED"
+                  ? "FAIL"
+                  : mapStatus(value)
                 : mapStatus(value);
           }
 
@@ -430,7 +443,7 @@ const TraceabilityReport = () => {
           <p>Traceability Report of EOLTStation</p>
         </div>
         <div className="flex flex-wrap mx-4 py-2 h-fit items-center justify-center">
-          <>
+          {/* <>
             <button
               onClick={toggleDropdown}
               className=" text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center"
@@ -481,10 +494,10 @@ const TraceabilityReport = () => {
                 </ul>
               </div>
             )}
-          </>
-          <div className="mx-2 mb-2">
+          </> */}
+          <div className="mx-2 mb-2 flex ">
             {rows && rows.length > 0 ? (
-              <>
+              <div className="flex-row">
                 <label
                   htmlFor="serialNumber"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-800"
@@ -499,53 +512,56 @@ const TraceabilityReport = () => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
-              </>
+              </div>
             ) : (
               ""
             )}
-            {dropDown === "date" ? (
-              <div className="flex">
-                <div className="mx-2 mb-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-                    From Date
-                  </label>
-                  <input
-                    type="date"
-                    className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-                    value={fromDate}
-                    onChange={handleFromDateChange}
-                  />
-                </div>
-                <div className="mx-2 mb-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-                    To Date
-                  </label>
-                  <input
-                    type="date"
-                    className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-                    value={toDate}
-                    onChange={handleToDateChange}
-                  />
-                </div>
-              </div>
-            ) : (
-              <>
-                <label
-                  htmlFor="serialNumber"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-800"
-                >
-                  Serial Number
+            {/* <div className="flex"> */}
+
+            {/* {dropDown === "date" ? ( */}
+            <div className="flex">
+              <div className="mx-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+                  From Date
                 </label>
                 <input
-                  type="text"
-                  id="serialNumber"
+                  type="date"
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-                  placeholder="Serial Number..."
-                  value={searchTerm}
-                  onChange={handleSearchBySerial}
+                  value={fromDate}
+                  onChange={handleFromDateChange}
                 />
-              </>
-            )}
+              </div>
+              <div className="mx-2 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+                  To Date
+                </label>
+                <input
+                  type="date"
+                  className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                  value={toDate}
+                  onChange={handleToDateChange}
+                />
+              </div>
+            </div>
+            {/* ) : (
+                <>
+                  <label
+                    htmlFor="serialNumber"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-800"
+                  >
+                    Serial Number
+                  </label>
+                  <input
+                    type="text"
+                    id="serialNumber"
+                    className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                    placeholder="Serial Number..."
+                    value={searchTerm}
+                    onChange={handleSearchBySerial}
+                  />
+                </>
+              )} */}
+            {/* </div> */}
           </div>
 
           <div className="justify-items-center mx-2 mt-3">
@@ -649,7 +665,7 @@ const TraceabilityReport = () => {
                               column.id === "sensitivityJud" ||
                               column.id === "thdJud" ||
                               column.id === "frequencyJud"
-                                ? row[column.id] === 1 ||
+                                ? row[column.id] === 2 ||
                                   row[column.id] === "PASS"
                                   ? "green"
                                   : "red"
@@ -682,9 +698,14 @@ const TraceabilityReport = () => {
                               column.id === "sensitivityJud" ||
                               column.id === "thdJud" ||
                               column.id === "frequencyJud"
-                            ? row[column.id] === 1 || row[column.id] === "PASS"
+                            ? row[column.id] === 2 || row[column.id] === "PASS"
                               ? "PASS"
-                              : "FAIL"
+                              : row[column.id] === 1 ||
+                                row[column.id] === 3 ||
+                                row[column.id] === "FAIL" ||
+                                row[column.id] === "FAILED"
+                              ? "FAIL"
+                              : mapStatus(row[column.id])
                             : mapStatus(row[column.id])}
                         </StyledTableCell>
                       ))}
