@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import {
   formatDateForSetting,formatDateToSetting,
-  formatDate,
+  formatDate,yyMMdd,
 } from "../../services/formatTimeStamp";
 // import CardSetting from "../card-setting";
 import {
@@ -88,7 +88,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
-    setIsAuthenticated(true);
+    // setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -104,8 +104,8 @@ const MasterSetting = () => {
           icon: "error",
           title: "Authorization Fail",
         });
-        // navigate("/Console/Content_ACT/AutoRun");
-        setIsAuthenticated(true);
+        navigate("/Console/Content_ACT/AutoRun");
+        // setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -113,8 +113,8 @@ const MasterSetting = () => {
         icon: "error",
         title: "Authorization Fail",
       });
-      // navigate("/Console/Content_ACT/AutoRun");
-      setIsAuthenticated(true);
+      navigate("/Console/Content_ACT/AutoRun");
+      // setIsAuthenticated(true);
     }
   };
 
@@ -307,7 +307,7 @@ const MasterSetting = () => {
                     // },
                     {
                       label: "Last Running Date",
-                      type: "date",
+                      type: "text",
                       value: lastRunDate,
                       setter: (value) =>
                         setMasterData((prev) => ({
