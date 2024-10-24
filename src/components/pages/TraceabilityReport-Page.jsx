@@ -238,7 +238,7 @@ const TraceabilityReport = () => {
     if (value === 1 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 0) return null;
+    if (value === 0) return null ;
     return value;
   };
 
@@ -256,17 +256,17 @@ const TraceabilityReport = () => {
   };
 
   const handleFromDateChange = (event) => {
-    const inputValue = event.target.value;
-    const Format = inputValue.replace("T", " ");
+    const inputValue =event.target.value
+    const Format = inputValue.replace('T', ' ');
     console.log(Format);
     setFromDate(Format);
   };
 
   const handleToDateChange = (event) => {
-    const inputValue = event.target.value;
-    const Format = inputValue.replace("T", " ");
+    const inputValue =event.target.value
+    const Format = inputValue.replace('T', ' ');
     console.log(Format);
-    setFromDate(Format);
+    setToDate(Format);
   };
 
   const handleClear = () => {
