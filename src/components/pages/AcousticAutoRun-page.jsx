@@ -122,7 +122,6 @@ const TraceabilityStatus = () => {
   // console.log("Lst Log : ", LstStatusLog);
 
   const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
-  console.log(sortedStatus.length);
 
   // if (sortedStatus.length > 0) {
   //   const firstItem = sortedStatus[0];
@@ -352,9 +351,9 @@ const TraceabilityStatus = () => {
                     <TableBody>
                       {LstStatusLog && LstStatusLog.length > 0 ? (
                         sortedStatus.slice(0, 5).map((row) => {
-                          const extractedCode = row.serialCode
-                            ? row.serialCode.split("-").pop()
-                            : "N/A";
+                          // const extractedCode = row.serialCode
+                          //   ? row.serialCode.split("-").pop()
+                          //   : "N/A";
                           return (
                             <TableRow
                               key={row.id}
@@ -365,7 +364,7 @@ const TraceabilityStatus = () => {
                               }}
                             >
                               <TableCell align="center">
-                                <p className="font-semibold">{extractedCode}</p>
+                                <p className="font-semibold">{row.id}</p>
                               </TableCell>
                               <TableCell
                                 component="th"
