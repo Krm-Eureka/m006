@@ -238,7 +238,7 @@ const TraceabilityReport = () => {
     if (value === 1 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 0) return null ;
+    if (value === 0) return null;
     return value;
   };
 
@@ -256,11 +256,17 @@ const TraceabilityReport = () => {
   };
 
   const handleFromDateChange = (event) => {
-    setFromDate(event.target.value);
+    const inputValue = event.target.value;
+    const Format = inputValue.replace("T", " ");
+    console.log(Format);
+    setFromDate(Format);
   };
 
   const handleToDateChange = (event) => {
-    setToDate(event.target.value);
+    const inputValue = event.target.value;
+    const Format = inputValue.replace("T", " ");
+    console.log(Format);
+    setFromDate(Format);
   };
 
   const handleClear = () => {
@@ -525,7 +531,8 @@ const TraceabilityReport = () => {
                   From Date
                 </label>
                 <input
-                  type="date"
+                  // type="date"
+                  type="datetime-local"
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
                   value={fromDate}
                   onChange={handleFromDateChange}
@@ -536,7 +543,8 @@ const TraceabilityReport = () => {
                   To Date
                 </label>
                 <input
-                  type="date"
+                  // type="date"
+                  type="datetime-local"
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
                   value={toDate}
                   onChange={handleToDateChange}
