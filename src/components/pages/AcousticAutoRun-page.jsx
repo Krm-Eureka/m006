@@ -122,6 +122,20 @@ const TraceabilityStatus = () => {
   // console.log("Lst Log : ", LstStatusLog);
 
   const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
+  console.log(sortedStatus.length);
+
+  if (sortedStatus.length > 0) {
+    const firstItem = sortedStatus[0];
+    if (firstItem.serialCode) {
+      const SRC = firstItem.serialCode;
+      const extractedCode = SRC.split("-").pop();
+      console.log(extractedCode);
+    } else {
+      console.error("serialCode is undefined on the first item.");
+    }
+  } else {
+    console.error("sortedStatus array is empty.");
+  }
 
   return (
     <>
@@ -325,10 +339,10 @@ const TraceabilityStatus = () => {
                     <TableHead>
                       <TableRow>
                         <TableCell align="center">
-                          <p className="font-semibold">ID</p>
+                          <p className="font-semibold">Serial No.</p>
                         </TableCell>
                         <TableCell align="center">
-                          <p className="font-semibold">Serial_Code</p>
+                          <p className="font-semibold">Lasermark Code</p>
                         </TableCell>
                         <TableCell align="center">
                           <p className="font-semibold">Result</p>
@@ -337,40 +351,53 @@ const TraceabilityStatus = () => {
                     </TableHead>
                     <TableBody>
                       {LstStatusLog && LstStatusLog.length > 0 ? (
-                        sortedStatus.slice(0, 5).map((row) => (
-                          <TableRow
-                            key={row.id}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
-                          >
-                            <TableCell align="center">
-                              <p className="font-semibold">{row.id}</p>
-                            </TableCell>
-                            <TableCell component="th" scope="row" align="left">
-                              <p className="font-semibold">{row.serialCode}</p>
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.totalJudgement === 1 ? (
-                                <p className="text-green-700 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
+                        sortedStatus.slice(0, 5).map((row) => {
+                          const extractedCode = row.serialCode
+                            ? row.serialCode.split("-").pop()
+                            : "N/A";
+                          return (
+                            <TableRow
+                              key={row.id}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                              <TableCell align="center">
+                                <p className="font-semibold">{extractedCode}</p>
+                              </TableCell>
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                align="left"
+                              >
+                                <p className="font-semibold">
+                                  {row.serialCode}
                                 </p>
-                              ) : row.totalJudgement === 3 ? (
-                                <p className="text-red-700 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              ) : row.totalJudgement === 2 ? (
-                                <p className="text-red-500 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              ) : (
-                                <p className="text-yellow-500 font-semibold">
-                                  {mapStatus(row.totalJudgement)}
-                                </p>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))
+                              </TableCell>
+                              <TableCell align="center">
+                                {row.totalJudgement === 1 ? (
+                                  <p className="text-green-700 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                ) : row.totalJudgement === 3 ? (
+                                  <p className="text-red-700 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                ) : row.totalJudgement === 2 ? (
+                                  <p className="text-red-500 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                ) : (
+                                  <p className="text-yellow-500 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
                       ) : (
                         <TableRow>
                           <TableCell colSpan={3} align="center">
