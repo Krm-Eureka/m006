@@ -124,18 +124,18 @@ const TraceabilityStatus = () => {
   const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
   console.log(sortedStatus.length);
 
-  if (sortedStatus.length > 0) {
-    const firstItem = sortedStatus[0];
-    if (firstItem.serialCode) {
-      const SRC = firstItem.serialCode;
-      const extractedCode = SRC.split("-").pop();
-      console.log(extractedCode);
-    } else {
-      console.error("serialCode is undefined on the first item.");
-    }
-  } else {
-    console.error("sortedStatus array is empty.");
-  }
+  // if (sortedStatus.length > 0) {
+  //   const firstItem = sortedStatus[0];
+  //   if (firstItem.serialCode) {
+  //     const SRC = firstItem.serialCode;
+  //     const extractedCode = SRC.split("-").pop();
+  //     // console.log(extractedCode);
+  //   } else {
+  //     console.error("serialCode is undefined on the first item.");
+  //   }
+  // } else {
+  //   console.error("sortedStatus array is empty.");
+  // }
 
   return (
     <>
