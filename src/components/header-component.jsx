@@ -107,7 +107,7 @@ const HeaderLayout = (props) => {
               >
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-file-contract"></i>
-                  <span className="ml-2">AcousticManualRun</span>
+                  <span className="ml-2">AcousticRetest</span>
                 </div>
               </Link>
               {/* <Link

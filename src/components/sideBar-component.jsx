@@ -25,7 +25,7 @@ const SideBarLayout = ({ isOpen }) => {
           i="fa-solid fa-square-poll-vertical"
         />
         <SideNav title="Acoustic AutoRun" i="fa-solid fa-circle-play" />
-        <SideNav title="Acoustic ManualRun" i="fa-solid fa-file-contract" />
+        <SideNav title="Acoustic Retest" i="fa-solid fa-file-contract" />
         <SideNav title="AcousticTest Report" i="fa-solid fa-file-audio" />
         <SideNav title="Traceability Report" i="fa-solid fa-folder-tree" />
         <SideNav title="Setting" i="fa-solid fa-gears" />
