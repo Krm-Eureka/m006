@@ -166,13 +166,13 @@ const AcousticManualRun = () => {
 
   return (
     <>
-      <HeaderLayout page="Acoustic ManualRun" />
+      <HeaderLayout page="Acoustic Retest" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-              Show Process Current of Manual EOLTStation {">>>"}{" "}
+              Show Process Current of Retest EOLTStation {">>>"}{" "}
               <span className="text-red-600 font-semibold">
                 {dataBySerial?.serialCode || "N/A"}
               </span>
@@ -331,13 +331,13 @@ const AcousticManualRun = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">
-                        <p className="font-semibold">ID</p>
-                      </TableCell>
-                      <TableCell align="center">
-                        <p className="font-semibold">Serial_Code</p>
-                      </TableCell>
-                      <TableCell align="center">
-                        <p className="font-semibold">Result</p>
+                      <p className="font-semibold">Serial No.</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">Lasermark Code</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">Result</p>
                       </TableCell>
                     </TableRow>
                   </TableHead>
