@@ -343,40 +343,59 @@ const AcousticManualRun = () => {
                   </TableHead>
                   <TableBody>
                       {LstStatusLog && LstStatusLog.length > 0 ? (
-                        sortedStatus.slice(0, 5).map((row) => (
-                          <TableRow
-                            key={row.id}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
-                          >
-                            <TableCell align="center">
-                              <p className="font-semibold">{row.id}</p>
-                            </TableCell>
-                            <TableCell component="th" scope="row" align="left">
-                              <p className="font-semibold">{row.serialCode}</p>
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.totalJudgement === 1 ? (
-                                <p className="text-green-700 font-semibold">
-                                  {dataBySerial?.serialCode ? mapStatus(row.totalJudgement):mapStatus(4)}
+                        sortedStatus.slice(0, 5).map((row) => {
+                          const extractedCode = row.serialCode
+                            ? row.serialCode.split("-").pop()
+                            : "N/A";
+
+                          const number =
+                            extractedCode !== "N/A"
+                              ? parseInt(extractedCode, 10)
+                              : "N/A";
+                          return (
+                            <TableRow
+                              key={row.id}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                              <TableCell align="center">
+                                {/* <p className="font-semibold">{row.id}</p> */}
+                                <p className="font-semibold">{number}</p>
+                              </TableCell>
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                align="left"
+                              >
+                                <p className="font-semibold">
+                                  {row.serialCode}
                                 </p>
-                              ) : row.totalJudgement === 3 ? (
-                                <p className="text-red-700 font-semibold">
-                                  {dataBySerial?.serialCode ? mapStatus(row.totalJudgement):mapStatus(4)}
-                                </p>
-                              ) : row.totalJudgement === 2 ? (
-                                <p className="text-red-500 font-semibold">
-                                  {dataBySerial?.serialCode ? mapStatus(row.totalJudgement):mapStatus(4)}
-                                </p>
-                              ) : (
-                                <p className="text-yellow-500 font-semibold">
-                                  {dataBySerial?.serialCode ? mapStatus(row.totalJudgement):mapStatus(4)}
-                                </p>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))
+                              </TableCell>
+                              <TableCell align="center">
+                                {row.totalJudgement === 1 ? (
+                                  <p className="text-green-700 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                ) : row.totalJudgement === 3 ? (
+                                  <p className="text-red-700 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                ) : row.totalJudgement === 2 ? (
+                                  <p className="text-red-500 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                ) : (
+                                  <p className="text-yellow-500 font-semibold">
+                                    {mapStatus(row.totalJudgement)}
+                                  </p>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
                       ) : (
                         <TableRow>
                           <TableCell colSpan={3} align="center">
