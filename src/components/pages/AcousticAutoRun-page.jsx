@@ -56,12 +56,10 @@ const TraceabilityStatus = () => {
         setError(error.message);
       }
     };
-
     fetchData();
-
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate, LstActLog]);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
@@ -351,9 +349,14 @@ const TraceabilityStatus = () => {
                     <TableBody>
                       {LstStatusLog && LstStatusLog.length > 0 ? (
                         sortedStatus.slice(0, 5).map((row) => {
-                          // const extractedCode = row.serialCode
-                          //   ? row.serialCode.split("-").pop()
-                          //   : "N/A";
+                          const extractedCode = row.serialCode
+                            ? row.serialCode.split("-").pop()
+                            : "N/A";
+
+                          const number =
+                            extractedCode !== "N/A"
+                              ? parseInt(extractedCode, 10)
+                              : "N/A";
                           return (
                             <TableRow
                               key={row.id}
@@ -364,7 +367,8 @@ const TraceabilityStatus = () => {
                               }}
                             >
                               <TableCell align="center">
-                                <p className="font-semibold">{row.id}</p>
+                                {/* <p className="font-semibold">{row.id}</p> */}
+                                <p className="font-semibold">{number}</p>
                               </TableCell>
                               <TableCell
                                 component="th"
