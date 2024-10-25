@@ -39,9 +39,9 @@ const MasterSetting = () => {
     manufacturingDateFormat: "",
     plmReference: "",
     ebomReference: "",
-    lastRunningDate: "2024-10-23T02:26:48.622Z",
+    lastRunningDate: "",
     eoltRefCode: "",
-    runningNo: "0000",
+    runningNo: "",
     runningMin: "",
     runningMax: "",
     enableFlag: true,
@@ -395,10 +395,11 @@ const MasterSetting = () => {
                       label: "Current Min",
                       value: masterData.runningMin,
                       type: "number",
+                      
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMin: parseInt(value),
+                          runningMin: parseFloat(value),
                         })),
                     },
                     {
@@ -406,10 +407,11 @@ const MasterSetting = () => {
                       label: "Current Max",
                       value: masterData.runningMax,
                       type: "number",
+                      
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMax: parseInt(value),
+                          runningMax: parseFloat(value),
                         })),
                     },
                   ].map(({ id, label, value, setter, type }) => (
@@ -421,7 +423,8 @@ const MasterSetting = () => {
                         <input
                           disabled={!modify || label === "Serial Number"}
                           required={label !== "Serial Number"}
-                          type={type}
+                          type={type === "number" ? "number" : "text"}
+                          step={0.1}
                           value={loading ? "" : value}
                           className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
                           placeholder={label}
