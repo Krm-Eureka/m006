@@ -76,6 +76,13 @@ const columns = [
     aln: "center",
   },
   {
+    id: "QRCodeScanner",
+    label: "QRCodeScanner",
+    sortable: true,
+    w: 340,
+    aln: "center",
+  },
+  {
     id: "qrJudgement",
     label: "Qr Code Jud",
     w: 200,
@@ -151,6 +158,13 @@ const columns = [
   {
     id: "frequencyJud",
     label: "Frequency Jud",
+    w: 200,
+    sortable: true,
+    aln: "center",
+  },
+  {
+    id: "ProductionMode",
+    label: "ProductionMode",
     w: 200,
     sortable: true,
     aln: "center",
@@ -235,10 +249,10 @@ const TraceabilityReport = () => {
   };
 
   const mapStatus = (value) => {
-    if (value === 1 || value === 3 || value === "FAIL" || value === "FAILED")
+    if (value === 2 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
-    if (value === 2 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 0) return null ;
+    if (value === 1 || value === "PASS" || value === "PASSED") return "PASS";
+    if (value === 0) return 'Status Unmatch';
     return value;
   };
 
@@ -256,21 +270,133 @@ const TraceabilityReport = () => {
   };
 
   const handleFromDateChange = (event) => {
-    const inputValue =event.target.value
-    const Format = inputValue.replace('T', ' ');
+    const inputValue = event.target.value;
+    const Format = inputValue.replace("T", " ");
     console.log(Format);
     setFromDate(Format);
   };
 
   const handleToDateChange = (event) => {
-    const inputValue =event.target.value
-    const Format = inputValue.replace('T', ' ');
+    const inputValue = event.target.value;
+    const Format = inputValue.replace("T", " ");
     console.log(Format);
     setToDate(Format);
   };
 
   const handleClear = () => {
-    setRows([]);
+    setRows([
+      // {
+      //   id: 1,
+      //   modelType: "Status 1",
+      //   lastUpdateDate: "2024-10-25 12:00",
+      //   totalJudgement: 1,
+      //   serialCode: "LM-12345",
+      //   qrCode: "QR-54321",
+      //   qrJudgement: 5,
+      //   currentMin: 1.2,
+      //   currentMax: 2.3,
+      //   currentMeasured: 1.9,
+      //   currentJud: 1,
+      //   sensitivityMin: -45,
+      //   sensitivityMax: -30,
+      //   sensitivityResult: -35,
+      //   sensitivityJud: 1,
+      //   thdMin: 0.5,
+      //   thdMax: 1.2,
+      //   thdResult: 0.9,
+      //   thdJud: 1,
+      //   frequencyJud: 1,
+      // },
+      // {
+      //   id: 2,
+      //   modelType: "Status 2",
+      //   lastUpdateDate: "2024-10-25 12:05",
+      //   totalJudgement: 2,
+      //   serialCode: "LM-12346",
+      //   qrCode: "QR-54322",
+      //   qrJudgement: 2,
+      //   currentMin: 1.1,
+      //   currentMax: 2.5,
+      //   currentMeasured: 2.6,
+      //   currentJud: 2,
+      //   sensitivityMin: -42,
+      //   sensitivityMax: -28,
+      //   sensitivityResult: -30,
+      //   sensitivityJud: 2,
+      //   thdMin: 0.6,
+      //   thdMax: 1.3,
+      //   thdResult: 1.1,
+      //   thdJud: 2,
+      //   frequencyJud: 2,
+      // },
+      // {
+      //   id: 3,
+      //   modelType: "Status 3",
+      //   lastUpdateDate: "2024-10-25 12:10",
+      //   totalJudgement: 3,
+      //   serialCode: "LM-12347",
+      //   qrCode: "QR-54323",
+      //   qrJudgement: 3,
+      //   currentMin: 1.2,
+      //   currentMax: 2.4,
+      //   currentMeasured: 2.0,
+      //   currentJud: 3,
+      //   sensitivityMin: -47,
+      //   sensitivityMax: -29,
+      //   sensitivityResult: -32,
+      //   sensitivityJud: 3,
+      //   thdMin: 0.4,
+      //   thdMax: 1.0,
+      //   thdResult: 0.8,
+      //   thdJud: 3,
+      //   frequencyJud: 3,
+      // },
+      // {
+      //   id: 4,
+      //   modelType: "Status 5",
+      //   lastUpdateDate: "2024-10-25 12:15",
+      //   totalJudgement: 5,
+      //   serialCode: "LM-12348",
+      //   qrCode: "QR-54324",
+      //   qrJudgement: 5,
+      //   currentMin: 1.5,
+      //   currentMax: 2.7,
+      //   currentMeasured: 2.3,
+      //   currentJud: 5,
+      //   sensitivityMin: -40,
+      //   sensitivityMax: -26,
+      //   sensitivityResult: -36,
+      //   sensitivityJud: 5,
+      //   thdMin: 0.7,
+      //   thdMax: 1.4,
+      //   thdResult: 1.3,
+      //   thdJud: 5,
+      //   frequencyJud: 5,
+      // },
+      // {
+      //   id: 5,
+      //   modelType: "Status 0",
+      //   lastUpdateDate: "2024-10-25 12:15",
+      //   totalJudgement: 0,
+      //   serialCode: "LM-12348",
+      //   qrCode: "QR-54324",
+      //   qrJudgement: 0,
+      //   currentMin: 1.5,
+      //   currentMax: 2.7,
+      //   currentMeasured: 2.3,
+      //   currentJud: 0,
+      //   sensitivityMin: -40,
+      //   sensitivityMax: -26,
+      //   sensitivityResult: -36,
+      //   sensitivityJud: 0,
+      //   thdMin: 0.7,
+      //   thdMax: 1.4,
+      //   thdResult: 1.3,
+      //   thdJud: 0,
+      //   frequencyJud: 0,
+      //   ProductionMode: "byPass",
+      // },
+    ]);
     setSearchTerm("");
     setFromDate("");
     setToDate("");
@@ -347,24 +473,25 @@ const TraceabilityReport = () => {
             column.id === "thdJud" ||
             column.id === "frequencyJud"
           ) {
-            value =
-              column.id === "totalJudgement" ||
-              column.id === "qrJudgement" ||
-              column.id === "currentJud" ||
-              column.id === "sensitivityJud" ||
-              column.id === "thdJud" ||
-              column.id === "frequencyJud"
-                ? row[column.id] === 2 ||
-                  row[column.id] === "PASS" ||
-                  row[column.id] === "PASSED"
+            if (column.id === "qrJudgement") {
+              value =
+                row[column.id] === 2 ||
+                row[column.id] === "PASS" ||
+                row[column.id] === "PASSED"
                   ? "PASS"
-                  : row[column.id] === 1 ||
-                    row[column.id] === 3 ||
+                  : row[column.id] === 5 ||
                     row[column.id] === "FAIL" ||
                     row[column.id] === "FAILED"
                   ? "FAIL"
-                  : mapStatus(value)
-                : mapStatus(value);
+                  : row[column.id] !== 2 ||
+                    row[column.id] !== 3 ||
+                    row[column.id] !== "FAIL" ||
+                    row[column.id] !== "FAILED"
+                  ? "NA"
+                  : mapStatus(row[column.id]);
+            } else {
+              value = mapStatus(row[column.id]);
+            }
           }
 
           return typeof value === "string"
@@ -666,55 +793,94 @@ const TraceabilityReport = () => {
                           key={column.id}
                           align={column.aln || "left"}
                           style={{
-                            color:
+                            color: (() => {
+                              if (
+                                column.id === "totalJudgement" ||
+                                column.id === "qrJudgement" ||
+                                column.id === "currentJud" ||
+                                column.id === "sensitivityJud" ||
+                                column.id === "thdJud" ||
+                                column.id === "frequencyJud"
+                              ) {
+                                if (column.id === "qrJudgement") {
+                                  return row[column.id] === 2 ||
+                                    row[column.id] === "PASS" ||
+                                    row[column.id] === "PASSED"
+                                    ? "green"
+                                    : "red";
+                                }
+                                return row[column.id] === 1 ||
+                                  row[column.id] === "PASS"
+                                  ? "green"
+                                  : "red";
+                              }
+
+                              if (
+                                column.id === "thdJud" ||
+                                column.id === "laserMarkStatus" ||
+                                column.id === "creationDate" ||
+                                column.id === "tracReportStatus" ||
+                                column.id === "qrStatus" ||
+                                column.id === "acousticStatus"
+                              ) {
+                                return getColor(row[column.id]);
+                              }
+
+                              return "inherit";
+                            })(),
+                          }}
+                        >
+                          {(() => {
+                            if (
+                              column.id === "lastUpdateDate" ||
+                              column.id === "creationDate"
+                            ) {
+                              return formatDateTimeSlash(row[column.id]);
+                            }
+
+                            if (
+                              column.id === "sensitivityResult" ||
+                              column.id === "thdResult" ||
+                              column.id === "currentMeasured"
+                            ) {
+                              return toFixedTwo(row[column.id]);
+                            }
+
+                            if (column.id === "id") {
+                              return row[column.id];
+                            }
+
+                            if (
                               column.id === "totalJudgement" ||
                               column.id === "qrJudgement" ||
                               column.id === "currentJud" ||
                               column.id === "sensitivityJud" ||
                               column.id === "thdJud" ||
                               column.id === "frequencyJud"
-                                ? row[column.id] === 2 ||
-                                  row[column.id] === "PASS"
-                                  ? "green"
-                                  : "red"
-                                : column.id === "thdJud" ||
-                                  // column.id === "frequencyJud" ||
-                                  // column.id === "sensitivityJud" ||
-                                  column.id === "laserMarkStatus" ||
-                                  column.id === "creationDate" ||
-                                  // column.id === "currentJud" ||
-                                  column.id === "tracReportStatus" ||
-                                  // column.id === "totalJudgement" ||
-                                  column.id === "qrStatus" ||
-                                  column.id === "acousticStatus"
-                                ? getColor(row[column.id])
-                                : "inherit",
-                          }}
-                        >
-                          {column.id === "lastUpdateDate" ||
-                          column.id === "creationDate"
-                            ? formatDateTimeSlash(row[column.id])
-                            : column.id === "sensitivityResult" ||
-                              column.id === "thdResult" ||
-                              column.id === "currentMeasured"
-                            ? toFixedTwo(row[column.id])
-                            : column.id === "id"
-                            ? row[column.id]
-                            : column.id === "totalJudgement" ||
-                              column.id === "qrJudgement" ||
-                              column.id === "currentJud" ||
-                              column.id === "sensitivityJud" ||
-                              column.id === "thdJud" ||
-                              column.id === "frequencyJud"
-                            ? row[column.id] === 2 || row[column.id] === "PASS"
-                              ? "PASS"
-                              : row[column.id] === 1 ||
-                                row[column.id] === 3 ||
-                                row[column.id] === "FAIL" ||
-                                row[column.id] === "FAILED"
-                              ? "FAIL"
-                              : mapStatus(row[column.id])
-                            : mapStatus(row[column.id])}
+                            ) {
+                              if (column.id === "qrJudgement") {
+                                return row[column.id] === 2 ||
+                                  row[column.id] === "PASS" ||
+                                  row[column.id] === "PASSED"
+                                  ? "PASS"
+                                  : row[column.id] === 5 ||
+                                    row[column.id] === 3 ||
+                                    row[column.id] === "FAIL" ||
+                                    row[column.id] === "FAILED"
+                                  ? "FAIL"
+                                  : row[column.id] !== 5 ||
+                                    row[column.id] !== 3 ||
+                                    row[column.id] !== "FAIL" ||
+                                    row[column.id] !== "FAILED"
+                                  ? "NA"
+                                  : mapStatus(row[column.id]);
+                              }
+
+                              return mapStatus(row[column.id]);
+                            }
+
+                            return row[column.id] || "";
+                          })()}
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
