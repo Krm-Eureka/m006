@@ -63,10 +63,11 @@ const HeaderLayout = (props) => {
               }}
             >
               <div className="flex items-center">
+                <p>Admin</p>
                 <img
                   src={OUT}
                   alt={"Logout"}
-                  className="mr-2 h-6 w-6 justify-center mt-1"
+                  className="mx-2 h-6 w-6 justify-center mt-1"
                 />
                 <span className="font-semibold text-lg">Logout</span>
               </div>
