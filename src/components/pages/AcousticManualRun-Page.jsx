@@ -60,7 +60,7 @@ const AcousticManualRun = () => {
 
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, LstStatusLog]);
 
   const mapStatus = (value) => {
     switch (value) {
