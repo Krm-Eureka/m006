@@ -257,7 +257,7 @@ const TraceabilityReport = () => {
   };
 
   const getColor = (value) => {
-    if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
+    if (value === 0|| value === 1 || value === "FAIL" || value === "FAILED")
       return "red";
     if (value === 2 || value === "PASS" || value === "PASSED") return "green";
     if (value === 3 || value === "FAIL" || value === "FAILED") return "red";
@@ -847,7 +847,15 @@ const TraceabilityReport = () => {
                             }
 
                             if (column.id === "id") {
-                              return row[column.id];
+                              // console.log(row.serialCode);
+                              const extractedCode = row.serialCode
+                            
+                                ? row.serialCode.split("-").pop()
+                                : "N/A";
+                            
+                              const number = extractedCode !== "N/A" ? parseInt(extractedCode, 10) : "N/A";
+
+                              return number;
                             }
 
                             if (
