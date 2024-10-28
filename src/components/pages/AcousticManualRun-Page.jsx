@@ -60,7 +60,7 @@ const AcousticManualRun = () => {
 
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate, LstStatusLog]);
+  }, [startDate, endDate]);
 
   const mapStatus = (value) => {
     switch (value) {
@@ -169,7 +169,6 @@ const AcousticManualRun = () => {
       <HeaderLayout page="Acoustic Retest" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
               Show Process Current of Retest EOLTStation {">>>"}{" "}
@@ -199,13 +198,7 @@ const AcousticManualRun = () => {
             <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
             <StatusBox
               name="Current"
-              status={
-                currentDescp
-                  ? currentDescp.status === "FAIL"
-                    ? 3
-                    : 2
-                  : undefined
-              }
+              status={currentDescp ? currentDescp.status : 7}
             />
             <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
             <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
@@ -245,75 +238,73 @@ const AcousticManualRun = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                      {smrData.map((row, idx) => (
-                        <TableRow
-                          key={idx}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.description}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.lowerValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            <p className="font-semibold">{row.upperValue}</p>
-                          </TableCell>
-                          <TableCell align="center">
-                            {row.result === "Fail" ? (
+                    {smrData.map((row, idx) => (
+                      <TableRow
+                        key={idx}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell align="left" component="th" scope="row">
+                          <p className="font-semibold">{row.description}</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">{row.lowerValue}</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">{row.upperValue}</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          {row.result === "Fail" ? (
+                            <p className="text-red-700 font-semibold">
+                              {row.result}
+                            </p>
+                          ) : row.description.toLowerCase() ===
+                            "sensitivity" ? (
+                            row.result !== "" &&
+                            !isNaN(parseFloat(row.result)) &&
+                            row.lowerValue !== "" &&
+                            !isNaN(parseFloat(row.lowerValue)) &&
+                            row.upperValue !== "" &&
+                            !isNaN(parseFloat(row.upperValue)) &&
+                            parseFloat(row.result) >=
+                              parseFloat(row.lowerValue) &&
+                            parseFloat(row.result) <=
+                              parseFloat(row.upperValue) ? (
+                              <p className="text-green-700 font-semibold">
+                                {row.result}
+                              </p>
+                            ) : (
                               <p className="text-red-700 font-semibold">
                                 {row.result}
                               </p>
-                            ) : row.description.toLowerCase() ===
-                              "sensitivity" ? (
-                              row.result !== "" &&
-                              !isNaN(parseFloat(row.result)) &&
-                              row.lowerValue !== "" &&
-                              !isNaN(parseFloat(row.lowerValue)) &&
-                              row.upperValue !== "" &&
-                              !isNaN(parseFloat(row.upperValue)) &&
-                              parseFloat(row.result) >=
-                                parseFloat(row.lowerValue) &&
-                              parseFloat(row.result) <=
-                                parseFloat(row.upperValue) ? (
-                                <p className="text-green-700 font-semibold">
-                                  {row.result}
-                                </p>
-                              ) : (
-                                <p className="text-red-700 font-semibold">
-                                  {row.result}
-                                </p>
-                              )
-                            ) : row.description.toLowerCase() ===
-                              "frequency" ? null : (
-                              <p className="text-green-700 font-semibold">
-                                {row.result}
-                              </p>
-                            )}
-                          </TableCell>
+                            )
+                          ) : row.description.toLowerCase() ===
+                            "frequency" ? null : (
+                            <p className="text-green-700 font-semibold">
+                              {row.result}
+                            </p>
+                          )}
+                        </TableCell>
 
-                          <TableCell align="center">
-                            {row.status.toLowerCase() === "failed" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "pass" ? (
-                              <p className="text-green-700 font-semibold">
-                                PASS
-                              </p>
-                            ) : row.status.toLowerCase() === "fail" ? (
-                              <p className="text-red-700 font-semibold">FAIL</p>
-                            ) : row.status.toLowerCase() === "" ? (
-                              <p className="font-semibold text-yellow-500">
-                                Exception
-                              </p>
-                            ) : (
-                              ""
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
+                        <TableCell align="center">
+                          {row.status.toLowerCase() === "failed" ? (
+                            <p className="text-red-700 font-semibold">FAIL</p>
+                          ) : row.status.toLowerCase() === "pass" ? (
+                            <p className="text-green-700 font-semibold">PASS</p>
+                          ) : row.status.toLowerCase() === "fail" ? (
+                            <p className="text-red-700 font-semibold">FAIL</p>
+                          ) : row.status.toLowerCase() === "" ? (
+                            <p className="font-semibold text-yellow-500">
+                              Exception
+                            </p>
+                          ) : (
+                            ""
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
                 </Table>
               </TableContainer>
             </div>
@@ -331,84 +322,78 @@ const AcousticManualRun = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">
-                      <p className="font-semibold">Serial No.</p>
-                        </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">Lasermark Code</p>
-                        </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">Result</p>
+                        <p className="font-semibold">Serial No.</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Lasermark Code</p>
+                      </TableCell>
+                      <TableCell align="center">
+                        <p className="font-semibold">Result</p>
                       </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                      {LstStatusLog && LstStatusLog.length > 0 ? (
-                        sortedStatus.slice(0, 5).map((row) => {
-                          const extractedCode = row.serialCode
-                            ? row.serialCode.split("-").pop()
-                            : "N/A";
+                    {LstStatusLog && LstStatusLog.length > 0 ? (
+                      sortedStatus.slice(0, 5).map((row) => {
+                        const extractedCode = row.serialCode
+                          ? row.serialCode.split("-").pop()
+                          : "N/A";
 
-                          const number =
-                            extractedCode !== "N/A"
-                              ? parseInt(extractedCode, 10)
-                              : "N/A";
-                          return (
-                            <TableRow
-                              key={row.id}
-                              sx={{
-                                "&:last-child td, &:last-child th": {
-                                  border: 0,
-                                },
-                              }}
-                            >
-                              <TableCell align="center">
-                                {/* <p className="font-semibold">{row.id}</p> */}
-                                <p className="font-semibold">{number}</p>
-                              </TableCell>
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                align="left"
-                              >
-                                <p className="font-semibold">
-                                  {row.serialCode}
+                        const number =
+                          extractedCode !== "N/A"
+                            ? parseInt(extractedCode, 10)
+                            : "N/A";
+                        return (
+                          <TableRow
+                            key={row.id}
+                            sx={{
+                              "&:last-child td, &:last-child th": {
+                                border: 0,
+                              },
+                            }}
+                          >
+                            <TableCell align="center">
+                              {/* <p className="font-semibold">{row.id}</p> */}
+                              <p className="font-semibold">{number}</p>
+                            </TableCell>
+                            <TableCell component="th" scope="row" align="left">
+                              <p className="font-semibold">{row.serialCode}</p>
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.totalJudgement === 1 ? (
+                                <p className="text-green-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
                                 </p>
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.totalJudgement === 1 ? (
-                                  <p className="text-green-700 font-semibold">
-                                    {mapStatus(row.totalJudgement)}
-                                  </p>
-                                ) : row.totalJudgement === 3 ? (
-                                  <p className="text-red-700 font-semibold">
-                                    {mapStatus(row.totalJudgement)}
-                                  </p>
-                                ) : row.totalJudgement === 2 ? (
-                                  <p className="text-red-500 font-semibold">
-                                    {mapStatus(row.totalJudgement)}
-                                  </p>
-                                ) : (
-                                  <p className="text-yellow-500 font-semibold">
-                                    {mapStatus(row.totalJudgement)}
-                                  </p>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={3} align="center">
-                            <div className="items-center justify-center text-center p-4">
-                              <p className="text-gray-600 font-semibold">
-                                No data available
-                              </p>
-                              <Loading text="Data Not Found . . ." />
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
+                              ) : row.totalJudgement === 3 ? (
+                                <p className="text-red-700 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : row.totalJudgement === 2 ? (
+                                <p className="text-red-500 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              ) : (
+                                <p className="text-yellow-500 font-semibold">
+                                  {mapStatus(row.totalJudgement)}
+                                </p>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={3} align="center">
+                          <div className="items-center justify-center text-center p-4">
+                            <p className="text-gray-600 font-semibold">
+                              No data available
+                            </p>
+                            <Loading text="Data Not Found . . ." />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
                 </Table>
               </TableContainer>
             </div>
