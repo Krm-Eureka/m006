@@ -33,7 +33,7 @@ const AcousticManualRun = () => {
   const [serialRun, setSerialRun] = useState("");
   const [LstStatusLog, setLstStatusLog] = useState([]);
   const [smrData, setSmrData] = useState([]);
-  const [currentDescp, setCurrentDescp] = useState(null);
+  const [currentDescp, setCurrentDescp] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ActDetailById, setActDetailById] = useState(null);
   const today = new Date();
@@ -414,8 +414,8 @@ const AcousticManualRun = () => {
             </div>
           </div>
         </div>
-        {loading && <Loading />}
-        {error && <div className="text-red-600">{error}</div>}
+        {/* {loading && <Loading />}
+        {error && <div className="text-red-600">{error}</div>} */}
       </div>
     </>
   );
