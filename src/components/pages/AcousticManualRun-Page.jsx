@@ -52,7 +52,7 @@ const AcousticManualRun = () => {
         if (!LstRetest || LstRetest.NewAcousticId === 0) {
           await GetLastRetestAcoustic("1", setLstRetest, setLoading);
         }
-        if (LstRetest.NewAcousticId !== 0) {
+        if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
           DoGetNewRetest();
         }
         await traceabilityService.getTraceabilityDataWithDate(
@@ -226,17 +226,31 @@ const AcousticManualRun = () => {
               Run
             </button>
           </div>
-          {/* {LstRetest.NewAcousticId === 0? '': {DoGetNewRetest}} */}
-          <div className="content flex flex-wrap flex-between p-4 items-center">
-            <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
-            <StatusBox
-              name="Current"
-              status={currentDescp ? currentDescp.status : 7}
-            />
-            <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
-            <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
-            <StatusBox name="TotalStatus" status={LstRetest?.totalJudgement} />
-          </div>
+          {loading  || LstRetest.length <= 0 ? (
+            <>
+              <div className="items-center justify-center text-center p-4">
+                <p className="text-gray-600 font-semibold">No data available</p>
+                <Loading text="Data Not Found . . ." />
+              </div>
+            </>
+          ) : (
+            <div className="content flex flex-wrap flex-between p-4 items-center">
+              <StatusBox
+                name="AcousticTest"
+                status={LstRetest?.acousticStatus}
+              />
+              <StatusBox
+                name="Current"
+                status={currentDescp ? currentDescp.status : 7}
+              />
+              <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
+              <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
+              <StatusBox
+                name="TotalStatus"
+                status={LstRetest?.totalJudgement}
+              />
+            </div>
+          )}
         </div>
 
         {/* {data summary } */}
