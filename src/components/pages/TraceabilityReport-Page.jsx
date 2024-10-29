@@ -417,7 +417,17 @@ const TraceabilityReport = () => {
       setError(err);
     }
   };
-
+  const handleSearchBySerial = async () => {
+    try {
+      await traceabilityService.getTraceabilityDataWithSerial(
+        "1",
+        searchTerm,
+        setRows
+      );
+    } catch (err) {
+      setError(err);
+    }
+  };
   const filteredRows = rows.filter((row) => {
     const rowDate = new Date(row.lastUpdateDate);
     const from = fromDate ? new Date(fromDate) : null;
@@ -547,17 +557,7 @@ const TraceabilityReport = () => {
   const handleSerialChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const handleSearchBySerial = async () => {
-    try {
-      await traceabilityService.getTraceabilityDataWithSerial(
-        "1",
-        searchTerm,
-        setRows
-      );
-    } catch (err) {
-      setError(err);
-    }
-  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
