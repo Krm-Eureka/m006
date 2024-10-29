@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -40,10 +40,21 @@ const AcousticManualRun = () => {
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0];
   const endDate = today.toISOString().split("T")[0];
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await GetLastRetestAcoustic("1", setLstRetest, setLoading);
+        if (!LstRetest || LstRetest.NewAcousticId === 0) {
+          await GetLastRetestAcoustic("1", setLstRetest, setLoading);
+        }
+        if (LstRetest.NewAcousticId !== 0) {
+          DoGetNewRetest();
+        }
         await traceabilityService.getTraceabilityDataWithDate(
           "1",
           startDate,
@@ -84,8 +95,8 @@ const AcousticManualRun = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       if (!dataBySerial || !dataBySerial.id) return;
-
       setLoading(true);
+      setError(null);
       try {
         const res = await GetAcousticTraceDetailById(
           "1",
@@ -120,12 +131,17 @@ const AcousticManualRun = () => {
     };
 
     fetchDetails();
+    const intervalId =
+      dataBySerial && dataBySerial.id ? setInterval(fetchDetails, 2000) : null;
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [dataBySerial]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const handleRunClick = async () => {
     setSerialRun(serialNumber);
     setLoading(true);
-
     try {
       const dataSerial =
         await traceabilityService.getTraceabilityDataWithSerial(
@@ -161,7 +177,22 @@ const AcousticManualRun = () => {
       setLoading(false);
     }
   };
-
+  // useEffect(() => {
+  //   if (LstRetest.NewAcousticId !== 0) {
+  //     DoGetNewRetest();
+  //   }
+  // }, [LstRetest.NewAcousticId]);
+  const DoGetNewRetest = async () => {
+    try {
+      await traceabilityService.newRetest(
+        "1",
+        LstRetest.NewAcousticId,
+        setLstRetest
+      );
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
 
   return (
@@ -181,6 +212,7 @@ const AcousticManualRun = () => {
             <label htmlFor="SN">Serial Number :</label>
             <input
               id="SN"
+              ref={inputRef}
               className="mx-2 p-2 rounded-md w-96"
               type="text"
               placeholder="Serial Number"
@@ -194,6 +226,7 @@ const AcousticManualRun = () => {
               Run
             </button>
           </div>
+          {/* {LstRetest.NewAcousticId === 0? '': {DoGetNewRetest}} */}
           <div className="content flex flex-wrap flex-between p-4 items-center">
             <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
             <StatusBox

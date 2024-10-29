@@ -26,23 +26,50 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
   getData();
 };
 const getTraceabilityDataWithSerial = async (version, SN, SET) => {
-  if (SN !== null) {
-    const url = `/api/v${version}/AcousticTraceLog/GetAcousticTraceLogBySerialNo/${encodeURIComponent(SN)}`;
+  console.log(SN);
+
+  if (SN === " ") {
+    console.error("Serial number is required");
+    console.log("Serial number is required");
+    return [];
+  } else {
+    const url = `/api/v${version}/AcousticTraceLog/GetAcousticTraceLogBySerialNo/${encodeURIComponent(
+      SN
+    )}`;
     console.log(url);
 
     try {
       const res = await endpoint.get(url);
       console.log("Response Data:", res.data.data);
 
-      SET(res.data.data); 
-      return res.data.data; 
+      SET(res.data.data);
+      return res.data.data;
     } catch (error) {
       console.error("Failed to fetch Data:", error);
-      return null; 
+      return [];
     }
-  } else {
+  }
+};
+const newRetest = async (version, NewNo, SET) => {
+  console.log(NewNo);
+
+  if (NewNo === " ") {
     console.error("Serial number is required");
-    return null; 
+    console.log("Serial number is required");
+    return [];
+  } else {
+    const url = `/api/v1/AcousticTraceLog?id=${NewNo}`;
+    console.log(url);
+    try {
+      const res = await endpoint.get(url);
+      console.log("Response Data:", res.data.data);
+
+      SET(res.data.data);
+      return res.data.data;
+    } catch (error) {
+      console.error("Failed to fetch Data:", error);
+      return [];
+    }
   }
 };
 
@@ -69,6 +96,7 @@ const traceabilityService = {
   getTraceabilityDataWithDate,
   getTraceabilityDataWithSerial,
   retestById,
+  newRetest
 };
 
 export default traceabilityService;
