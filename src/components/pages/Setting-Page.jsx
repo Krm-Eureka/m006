@@ -400,7 +400,7 @@ const MasterSetting = () => {
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMin: parseInt(value),
+                          runningMin: parseFloat(value),
                         })),
                     },
                     {
@@ -411,7 +411,7 @@ const MasterSetting = () => {
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMax: parseInt(value),
+                          runningMax: parseFloat(value),
                         })),
                     },
                   ].map(({ id, label, value, setter, type }) => (
