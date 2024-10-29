@@ -40,10 +40,12 @@ const MasterSetting = () => {
     plmReference: "",
     ebomReference: "",
     lastRunningDate: "",
+    // lastRunningDate: "2024-10-23T02:26:48.622Z",
     eoltRefCode: "",
     runningNo: "",
-    runningMin: "",
-    runningMax: "",
+    // runningNo: "0000",
+    runningMin: 0,
+    runningMax: 0,
     enableFlag: true,
   });
 
@@ -90,7 +92,7 @@ const MasterSetting = () => {
   //   }
   // };
   const handleSubmit = async (e) => {
-    setIsAuthenticated(true);
+    // setIsAuthenticated(true);
     e.preventDefault();
     try {
       const { success, token, login_msg } = await AuthLogin(email, password);
@@ -106,8 +108,8 @@ const MasterSetting = () => {
           icon: "error",
           title: "Authorization Fail",
         });
-        // navigate("/Console/Content_ACT/AutoRun");
-        setIsAuthenticated(true);
+        navigate("/Console/Content_ACT/AutoRun");
+        // setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -115,8 +117,8 @@ const MasterSetting = () => {
         icon: "error",
         title: "Authorization Fail",
       });
-      // navigate("/Console/Content_ACT/AutoRun");
-      setIsAuthenticated(true);
+      navigate("/Console/Content_ACT/AutoRun");
+      // setIsAuthenticated(true);
     }
   };
 
@@ -200,8 +202,8 @@ const MasterSetting = () => {
         manufacturingDateFormat: "yyMMdd",
         eoltRefCode,
         runningNo,
-        runningMin: parseInt(runningMin),
-        runningMax: parseInt(runningMax),
+        runningMin: parseFloat(runningMin),
+        runningMax: parseFloat(runningMax),
         enableFlag,
       };
       try {
@@ -395,11 +397,10 @@ const MasterSetting = () => {
                       label: "Current Min",
                       value: masterData.runningMin,
                       type: "number",
-                      
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMin: parseFloat(value),
+                          runningMin: parseInt(value),
                         })),
                     },
                     {
@@ -407,11 +408,10 @@ const MasterSetting = () => {
                       label: "Current Max",
                       value: masterData.runningMax,
                       type: "number",
-                      
                       setter: (value) =>
                         setMasterData((prev) => ({
                           ...prev,
-                          runningMax: parseFloat(value),
+                          runningMax: parseInt(value),
                         })),
                     },
                   ].map(({ id, label, value, setter, type }) => (
@@ -423,8 +423,7 @@ const MasterSetting = () => {
                         <input
                           disabled={!modify || label === "Serial Number"}
                           required={label !== "Serial Number"}
-                          type={type === "number" ? "number" : "text"}
-                          step={0.1}
+                          type={type}
                           value={loading ? "" : value}
                           className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
                           placeholder={label}
