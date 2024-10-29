@@ -39,7 +39,7 @@ const AcousticManualRun = () => {
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
-  const endDate = today.toISOString().split("T")[0] + " 23:59"; 
+  const endDate = today.toISOString().split("T")[0] + " 23:59";
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -132,7 +132,9 @@ const AcousticManualRun = () => {
 
     fetchDetails();
     const intervalId =
-    LstRetest && LstRetest.NewAcousticId ? setInterval(fetchDetails, 2000) : null;
+      LstRetest && LstRetest.NewAcousticId
+        ? setInterval(fetchDetails, 2000)
+        : null;
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
@@ -235,22 +237,16 @@ const AcousticManualRun = () => {
               </div>
             </>
           ) : ( */}
-            <div className="content flex flex-wrap flex-between p-4 items-center">
-              <StatusBox
-                name="AcousticTest"
-                status={LstRetest?.acousticStatus}
-              />
-              <StatusBox
-                name="Current"
-                status={currentDescp ? currentDescp.status : 7}
-              />
-              <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
-              <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
-              <StatusBox
-                name="TotalStatus"
-                status={LstRetest?.totalJudgement}
-              />
-            </div>
+          <div className="content flex flex-wrap flex-between p-4 items-center">
+            <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
+            <StatusBox
+              name="Current"
+              status={currentDescp ? currentDescp.status : 7}
+            />
+            <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
+            <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
+            <StatusBox name="TotalStatus" status={LstRetest?.totalJudgement} />
+          </div>
           {/* )} */}
         </div>
 
@@ -285,74 +281,89 @@ const AcousticManualRun = () => {
                       </TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
-                    {smrData.map((row, idx) => (
-                      <TableRow
-                        key={idx}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell align="left" component="th" scope="row">
-                          <p className="font-semibold">{row.description}</p>
-                        </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">{row.lowerValue}</p>
-                        </TableCell>
-                        <TableCell align="center">
-                          <p className="font-semibold">{row.upperValue}</p>
-                        </TableCell>
-                        <TableCell align="center">
-                          {row.result === "Fail" ? (
-                            <p className="text-red-700 font-semibold">
-                              {row.result}
-                            </p>
-                          ) : row.description.toLowerCase() ===
-                            "sensitivity" ? (
-                            row.result !== "" &&
-                            !isNaN(parseFloat(row.result)) &&
-                            row.lowerValue !== "" &&
-                            !isNaN(parseFloat(row.lowerValue)) &&
-                            row.upperValue !== "" &&
-                            !isNaN(parseFloat(row.upperValue)) &&
-                            parseFloat(row.result) >=
-                              parseFloat(row.lowerValue) &&
-                            parseFloat(row.result) <=
-                              parseFloat(row.upperValue) ? (
-                              <p className="text-green-700 font-semibold">
-                                {row.result}
-                              </p>
-                            ) : (
+                  {smrData?.length > 0 ? (
+                    <TableBody>
+                      {smrData.map((row, idx) => (
+                        <TableRow
+                          key={idx}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell align="left" component="th" scope="row">
+                            <p className="font-semibold">{row.description}</p>
+                          </TableCell>
+                          <TableCell align="center">
+                            <p className="font-semibold">{row.lowerValue}</p>
+                          </TableCell>
+                          <TableCell align="center">
+                            <p className="font-semibold">{row.upperValue}</p>
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.result === "Fail" ? (
                               <p className="text-red-700 font-semibold">
                                 {row.result}
                               </p>
-                            )
-                          ) : row.description.toLowerCase() ===
-                            "frequency" ? null : (
-                            <p className="text-green-700 font-semibold">
-                              {row.result}
-                            </p>
-                          )}
-                        </TableCell>
+                            ) : row.description.toLowerCase() ===
+                              "sensitivity" ? (
+                              row.result !== "" &&
+                              !isNaN(parseFloat(row.result)) &&
+                              row.lowerValue !== "" &&
+                              !isNaN(parseFloat(row.lowerValue)) &&
+                              row.upperValue !== "" &&
+                              !isNaN(parseFloat(row.upperValue)) &&
+                              parseFloat(row.result) >=
+                                parseFloat(row.lowerValue) &&
+                              parseFloat(row.result) <=
+                                parseFloat(row.upperValue) ? (
+                                <p className="text-green-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              ) : (
+                                <p className="text-red-700 font-semibold">
+                                  {row.result}
+                                </p>
+                              )
+                            ) : row.description.toLowerCase() ===
+                              "frequency" ? null : (
+                              <p className="text-green-700 font-semibold">
+                                {row.result}
+                              </p>
+                            )}
+                          </TableCell>
 
-                        <TableCell align="center">
-                          {row.status.toLowerCase() === "failed" ? (
-                            <p className="text-red-700 font-semibold">FAIL</p>
-                          ) : row.status.toLowerCase() === "pass" ? (
-                            <p className="text-green-700 font-semibold">PASS</p>
-                          ) : row.status.toLowerCase() === "fail" ? (
-                            <p className="text-red-700 font-semibold">FAIL</p>
-                          ) : row.status.toLowerCase() === "" ? (
-                            <p className="font-semibold text-yellow-500">
-                              Exception
-                            </p>
-                          ) : (
-                            ""
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
+                          <TableCell align="center">
+                            {row.status.toLowerCase() === "failed" ? (
+                              <p className="text-red-700 font-semibold">FAIL</p>
+                            ) : row.status.toLowerCase() === "pass" ? (
+                              <p className="text-green-700 font-semibold">
+                                PASS
+                              </p>
+                            ) : row.status.toLowerCase() === "fail" ? (
+                              <p className="text-red-700 font-semibold">FAIL</p>
+                            ) : row.status.toLowerCase() === "" ? (
+                              <p className="font-semibold text-yellow-500">
+                                Exception
+                              </p>
+                            ) : (
+                              ""
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={3} align="center">
+                        <div className="items-center justify-center text-center p-4 pl-60">
+                          <p className="text-gray-600 font-semibold">
+                            No data available
+                          </p>
+                          <Loading text="Data Not Found . . ." />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
                 </Table>
               </TableContainer>
             </div>
