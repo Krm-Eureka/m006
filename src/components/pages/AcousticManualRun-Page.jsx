@@ -94,13 +94,13 @@ const AcousticManualRun = () => {
 
   useEffect(() => {
     const fetchDetails = async () => {
-      if (!dataBySerial || !dataBySerial.id) return;
+      if (!LstRetest || !LstRetest.NewAcousticId) return;
       setLoading(true);
       setError(null);
       try {
         const res = await GetAcousticTraceDetailById(
           "1",
-          dataBySerial.id,
+          LstRetest.NewAcousticId,
           setActDetailById,
           setLoading
         );
@@ -132,11 +132,11 @@ const AcousticManualRun = () => {
 
     fetchDetails();
     const intervalId =
-      dataBySerial && dataBySerial.id ? setInterval(fetchDetails, 2000) : null;
+    LstRetest && LstRetest.NewAcousticId ? setInterval(fetchDetails, 2000) : null;
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [dataBySerial]);
+  }, [LstRetest]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleRunClick = async () => {
@@ -204,7 +204,8 @@ const AcousticManualRun = () => {
             <p>
               Show Process Current of Retest EOLTStation {">>>"}{" "}
               <span className="text-red-600 font-semibold">
-                {dataBySerial?.serialCode || "N/A"}
+                {/* {dataBySerial?.serialCode || "N/A"} */}
+                {serialRun || "N/A"}
               </span>
             </p>
           </div>
@@ -226,14 +227,14 @@ const AcousticManualRun = () => {
               Run
             </button>
           </div>
-          {loading  || LstRetest.length <= 0 ? (
+          {/* {loading  || LstRetest.length <= 0 ? (
             <>
               <div className="items-center justify-center text-center p-4">
                 <p className="text-gray-600 font-semibold">No data available</p>
                 <Loading text="Data Not Found . . ." />
               </div>
             </>
-          ) : (
+          ) : ( */}
             <div className="content flex flex-wrap flex-between p-4 items-center">
               <StatusBox
                 name="AcousticTest"
@@ -250,7 +251,7 @@ const AcousticManualRun = () => {
                 status={LstRetest?.totalJudgement}
               />
             </div>
-          )}
+          {/* )} */}
         </div>
 
         {/* {data summary } */}
