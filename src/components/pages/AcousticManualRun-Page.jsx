@@ -28,14 +28,14 @@ function createSmrData(description, lowerValue, upperValue, result, status) {
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [dataBySerial, setDataBySerial] = useState(null);
-  const [LstRetest, setLstRetest] = useState(null);
+  const [LstRetest, setLstRetest] = useState([]);
   const [error, setError] = useState("");
   const [serialRun, setSerialRun] = useState("");
   const [LstStatusLog, setLstStatusLog] = useState([]);
   const [smrData, setSmrData] = useState([]);
   const [currentDescp, setCurrentDescp] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [ActDetailById, setActDetailById] = useState(null);
+  const [ActDetailById, setActDetailById] = useState([]);
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0];

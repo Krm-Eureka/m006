@@ -32,8 +32,8 @@ const TraceabilityStatus = () => {
   const [error, setError] = useState(null);
   const [LstActLog, setLstActLog] = useState([]);
   const [LstStatusLog, setLstStatusLog] = useState([]);
-  const [ActDetailById, setActDetailById] = useState(null);
-  const [currentDescp, setCurrentDescp] = useState(null);
+  const [ActDetailById, setActDetailById] = useState([]);
+  const [currentDescp, setCurrentDescp] = useState([]);
   const [smrData, setSmrData] = useState([]);
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
@@ -101,6 +101,47 @@ const TraceabilityStatus = () => {
       fetchDetails();
     }
   }, [LstActLog]);
+
+  // const handleTEST = () => {
+  //   setSmrData([
+  //     {
+  //     description: "Sample item description",
+  //     lowerValue: 10.5,      
+  //     upperValue: 20.75,     
+  //     result: 15.25,        
+  //     status: 'pass'    
+  //   },
+  //     {
+  //     description: "Sample item description",
+  //     lowerValue: 10.5,      
+  //     upperValue: 20.75,     
+  //     result: 15.25,        
+  //     status: 'fail'    
+  //   },
+  //     {
+  //     description: "Sample item description",
+  //     lowerValue: 10.5,      
+  //     upperValue: 20.75,     
+  //     result: 15.25,        
+  //     status: 'passed'     
+  //   },
+  //     {
+  //     description: "Sample item description",
+  //     lowerValue: 10.5,      
+  //     upperValue: 20.75,     
+  //     result: 15.25,        
+  //     status: 'failed'     
+  //   },
+  // ])
+  //   setCurrentDescp([{
+  //     description: "Sample item description",
+  //     lowerValue: 10.5,      
+  //     upperValue: 20.75,     
+  //     result: 15.25,        
+  //     status: 'pass'    
+  //   }])
+  //   setLoading(false)
+  // }
   const mapStatus = (value) => {
     switch (value) {
       case 0:
@@ -175,9 +216,9 @@ const TraceabilityStatus = () => {
                   <StatusBox
                     name="Current"
                     status={
-                      currentDescp.status === "FAIL"
+                      currentDescp.status === "FAIL" || currentDescp.status === "fail"
                         ? 3
-                        : currentDescp.status === "PASS"
+                        : currentDescp.status === "PASS" || currentDescp.status === "pass"
                         ? 2
                         : 7
                     }
@@ -233,6 +274,9 @@ const TraceabilityStatus = () => {
                     <TableBody>
                       {smrData.length <= 0 ? (
                         <TableRow>
+                          {/* <div>
+                            <button onClick={handleTEST}>TEST</button>
+                          </div> */}
                           <TableCell colSpan={3} align="center">
                             <div className="items-center justify-center text-center p-4 pl-60">
                               <p className="text-gray-600 font-semibold">
@@ -292,17 +336,13 @@ const TraceabilityStatus = () => {
                               )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.status.toLowerCase() === "failed" ? (
+                              {row.status.toLowerCase() === "failed" || row.status.toLowerCase() === "fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   FAIL
                                 </p>
-                              ) : row.status.toLowerCase() === "pass" ? (
+                              ) : row.status.toLowerCase() === "pass" || row.status.toLowerCase() === "passed" ? (
                                 <p className="text-green-700 font-semibold">
                                   PASS
-                                </p>
-                              ) : row.status.toLowerCase() === "fail" ? (
-                                <p className="text-red-700 font-semibold">
-                                  FAIL
                                 </p>
                               ) : row.status.toLowerCase() === "" ? (
                                 <p className="font-semibold text-yellow-500">
