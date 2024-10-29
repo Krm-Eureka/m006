@@ -34,6 +34,7 @@ const LoginPage = () => {
       const { success, token, login_msg } = await AuthLogin(email, password);
       if (success) {
         localStorage.setItem("authToken", token);
+        localStorage.setItem("USER", email);
         Toast.fire({
           icon: "success",
           title: `Logging in ${login_msg}`,

@@ -1,18 +1,31 @@
 import PropTypes from "prop-types";
-import { useState, useRef } from "react";
+import { useState, useRef ,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 import OUT from "../assets/svg/logout.svg";
 
 const HeaderLayout = (props) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef(null);
   const PAGE = props.page;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("USER");
+    setUser(storedUser);
+  }, []);
   // Toggle sidebar function
   // const toggleNav = () => {
   //   setIsOpen(!isOpen);
   //   setInterval(4000)
   // };
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("USER");
+    navigate("/auth/login"); 
+  };
   const toggleNav = () => {
     setIsOpen((prevIsOpen) => {
       if (!prevIsOpen) {
@@ -58,12 +71,10 @@ const HeaderLayout = (props) => {
             <Link
               to="/auth/login"
               className="bg-white-400 hover:bg-gray-300  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-gray-600 "
-              onClick={() => {
-                localStorage.removeItem("authToken");
-              }}
+              onClick={handleLogout}
             >
               <div className="flex items-center">
-                <p>Admin</p>
+              <p className="flex items-center text-lg align-baseline">{user}</p>
                 <img
                   src={OUT}
                   alt={"Logout"}
