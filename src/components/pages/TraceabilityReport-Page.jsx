@@ -76,13 +76,6 @@ const columns = [
     aln: "center",
   },
   {
-    id: "QRCodeScanner",
-    label: "QRCodeScanner",
-    sortable: true,
-    w: 340,
-    aln: "center",
-  },
-  {
     id: "qrJudgement",
     label: "Qr Code Jud",
     w: 200,
@@ -163,7 +156,14 @@ const columns = [
     aln: "center",
   },
   {
-    id: "ProductionMode",
+    id: "QRCodeScanner",
+    label: "QRCodeScanner",
+    sortable: true,
+    w: 340,
+    aln: "center",
+  },
+  {
+    id: "ReTestFlag",
     label: "ProductionMode",
     w: 200,
     sortable: true,
@@ -217,11 +217,10 @@ const TraceabilityReport = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  // const [dropDown, setDropDown] = useState("");
+  const [dropDown, setDropDown] = useState("");
 
   const toggleDropdown = () => {
     console.log(dropDown);
-
     setDropdownOpen(!dropdownOpen);
   };
   const handleRequestSort = (property) => {
@@ -252,12 +251,12 @@ const TraceabilityReport = () => {
     if (value === 2 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 1 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 0) return 'Status Unmatch';
+    if (value === 0) return "Status Unmatch";
     return value;
   };
 
   const getColor = (value) => {
-    if (value === 0|| value === 1 || value === "FAIL" || value === "FAILED")
+    if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "red";
     if (value === 2 || value === "PASS" || value === "PASSED") return "green";
     if (value === 3 || value === "FAIL" || value === "FAILED") return "red";
@@ -306,6 +305,7 @@ const TraceabilityReport = () => {
       //   thdResult: 0.9,
       //   thdJud: 1,
       //   frequencyJud: 1,
+      //   ReTestFlag: "PASS",
       // },
       // {
       //   id: 2,
@@ -328,6 +328,7 @@ const TraceabilityReport = () => {
       //   thdResult: 1.1,
       //   thdJud: 2,
       //   frequencyJud: 2,
+      //   ReTestFlag: 1,
       // },
       // {
       //   id: 3,
@@ -350,6 +351,7 @@ const TraceabilityReport = () => {
       //   thdResult: 0.8,
       //   thdJud: 3,
       //   frequencyJud: 3,
+      //   ReTestFlag: 1,
       // },
       // {
       //   id: 4,
@@ -372,6 +374,7 @@ const TraceabilityReport = () => {
       //   thdResult: 1.3,
       //   thdJud: 5,
       //   frequencyJud: 5,
+      //   ReTestFlag: 0,
       // },
       // {
       //   id: 5,
@@ -394,12 +397,12 @@ const TraceabilityReport = () => {
       //   thdResult: 1.3,
       //   thdJud: 0,
       //   frequencyJud: 0,
-      //   ProductionMode: "byPass",
+      //   ReTestFlag: 0,
       // },
     ]);
     setSearchTerm("");
     setFromDate("");
-    setToDate("");
+    setToDate(today);
   };
   const searchWithDate = async () => {
     try {
@@ -541,6 +544,9 @@ const TraceabilityReport = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  const handleSerialChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
   const handleSearchBySerial = async () => {
     try {
       await traceabilityService.getTraceabilityDataWithSerial(
@@ -576,16 +582,22 @@ const TraceabilityReport = () => {
           <p>Traceability Report of EOLTStation</p>
         </div>
         <div className="flex flex-wrap mx-4 py-2 h-fit items-center justify-center">
-          {/* <>
+          <div className="flex flex-col p-0">
             <button
               onClick={toggleDropdown}
-              className=" text-white mt-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center"
+              className="w-fit text-white mt-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center z-50"
               type="button"
             >
-              {dropDown === "" || null ? "Filter Options" : dropDown}
+              {dropDown === "" || null
+                ? "Filter Options"
+                : dropDown === "date"
+                ? "By Date"
+                : dropDown === "serial"
+                ? "By Serial Code"
+                : "Filter Options"}
 
               <svg
-                className="w-2.5 h-2.5 ml-3"
+                className="w-2.5 h-2.5 ml-4"
                 aria-hidden="true"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -600,11 +612,11 @@ const TraceabilityReport = () => {
               </svg>
             </button>
             {dropdownOpen && (
-              <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+              <div className="z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-full">
                 <ul className="py-2 text-sm text-gray-700">
                   <li>
                     <a
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="block px-4 py-2 hover:bg-gray-100 w-fit"
                       onClick={() => {
                         setDropDown("date");
                         toggleDropdown();
@@ -615,7 +627,7 @@ const TraceabilityReport = () => {
                   </li>
                   <li>
                     <a
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="block px-4 py-2 hover:bg-gray-100 w-fit"
                       onClick={() => {
                         setDropDown("serial");
                         toggleDropdown();
@@ -627,9 +639,9 @@ const TraceabilityReport = () => {
                 </ul>
               </div>
             )}
-          </> */}
+          </div>
           <div className="mx-2 mb-2 flex ">
-            {rows && rows.length > 0 ? (
+            {rows && rows.length > 0 && dropDown !== "serial" ? (
               <div className="flex-row">
                 <label
                   htmlFor="serialNumber"
@@ -651,57 +663,62 @@ const TraceabilityReport = () => {
             )}
             {/* <div className="flex"> */}
 
-            {/* {dropDown === "date" ? ( */}
-            <div className="flex">
-              <div className="mx-2 mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-                  From Date
-                </label>
-                <input
-                  // type="date"
-                  type="datetime-local"
-                  className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-                  value={fromDate}
-                  onChange={handleFromDateChange}
-                />
-              </div>
-              <div className="mx-2 mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
-                  To Date
-                </label>
-                <input
-                  // type="date"
-                  type="datetime-local"
-                  className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-                  value={toDate}
-                  onChange={handleToDateChange}
-                />
-              </div>
-            </div>
-            {/* ) : (
-                <>
-                  <label
-                    htmlFor="serialNumber"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-800"
-                  >
-                    Serial Number
+            {dropDown === "date" ? (
+              <div className="flex">
+                <div className="mx-2 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+                    From Date
                   </label>
                   <input
-                    type="text"
-                    id="serialNumber"
+                    // type="date"
+                    type="datetime-local"
                     className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
-                    placeholder="Serial Number..."
-                    value={searchTerm}
-                    onChange={handleSearchBySerial}
+                    value={fromDate}
+                    onChange={handleFromDateChange}
                   />
-                </>
-              )} */}
+                </div>
+                <div className="mx-2 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-800">
+                    To Date
+                  </label>
+                  <input
+                    // type="date"
+                    type="datetime-local"
+                    className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                    value={toDate}
+                    onChange={handleToDateChange}
+                  />
+                </div>
+              </div>
+            ) : dropDown === "serial" ? (
+              <div className="flex flex-col">
+                <label
+                  htmlFor="serialNumber"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-800"
+                >
+                  Serial Number
+                </label>
+                <input
+                  type="text"
+                  id="serialNumber"
+                  className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
+                  placeholder="Serial Number..."
+                  value={searchTerm}
+                  // onClick={handleSearchBySerial}
+                  onChange={handleSerialChange}
+                />
+              </div>
+            ) : (
+              setDropDown("date")
+            )}
             {/* </div> */}
           </div>
 
           <div className="justify-items-center mx-2 mt-3">
             <button
-              onClick={searchWithDate}
+              onClick={
+                dropDown === "serial" ? handleSearchBySerial : searchWithDate
+              }
               className="mx-2 my-1 py-1 px-2 bg-green-500 hover:bg-green-700 text-gray-900 hover:text-white h-fit w-fit border rounded-btn"
             >
               Search
@@ -825,7 +842,13 @@ const TraceabilityReport = () => {
                               ) {
                                 return getColor(row[column.id]);
                               }
-
+                              if (column.id === "ReTestFlag") {
+                                return row[column.id] === 0
+                                  ? "green"
+                                  : row[column.id] === 1
+                                  ? "blue"
+                                  : "red";
+                              }
                               return "inherit";
                             })(),
                           }}
@@ -849,11 +872,13 @@ const TraceabilityReport = () => {
                             if (column.id === "id") {
                               // console.log(row.serialCode);
                               const extractedCode = row.serialCode
-                            
                                 ? row.serialCode.split("-").pop()
                                 : "N/A";
-                            
-                              const number = extractedCode !== "N/A" ? parseInt(extractedCode, 10) : "N/A";
+
+                              const number =
+                                extractedCode !== "N/A"
+                                  ? parseInt(extractedCode, 10)
+                                  : "N/A";
 
                               return number;
                             }
@@ -886,7 +911,13 @@ const TraceabilityReport = () => {
 
                               return mapStatus(row[column.id]);
                             }
-
+                            if (column.id === "ReTestFlag") {
+                              return row[column.id] === 0
+                                ? "A"
+                                : row[column.id] === 1
+                                ? "R"
+                                : "unknow";
+                            }
                             return row[column.id] || "";
                           })()}
                         </StyledTableCell>
