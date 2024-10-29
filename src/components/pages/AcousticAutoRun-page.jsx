@@ -62,7 +62,7 @@ const TraceabilityStatus = () => {
     
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, LstStatusLog]);
   const length = LstActLog?.length;
   console.log(length);
   useEffect(() => {
@@ -207,24 +207,24 @@ const TraceabilityStatus = () => {
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
                   Show Process Current of Auto EOLTStation{" "}
-                  {LstActLog.productionLineName || ''} {">>>"}
+                  {LstActLog?.productionLineName || ''} {">>>"}
                   <span className="text-red-600 font-bold">
-                    {LstActLog.serialCode}
+                    {LstActLog?.serialCode}
                   </span>
                 </p>
               </div>
               <div className="content flex flex-wrap flex-between p-4 items-center">
                 <StatusBox
                   name="AcousticTest"
-                  status={LstActLog.acousticStatus}
+                  status={LstActLog?.acousticStatus}
                 />
                 {currentDescp ? (
                   <StatusBox
                     name="Current"
                     status={
-                      currentDescp.status === "FAIL" || currentDescp.status === "fail"
+                      currentDescp?.status === "FAIL" || currentDescp?.status === "fail"
                         ? 3
-                        : currentDescp.status === "PASS" || currentDescp.status === "pass"
+                        : currentDescp?.status === "PASS" || currentDescp?.status === "pass"
                         ? 2
                         : 7
                     }
@@ -234,12 +234,12 @@ const TraceabilityStatus = () => {
                 )}
                 <StatusBox
                   name="LaserMark"
-                  status={LstActLog.laserMarkStatus}
+                  status={LstActLog?.laserMarkStatus}
                 />
-                <StatusBox name="QRCode" status={LstActLog.qrStatus} />
+                <StatusBox name="QRCode" status={LstActLog?.qrStatus} />
                 <StatusBox
                   name="TotalStatus"
-                  status={LstActLog.totalJudgement}
+                  status={LstActLog?.totalJudgement}
                 />
               </div>
             </>
