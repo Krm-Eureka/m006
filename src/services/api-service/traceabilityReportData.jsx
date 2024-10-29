@@ -4,22 +4,23 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
   const getData = async () => {
     const url =
       SN !== null
-        ? `/api/v${version}/AcousticTraceLog/GetByDateRange?startDate=${encodeURIComponent(
-            start
-          )}&endDate=${encodeURIComponent(end)}&serialCode=${encodeURIComponent(
+        ? `/api/v${version}/AcousticTraceLog/GetByDateRange?startDate=${start}&endDate=${end}&serialCode=${encodeURIComponent(
             SN
           )}`
-        : `/api/v${version}/AcousticTraceLog/GetByDateRange?startDate=${encodeURIComponent(
-            start
-          )}&endDate=${encodeURIComponent(end)}`;
+        : `/api/v${version}/AcousticTraceLog/GetByDateRange?startDate=${start}&endDate=${end}`;
 
     console.log(url);
 
     try {
       const res = await endpoint.get(url);
+      console.log("Response data:", res.data);
       SET(res.data.data);
     } catch (error) {
       console.error("Failed to fetch Data:", error);
+      if (error.response) {
+        console.error("Error Status:", error.response.status);
+        console.error("Error Data:", error.response.data);
+      }
     }
   };
 
@@ -96,7 +97,7 @@ const traceabilityService = {
   getTraceabilityDataWithDate,
   getTraceabilityDataWithSerial,
   retestById,
-  newRetest
+  newRetest,
 };
 
 export default traceabilityService;

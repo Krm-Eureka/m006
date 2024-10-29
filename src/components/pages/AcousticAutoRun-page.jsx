@@ -37,8 +37,8 @@ const TraceabilityStatus = () => {
   const [smrData, setSmrData] = useState([]);
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
-  const startDate = lastWeek.toISOString().split("T")[0];
-  const endDate = today.toISOString().split("T")[0];
+  const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
+  const endDate = today.toISOString().split("T")[0] + " 23:59"; 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,8 +63,6 @@ const TraceabilityStatus = () => {
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
-  const length = LstActLog?.length;
-  console.log(length);
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {

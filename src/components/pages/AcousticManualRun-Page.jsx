@@ -38,8 +38,8 @@ const AcousticManualRun = () => {
   const [ActDetailById, setActDetailById] = useState([]);
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
-  const startDate = lastWeek.toISOString().split("T")[0];
-  const endDate = today.toISOString().split("T")[0];
+  const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
+  const endDate = today.toISOString().split("T")[0] + " 23:59"; 
   const inputRef = useRef(null);
 
   useEffect(() => {
