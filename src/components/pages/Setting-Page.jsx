@@ -424,6 +424,7 @@ const MasterSetting = () => {
                           disabled={!modify || label === "Serial Number"}
                           required={label !== "Serial Number"}
                           type={type}
+                          step={0.1}
                           value={loading ? "" : value}
                           className="w-32 p-2.5 mr-3 bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500"
                           placeholder={label}
