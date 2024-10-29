@@ -59,10 +59,10 @@ const TraceabilityStatus = () => {
     fetchData();
     const length = LstActLog?.length;
     console.log(length);
-    
+
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate, LstStatusLog]);
+  }, [startDate, endDate]);
   const length = LstActLog?.length;
   console.log(length);
   useEffect(() => {
@@ -110,39 +110,39 @@ const TraceabilityStatus = () => {
   //   setSmrData([
   //     {
   //     description: "Sample item description",
-  //     lowerValue: 10.5,      
-  //     upperValue: 20.75,     
-  //     result: 15.25,        
-  //     status: 'pass'    
+  //     lowerValue: 10.5,
+  //     upperValue: 20.75,
+  //     result: 15.25,
+  //     status: 'pass'
   //   },
   //     {
   //     description: "Sample item description",
-  //     lowerValue: 10.5,      
-  //     upperValue: 20.75,     
-  //     result: 15.25,        
-  //     status: 'fail'    
+  //     lowerValue: 10.5,
+  //     upperValue: 20.75,
+  //     result: 15.25,
+  //     status: 'fail'
   //   },
   //     {
   //     description: "Sample item description",
-  //     lowerValue: 10.5,      
-  //     upperValue: 20.75,     
-  //     result: 15.25,        
-  //     status: 'passed'     
+  //     lowerValue: 10.5,
+  //     upperValue: 20.75,
+  //     result: 15.25,
+  //     status: 'passed'
   //   },
   //     {
   //     description: "Sample item description",
-  //     lowerValue: 10.5,      
-  //     upperValue: 20.75,     
-  //     result: 15.25,        
-  //     status: 'failed'     
+  //     lowerValue: 10.5,
+  //     upperValue: 20.75,
+  //     result: 15.25,
+  //     status: 'failed'
   //   },
   // ])
   //   setCurrentDescp([{
   //     description: "Sample item description",
-  //     lowerValue: 10.5,      
-  //     upperValue: 20.75,     
-  //     result: 15.25,        
-  //     status: 'pass'    
+  //     lowerValue: 10.5,
+  //     upperValue: 20.75,
+  //     result: 15.25,
+  //     status: 'pass'
   //   }])
   //   setLoading(false)
   // }
@@ -162,7 +162,7 @@ const TraceabilityStatus = () => {
   };
 
   // console.log(ActDetailById);
-  // console.log("Lst Log : ", LstStatusLog);
+  console.log("Lst Log : ", LstStatusLog);
 
   const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
 
@@ -184,7 +184,7 @@ const TraceabilityStatus = () => {
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          {(Array.isArray(LstActLog) && LstActLog?.length <= 0) ? (
+          {Array.isArray(LstActLog) && LstActLog?.length <= 0 ? (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
@@ -198,16 +198,15 @@ const TraceabilityStatus = () => {
                 <Loading text="Data Not Found . . ." />
               </div>
             </>
-          ) 
-          // : error ? (
-          //   <p className="text-red-600">{error}</p>
-          // ) 
-          : (
+          ) : (
+            // : error ? (
+            //   <p className="text-red-600">{error}</p>
+            // )
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
                   Show Process Current of Auto EOLTStation{" "}
-                  {LstActLog?.productionLineName || ''} {">>>"}
+                  {LstActLog?.productionLineName || ""} {">>>"}
                   <span className="text-red-600 font-bold">
                     {LstActLog?.serialCode}
                   </span>
@@ -222,9 +221,11 @@ const TraceabilityStatus = () => {
                   <StatusBox
                     name="Current"
                     status={
-                      currentDescp?.status === "FAIL" || currentDescp?.status === "fail"
+                      currentDescp?.status === "FAIL" ||
+                      currentDescp?.status === "fail"
                         ? 3
-                        : currentDescp?.status === "PASS" || currentDescp?.status === "pass"
+                        : currentDescp?.status === "PASS" ||
+                          currentDescp?.status === "pass"
                         ? 2
                         : 7
                     }
@@ -342,11 +343,13 @@ const TraceabilityStatus = () => {
                               )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.status.toLowerCase() === "failed" || row.status.toLowerCase() === "fail" ? (
+                              {row.status.toLowerCase() === "failed" ||
+                              row.status.toLowerCase() === "fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   FAIL
                                 </p>
-                              ) : row.status.toLowerCase() === "pass" || row.status.toLowerCase() === "passed" ? (
+                              ) : row.status.toLowerCase() === "pass" ||
+                                row.status.toLowerCase() === "passed" ? (
                                 <p className="text-green-700 font-semibold">
                                   PASS
                                 </p>
@@ -393,7 +396,8 @@ const TraceabilityStatus = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {LstStatusLog && LstStatusLog.length > 0 ? (
+                      {Array.isArray(LstStatusLog) &&
+                      LstStatusLog?.length > 0 ? (
                         sortedStatus.slice(0, 5).map((row) => {
                           const extractedCode = row.serialCode
                             ? row.serialCode.split("-").pop()
