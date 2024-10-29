@@ -57,10 +57,14 @@ const TraceabilityStatus = () => {
       }
     };
     fetchData();
+    const length = LstActLog?.length;
+    console.log(length);
+    
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
-
+  const length = LstActLog?.length;
+  console.log(length);
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {
@@ -180,7 +184,7 @@ const TraceabilityStatus = () => {
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          {loading || (Array.isArray(LstActLog) && LstActLog.length <= 0) ? (
+          {(Array.isArray(LstActLog) && LstActLog?.length <= 0) ? (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
@@ -194,14 +198,16 @@ const TraceabilityStatus = () => {
                 <Loading text="Data Not Found . . ." />
               </div>
             </>
-          ) : error ? (
-            <p className="text-red-600">{error}</p>
-          ) : (
+          ) 
+          // : error ? (
+          //   <p className="text-red-600">{error}</p>
+          // ) 
+          : (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
                   Show Process Current of Auto EOLTStation{" "}
-                  {LstActLog.productionLineName} {">>>"}
+                  {LstActLog.productionLineName || ''} {">>>"}
                   <span className="text-red-600 font-bold">
                     {LstActLog.serialCode}
                   </span>
