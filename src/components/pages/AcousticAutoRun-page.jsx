@@ -314,7 +314,9 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               ) : row.description.toLowerCase() ===
-                                "sensitivity" ? (
+                                "sensitivity" ||row.description.toLowerCase() ===
+                                "thd"||row.description.toLowerCase() ===
+                                "current" ? (
                                 row.result !== "" &&
                                 !isNaN(parseFloat(row.result)) &&
                                 row.lowerValue !== "" &&
@@ -335,6 +337,7 @@ const TraceabilityStatus = () => {
                                 )
                               ) : row.description.toLowerCase() ===
                                 "frequency" ? null : (
+                                  row.result===
                                 <p className="text-green-700 font-semibold">
                                   {row.result}
                                 </p>
