@@ -178,9 +178,19 @@ const TraceabilityReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("lastUpdateDate");
-  const [fromDate, setFromDate] = useState(today);
+
   const [rows, setRows] = useState([]);
-  const [toDate, setToDate] = useState(today);
+  const now = new Date();
+  const NOW = `${now.getFullYear()}-${(now.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} ${now
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+
+  const [toDate, setToDate] = useState(NOW);
+  const [fromDate, setFromDate] = useState(today + " 00:00");
+  // const [toDate, setToDate] = useState(today + " 23:59");
   const [serialNumber, setSerialNumber] = useState("");
   const [error, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -218,15 +228,22 @@ const TraceabilityReport = () => {
     if (value === 2 || value === 3 || value === "FAIL" || value === "FAILED")
       return "FAIL";
     if (value === 1 || value === "PASS" || value === "PASSED") return "PASS";
-    if (value === 0 || value !== 1 || value !== 2 ) return null;
+    if (value === 0 || value !== 1 || value !== 2) return null;
     return value;
   };
 
   const getColor = (value) => {
     if (value === 0 || value === 1 || value === "FAIL" || value === "FAILED")
       return "red";
-    if (value === 2 || value === "PASS" || value === "PASSED" || value === false) return "green";
-    if (value === 3 || value === "FAIL" || value === "FAILED" || value === true) return "red";
+    if (
+      value === 2 ||
+      value === "PASS" ||
+      value === "PASSED" ||
+      value === false
+    )
+      return "green";
+    if (value === 3 || value === "FAIL" || value === "FAILED" || value === true)
+      return "red";
 
     return "inherit";
   };
@@ -387,6 +404,7 @@ const TraceabilityReport = () => {
     }
   };
   const handleSearchBySerial = async () => {
+
     try {
       await traceabilityService.getAcousticTraceLogBySerialNo(
         "1",
@@ -457,7 +475,7 @@ const TraceabilityReport = () => {
           ) {
             if (column.id === "qrJudgement") {
               value =
-                row[column.id] === 1||
+                row[column.id] === 1 ||
                 row[column.id] === "PASS" ||
                 row[column.id] === "PASSED"
                   ? "PASS"
@@ -815,7 +833,8 @@ const TraceabilityReport = () => {
                                 column.id === "creationDate" ||
                                 column.id === "tracReportStatus" ||
                                 column.id === "qrStatus" ||
-                                column.id === "acousticStatus" || column.id === "reTestFlag"
+                                column.id === "acousticStatus" ||
+                                column.id === "reTestFlag"
                               ) {
                                 return getColor(row[column.id]);
                               }

@@ -34,6 +34,7 @@ const StatusBox = ({ name, status = 7 }) => {
       1: { text: "Reading", className: "bg-blue-500 text-black" },
       2: { text: "OK", className: "bg-green-500 text-black" },
       3: { text: "NG", className: "bg-red-500 text-black" },
+      7: { text: "Unknown Status", className: "bg-gray-400 text-gray-600" },
       // 0: { text: "Exception", className: "bg-yellow-400 text-black" },
       // 1: { text: "Reading", className: "bg-blue-500 text-black" },/*  */
       // 2: { text: "PASS", className: "bg-green-500 text-black" },
