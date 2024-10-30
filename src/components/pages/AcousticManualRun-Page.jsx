@@ -41,20 +41,73 @@ const AcousticManualRun = () => {
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
   const inputRef = useRef(null);
-
+  const mapStatus = (value) => {
+    switch (value) {
+      case 0:
+        return null;
+      case 1:
+        return "PASS";
+      case 2:
+        return "FAIL";
+      case 3:
+        return "Unknown";
+      default:
+        return value;
+    }
+  };
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
+  const handleRunClick = async () => {
+    setSerialRun(serialNumber);
+    setLoading(true);
+    try {
+      const dataSerial =
+        await traceabilityService.getAcousticTraceLogBySerialNo(
+          "1",
+          serialNumber,
+          setDataBySerial
+        );
+        console.log(dataSerial.newAcousticId);
+        setDataBySerial(dataSerial);
+      await delay(2000);
+      if (dataSerial.newAcousticId) {
+        await delay(1000);
+        if (dataSerial.newAcousticId) {
+          console.log({ newAcousticId: dataSerial.newAcousticId });
+          await traceabilityService.retestById("1", { newAcousticId: dataSerial.newAcousticId });
+          console.log("Retest called with ID:", dataSerial.newAcousticId);
+          await delay(500);
+        } else {
+          console.error("Data fetched but ID is missing.");
+          setError("Data fetched but ID is missing.");
+          await delay(500);
+        }
+      } else {
+        console.error("Failed to fetch valid data.");
+        setError("Failed to fetch valid data.");
+      }
+
+      console.log("Data fetched successfully:", dataSerial.newAcousticId);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching traceability data:", err);
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
+  };
   useEffect(() => {
     const fetchData = async () => {
+      // get Old DATA
       try {
-        if (!LstRetest || LstRetest.NewAcousticId === 0) {
-          await GetLastRetestAcoustic("1", setLstRetest, setLoading);
-        }
-        if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
-          DoGetNewRetest();
-        }
+        // if (!LstRetest || LstRetest.NewAcousticId === 0) {
+        await GetLastRetestAcoustic("1", setLstRetest, setLoading);
+        // }
+        // if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
+        //   DoGetNewRetest();
+        // }
         await traceabilityService.getTraceabilityDataWithDate(
           "1",
           startDate,
@@ -68,25 +121,9 @@ const AcousticManualRun = () => {
     };
 
     fetchData();
-
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
-
-  const mapStatus = (value) => {
-    switch (value) {
-      case 0:
-        return "Exception";
-      case 1:
-        return "PASS";
-      case 2:
-        return "FAIL";
-      case 3:
-        return "Unknown";
-      default:
-        return value;
-    }
-  };
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
@@ -94,13 +131,13 @@ const AcousticManualRun = () => {
 
   useEffect(() => {
     const fetchDetails = async () => {
-      if (!LstRetest || !LstRetest.NewAcousticId) return;
+      if (!LstRetest || !LstRetest.newAcousticId) return;
       setLoading(true);
       setError(null);
       try {
         const res = await GetAcousticTraceDetailById(
           "1",
-          LstRetest.NewAcousticId,
+          LstRetest.newAcousticId,
           setActDetailById,
           setLoading
         );
@@ -125,14 +162,15 @@ const AcousticManualRun = () => {
         setSmrData(uniqueSmrData);
       } catch (error) {
         setError(error.message);
-      } finally {
-        setLoading(false);
-      }
+      } 
+      // finally {
+      //   setLoading(false);
+      // }
     };
 
     fetchDetails();
     const intervalId =
-      LstRetest && LstRetest.NewAcousticId
+      LstRetest && LstRetest.newAcousticId
         ? setInterval(fetchDetails, 2000)
         : null;
     return () => {
@@ -141,44 +179,7 @@ const AcousticManualRun = () => {
   }, [LstRetest]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  const handleRunClick = async () => {
-    setSerialRun(serialNumber);
-    setLoading(true);
-    try {
-      const dataSerial =
-        await traceabilityService.getTraceabilityDataWithSerial(
-          "1",
-          serialNumber,
-          setDataBySerial
-        );
-      setDataBySerial(dataSerial);
-      await delay(2000);
-      if (dataSerial) {
-        await delay(1000);
-        if (dataSerial.id) {
-          console.log({ id: dataSerial.id });
 
-          await traceabilityService.retestById("1", { id: dataSerial.id });
-          console.log("Retest called with ID:", dataSerial.id);
-          await delay(500);
-        } else {
-          console.error("Data fetched but ID is missing.");
-          setError("Data fetched but ID is missing.");
-          await delay(500);
-        }
-      } else {
-        console.error("Failed to fetch valid data.");
-        setError("Failed to fetch valid data.");
-      }
-
-      console.log("Data fetched successfully:", dataSerial.id);
-    } catch (err) {
-      setError(err.message);
-      console.error("Error fetching traceability data:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
   // useEffect(() => {
   //   if (LstRetest.NewAcousticId !== 0) {
   //     DoGetNewRetest();
@@ -188,7 +189,7 @@ const AcousticManualRun = () => {
     try {
       await traceabilityService.newRetest(
         "1",
-        LstRetest.NewAcousticId,
+        LstRetest.newAcousticId,
         setLstRetest
       );
     } catch (error) {

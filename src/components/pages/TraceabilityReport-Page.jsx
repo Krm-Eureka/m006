@@ -156,7 +156,7 @@ const columns = [
     aln: "center",
   },
   {
-    id: "QRCodeScanner",
+    id: "newSerialCode",
     label: "QRCodeScanner",
     sortable: true,
     w: 340,
@@ -274,6 +274,7 @@ const TraceabilityReport = () => {
       //   thdJud: 1,
       //   frequencyJud: 1,
       //   reTestFlag: true,
+      //   newSerialCode: '1231213213213213213212132'
       // },
       // {
       //   id: 2,

@@ -58,7 +58,7 @@ const newRetest = async (version, NewNo, SET) => {
     console.log("Serial number is required");
     return [];
   } else {
-    const url = `/api/v1/AcousticTraceLog?id=${NewNo}`;
+    const url = `/api/v1/AcousticTraceLog/GetLastRetestAcousticTraceLog`;
     console.log(url);
     try {
       const res = await endpoint.get(url);
