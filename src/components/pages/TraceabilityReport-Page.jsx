@@ -455,7 +455,7 @@ const TraceabilityReport = () => {
           ) {
             if (column.id === "qrJudgement") {
               value =
-                row[column.id] === 2||
+                row[column.id] === 1||
                 row[column.id] === "PASS" ||
                 row[column.id] === "PASSED"
                   ? "PASS"
@@ -860,7 +860,7 @@ const TraceabilityReport = () => {
                               column.id === "frequencyJud"
                             ) {
                               if (column.id === "qrJudgement") {
-                                return row[column.id] === 2 ||
+                                return row[column.id] === 1 ||
                                   row[column.id] === "PASS" ||
                                   row[column.id] === "PASSED"
                                   ? "PASS"
