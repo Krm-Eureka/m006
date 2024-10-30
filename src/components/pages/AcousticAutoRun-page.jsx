@@ -38,7 +38,7 @@ const TraceabilityStatus = () => {
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
-  const endDate = today.toISOString().split("T")[0] + " 23:59"; 
+  const endDate = today.toISOString().split("T")[0] + " 23:59";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,7 +147,7 @@ const TraceabilityStatus = () => {
   const mapStatus = (value) => {
     switch (value) {
       case 0:
-        return "Exception";
+        return null;
       case 1:
         return "PASS";
       case 2:
