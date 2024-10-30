@@ -594,7 +594,7 @@ const TraceabilityReport = () => {
                     </a>
                   </li>
                   <li>
-                    <a
+                    {/* <a
                       className="block px-4 py-2 hover:bg-gray-100 w-fit"
                       onClick={() => {
                         setDropDown("serial");
@@ -602,7 +602,7 @@ const TraceabilityReport = () => {
                       }}
                     >
                       By Serial Code
-                    </a>
+                    </a> */}
                   </li>
                 </ul>
               </div>
