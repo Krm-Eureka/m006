@@ -32,7 +32,7 @@ const StatusBox = ({ name, status = 7 }) => {
     qrcode: {
       0: { text: "Exception", className: "bg-yellow-400 text-black" },
       1: { text: "OK", className: "bg-blue-500 text-black" },
-      5: { text: "NG", className: "bg-red-500 text-black" },
+      2: { text: "NG", className: "bg-red-500 text-black" },
       // 0: { text: "Exception", className: "bg-yellow-400 text-black" },
       // 1: { text: "Reading", className: "bg-blue-500 text-black" },/*  */
       // 2: { text: "PASS", className: "bg-green-500 text-black" },
