@@ -304,7 +304,7 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() ===
-                              "frequency" ? null : (
+                              "frequency" ? 'NA' : (
                                 <p className="font-semibold">
                                   {row.lowerValue}
                                 </p>
@@ -312,7 +312,7 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() ===
-                              "frequency" ? null : (
+                              "frequency" ? 'NA' : (
                                 <p className="font-semibold">
                                   {row.lowerValue}
                                 </p>

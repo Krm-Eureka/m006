@@ -69,8 +69,8 @@ const AcousticManualRun = () => {
           serialNumber,
           setDataBySerial
         );
-        console.log(dataSerial);
-        
+      console.log(dataSerial);
+
       console.log(dataSerial?.newAcousticId);
       setDataBySerial(dataSerial);
       await delay(2000);
@@ -297,10 +297,16 @@ const AcousticManualRun = () => {
                             <p className="font-semibold">{row.description}</p>
                           </TableCell>
                           <TableCell align="center">
-                            <p className="font-semibold">{row.lowerValue}</p>
+                            {row.description.toLowerCase() ===
+                            "frequency" ? 'NA' : (
+                              <p className="font-semibold">{row.lowerValue}</p>
+                            )}
                           </TableCell>
                           <TableCell align="center">
-                            <p className="font-semibold">{row.upperValue}</p>
+                            {row.description.toLowerCase() ===
+                            "frequency" ? 'NA' : (
+                              <p className="font-semibold">{row.lowerValue}</p>
+                            )}
                           </TableCell>
                           <TableCell align="center">
                             {row.result === "Fail" ? (
