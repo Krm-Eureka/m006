@@ -455,16 +455,16 @@ const TraceabilityReport = () => {
           ) {
             if (column.id === "qrJudgement") {
               value =
-                row[column.id] === 1 ||
+                row[column.id] === 2||
                 row[column.id] === "PASS" ||
                 row[column.id] === "PASSED"
                   ? "PASS"
-                  : row[column.id] === 2 ||
+                  : row[column.id] === 5 ||
                     row[column.id] === 3 ||
                     row[column.id] === "FAIL" ||
                     row[column.id] === "FAILED"
                   ? "FAIL"
-                  : row[column.id] !== 1 ||
+                  : row[column.id] !== 2 ||
                     row[column.id] !== 3 ||
                     row[column.id] !== "FAIL" ||
                     row[column.id] !== "FAILED"
@@ -860,16 +860,16 @@ const TraceabilityReport = () => {
                               column.id === "frequencyJud"
                             ) {
                               if (column.id === "qrJudgement") {
-                                return row[column.id] === 1 ||
+                                return row[column.id] === 2 ||
                                   row[column.id] === "PASS" ||
                                   row[column.id] === "PASSED"
                                   ? "PASS"
-                                  : row[column.id] === 2 ||
+                                  : row[column.id] === 5 ||
                                     row[column.id] === 3 ||
                                     row[column.id] === "FAIL" ||
                                     row[column.id] === "FAILED"
                                   ? "FAIL"
-                                  : row[column.id] !== 1 ||
+                                  : row[column.id] !== 2 ||
                                     row[column.id] !== 3 ||
                                     row[column.id] !== "FAIL" ||
                                     row[column.id] !== "FAILED"
