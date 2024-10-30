@@ -396,7 +396,7 @@ const TraceabilityStatus = () => {
                     <TableBody>
                       {Array.isArray(LstStatusLog) &&
                       LstStatusLog?.length > 0 ? (
-                        sortedStatus.slice(0, 5).map((row) => {
+                        sortedStatus.slice(1, 6).map((row) => {
                           const extractedCode = row.serialCode
                             ? row.serialCode.split("-").pop()
                             : "N/A";

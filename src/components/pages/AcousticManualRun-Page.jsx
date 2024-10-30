@@ -69,15 +69,17 @@ const AcousticManualRun = () => {
           serialNumber,
           setDataBySerial
         );
-        console.log(dataSerial.newAcousticId);
-        setDataBySerial(dataSerial);
+      console.log(dataSerial?.newAcousticId);
+      setDataBySerial(dataSerial);
       await delay(2000);
-      if (dataSerial.newAcousticId) {
+      if (dataSerial?.newAcousticId) {
         await delay(1000);
         if (dataSerial.newAcousticId) {
-          console.log({ id: dataSerial.newAcousticId });
-          await traceabilityService.retestById("1", { id: dataSerial.newAcousticId });
-          console.log("Retest called with ID:", dataSerial.newAcousticId);
+          console.log({ id: dataSerial?.newAcousticId });
+          await traceabilityService.retestById("1", {
+            id: dataSerial?.newAcousticId,
+          });
+          console.log("Retest called with ID:", dataSerial?.newAcousticId);
           await delay(500);
         } else {
           console.error("Data fetched but ID is missing.");
@@ -88,11 +90,11 @@ const AcousticManualRun = () => {
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
       }
-      console.log("Data fetched successfully:", dataSerial.newAcousticId);
+      console.log("Data fetched successfully:", dataSerial?.newAcousticId);
     } catch (err) {
       setError(err.message);
       console.error("Error fetching traceability data:", err);
-    } 
+    }
     // finally {
     //   setLoading(false);
     // }
@@ -161,7 +163,7 @@ const AcousticManualRun = () => {
         setSmrData(uniqueSmrData);
       } catch (error) {
         setError(error.message);
-      } 
+      }
       // finally {
       //   setLoading(false);
       // }
@@ -177,7 +179,6 @@ const AcousticManualRun = () => {
     };
   }, [LstRetest]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 
   // useEffect(() => {
   //   if (LstRetest.NewAcousticId !== 0) {
@@ -393,7 +394,7 @@ const AcousticManualRun = () => {
                   </TableHead>
                   <TableBody>
                     {LstStatusLog && LstStatusLog.length > 0 ? (
-                      sortedStatus.slice(0, 5).map((row) => {
+                      sortedStatus.slice(1, 6).map((row) => {
                         const extractedCode = row.serialCode
                           ? row.serialCode.split("-").pop()
                           : "N/A";
