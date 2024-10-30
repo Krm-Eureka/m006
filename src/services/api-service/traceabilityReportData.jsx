@@ -53,7 +53,7 @@ const getAcousticTraceLogBySerialNo = async (version, SN, SET) => {
 const newRetest = async (version, NewNo, SET) => {
   console.log(NewNo);
 
-  if (NewNo === " ") {
+  if (NewNo === "") {
     console.error("Serial number is required");
     console.log("Serial number is required");
     return [];

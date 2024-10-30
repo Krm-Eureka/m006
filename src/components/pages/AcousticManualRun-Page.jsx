@@ -61,7 +61,7 @@ const AcousticManualRun = () => {
 
   const handleRunClick = async () => {
     setSerialRun(serialNumber);
-    setLoading(true);
+    // setLoading(true);
     try {
       const dataSerial =
         await traceabilityService.getAcousticTraceLogBySerialNo(
@@ -75,8 +75,8 @@ const AcousticManualRun = () => {
       if (dataSerial.newAcousticId) {
         await delay(1000);
         if (dataSerial.newAcousticId) {
-          console.log({ newAcousticId: dataSerial.newAcousticId });
-          await traceabilityService.retestById("1", { newAcousticId: dataSerial.newAcousticId });
+          console.log({ id: dataSerial.newAcousticId });
+          await traceabilityService.retestById("1", { id: dataSerial.newAcousticId });
           console.log("Retest called with ID:", dataSerial.newAcousticId);
           await delay(500);
         } else {
@@ -88,7 +88,6 @@ const AcousticManualRun = () => {
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
       }
-
       console.log("Data fetched successfully:", dataSerial.newAcousticId);
     } catch (err) {
       setError(err.message);
@@ -137,7 +136,7 @@ const AcousticManualRun = () => {
       try {
         const res = await GetAcousticTraceDetailById(
           "1",
-          LstRetest.newAcousticId,
+          LstRetest?.newAcousticId,
           setActDetailById,
           setLoading
         );
@@ -170,7 +169,7 @@ const AcousticManualRun = () => {
 
     fetchDetails();
     const intervalId =
-      LstRetest && LstRetest.newAcousticId
+      LstRetest && LstRetest?.newAcousticId
         ? setInterval(fetchDetails, 2000)
         : null;
     return () => {
