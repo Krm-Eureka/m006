@@ -386,7 +386,7 @@ const TraceabilityReport = () => {
   };
   const handleSearchBySerial = async () => {
     try {
-      await traceabilityService.getTraceabilityDataWithSerial(
+      await traceabilityService.getAcousticTraceLogBySerialNo(
         "1",
         searchTerm,
         setRows

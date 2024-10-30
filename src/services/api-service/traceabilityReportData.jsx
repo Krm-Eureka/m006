@@ -26,7 +26,7 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
 
   getData();
 };
-const getTraceabilityDataWithSerial = async (version, SN, SET) => {
+const getAcousticTraceLogBySerialNo = async (version, SN, SET) => {
   console.log(SN);
 
   if (SN === " ") {
@@ -94,7 +94,7 @@ const retestById = async (version, data) => {
 
 const traceabilityService = {
   getTraceabilityDataWithDate,
-  getTraceabilityDataWithSerial,
+  getAcousticTraceLogBySerialNo,
   retestById,
   newRetest,
 };
