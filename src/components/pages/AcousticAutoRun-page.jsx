@@ -303,24 +303,22 @@ const TraceabilityStatus = () => {
                               <p className="font-semibold">{row.description}</p>
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "frequency"
-                                ? "NA"
-                                : row.result ===
-                                  (
-                                    <p className="font-semibold">
-                                      {row.lowerValue}
-                                    </p>
-                                  )}
+                              {row.description.toLowerCase() === "frequency" ? (
+                                "NA"
+                              ) : (
+                                <p className="font-semibold">
+                                  {row.lowerValue}
+                                </p>
+                              )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "frequency"
-                                ? "NA"
-                                : row.result ===
-                                  (
-                                    <p className="font-semibold">
-                                      {row.lowerValue}
-                                    </p>
-                                  )}
+                              {row.description.toLowerCase() === "frequency" ? (
+                                "NA"
+                              ) : (
+                                <p className="font-semibold">
+                                  {row.upperValue}
+                                </p>
+                              )}
                             </TableCell>
                             <TableCell align="center">
                               {row.result === "Fail" ? (
