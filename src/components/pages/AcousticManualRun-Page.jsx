@@ -69,6 +69,8 @@ const AcousticManualRun = () => {
           serialNumber,
           setDataBySerial
         );
+        console.log(dataSerial);
+        
       console.log(dataSerial?.newAcousticId);
       setDataBySerial(dataSerial);
       await delay(2000);
@@ -90,7 +92,7 @@ const AcousticManualRun = () => {
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
       }
-      console.log("Data fetched successfully:", dataSerial?.newAcousticId);
+      console.log("Data fetched successfully:", dataBySerial?.newAcousticId);
     } catch (err) {
       setError(err.message);
       console.error("Error fetching traceability data:", err);

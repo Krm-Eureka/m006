@@ -303,10 +303,20 @@ const TraceabilityStatus = () => {
                               <p className="font-semibold">{row.description}</p>
                             </TableCell>
                             <TableCell align="center">
-                              <p className="font-semibold">{row.lowerValue}</p>
+                              {row.description.toLowerCase() ===
+                              "frequency" ? null : (
+                                <p className="font-semibold">
+                                  {row.lowerValue}
+                                </p>
+                              )}
                             </TableCell>
                             <TableCell align="center">
-                              <p className="font-semibold">{row.upperValue}</p>
+                              {row.description.toLowerCase() ===
+                              "frequency" ? null : (
+                                <p className="font-semibold">
+                                  {row.lowerValue}
+                                </p>
+                              )}
                             </TableCell>
                             <TableCell align="center">
                               {row.result === "Fail" ? (
@@ -314,9 +324,9 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               ) : row.description.toLowerCase() ===
-                                "sensitivity" ||row.description.toLowerCase() ===
-                                "thd"||row.description.toLowerCase() ===
-                                "current" ? (
+                                  "sensitivity" ||
+                                row.description.toLowerCase() === "thd" ||
+                                row.description.toLowerCase() === "current" ? (
                                 row.result !== "" &&
                                 !isNaN(parseFloat(row.result)) &&
                                 row.lowerValue !== "" &&
@@ -337,10 +347,12 @@ const TraceabilityStatus = () => {
                                 )
                               ) : row.description.toLowerCase() ===
                                 "frequency" ? null : (
-                                  row.result===
-                                <p className="text-green-700 font-semibold">
-                                  {row.result}
-                                </p>
+                                row.result ===
+                                (
+                                  <p className="text-green-700 font-semibold">
+                                    {row.result}
+                                  </p>
+                                )
                               )}
                             </TableCell>
                             <TableCell align="center">
