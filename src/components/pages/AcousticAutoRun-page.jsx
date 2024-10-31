@@ -222,10 +222,12 @@ const TraceabilityStatus = () => {
                       !currentDescp?.status
                         ? 0
                         : currentDescp?.status === "FAIL" ||
-                          currentDescp?.status === "fail"
+                          currentDescp?.status === "fail" ||
+                          currentDescp?.status === 3
                         ? 3
                         : currentDescp?.status === "PASS" ||
-                          currentDescp?.status === "pass"
+                          currentDescp?.status === "pass" ||
+                          currentDescp?.status === 2
                         ? 2
                         : 7
                     }
