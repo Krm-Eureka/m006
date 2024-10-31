@@ -241,26 +241,24 @@ const AcousticManualRun = () => {
           ) : ( */}
           <div className="content flex flex-wrap flex-between p-4 items-center">
             <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
-            <StatusBox
-              name="Current"
-              status={
-                currentDescp?.status === "FAIL" ||
-                currentDescp?.status === "fail"
-                  ? 3
-                  : currentDescp?.status === "PASS" ||
-                    currentDescp?.status === "pass" ||
-                    currentDescp?.status === 2
-                  ? 2
-                  : currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail" ||
-                    currentDescp?.status === "PASS" ||
-                    currentDescp?.status === "pass" ||
-                    currentDescp?.status === 2 ||
-                    currentDescp?.status === 3
-                  ? 0
-                  : 7
-              }
-            />
+            {LstRetest?.length > 0 ? (
+              <StatusBox
+                name="Current"
+                status={
+                  currentDescp?.status === "FAIL" ||
+                  currentDescp?.status === "fail" ||
+                  currentDescp?.status === 3
+                    ? 3
+                    : currentDescp?.status === "PASS" ||
+                      currentDescp?.status === "pass" ||
+                      currentDescp?.status === 2
+                    ? 2
+                    : 0
+                }
+              />
+            ) : (
+              <StatusBox name="Current" />
+            )}
             <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
             <StatusBox name="QRCode" status={LstRetest?.qrStatus} />
             <StatusBox name="TotalStatus" status={LstRetest?.totalJudgement} />

@@ -176,7 +176,6 @@ const TraceabilityStatus = () => {
   // } else {
   //   console.error("sortedStatus array is empty.");
   // }
-  console.log(currentDescp);
   console.log(LstActLog);
 
   return (
@@ -218,25 +217,19 @@ const TraceabilityStatus = () => {
                 name="AcousticTest"
                 status={LstActLog?.acousticStatus}
               />
-              {currentDescp ? (
+              {LstActLog?.length > 0 ? (
                 <StatusBox
                   name="Current"
                   status={
                     currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail"
+                    currentDescp?.status === "fail" ||
+                    currentDescp?.status === 3
                       ? 3
                       : currentDescp?.status === "PASS" ||
                         currentDescp?.status === "pass" ||
                         currentDescp?.status === 2
                       ? 2
-                      : currentDescp?.status === "FAIL" ||
-                        currentDescp?.status === "fail" ||
-                        currentDescp?.status === "PASS" ||
-                        currentDescp?.status === "pass" ||
-                        currentDescp?.status === 2 ||
-                        currentDescp?.status === 3
-                      ? 0
-                      : 7
+                      : 3
                   }
                 />
               ) : (
