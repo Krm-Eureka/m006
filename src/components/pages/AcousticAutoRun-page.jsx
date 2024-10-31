@@ -183,7 +183,7 @@ const TraceabilityStatus = () => {
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          {Array.isArray(LstActLog) && LstActLog?.length <= 0 ? (
+          {/* {Array.isArray(LstActLog) && LstActLog?.length <= 0 ? (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
@@ -198,10 +198,10 @@ const TraceabilityStatus = () => {
               </div>
             </>
           ) : 
-          (
-          // : error ? (
-            //   <p className="text-red-600">{error}</p>
-            // )
+          ( */}
+           {/* : error ? (
+               <p className="text-red-600">{error}</p>
+            ) */}
           <>
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>
@@ -217,7 +217,7 @@ const TraceabilityStatus = () => {
                 name="AcousticTest"
                 status={LstActLog?.acousticStatus}
               />
-              {LstActLog?.length > 0 ? (
+              {LstActLog?.length > 0 || LstActLog.id? (
                 <StatusBox
                   name="Current"
                   status={
@@ -243,7 +243,7 @@ const TraceabilityStatus = () => {
               />
             </div>
           </>
-           )} 
+           {/* )}  */}
         </div>
 
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
