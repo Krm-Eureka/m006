@@ -63,6 +63,7 @@ const TraceabilityStatus = () => {
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
+  
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {

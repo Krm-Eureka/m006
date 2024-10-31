@@ -71,11 +71,13 @@ const AcousticManualRun = () => {
         );
       console.log(dataSerial);
       console.log(dataSerial?.id);
+      console.log(dataSerial?.reTestFlag);
+      
       setDataBySerial(dataSerial);
       await delay(2000);
       if (dataSerial?.id) {
         await delay(1000);
-        if (dataSerial?.retestFlag === false) {
+        if (dataSerial?.reTestFlag === false) {
           console.log({ id: dataSerial?.id });
           await traceabilityService.SetReTestAcousticTracLogById("1", {
             id: dataSerial?.id,
@@ -132,43 +134,86 @@ const AcousticManualRun = () => {
   };
 
   useEffect(() => {
-    const fetchDetails = async () => {
-      if (!LstRetest || !LstRetest.newAcousticId) return;
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await GetAcousticTraceDetailById(
-          "1",
-          LstRetest?.newAcousticId,
-          setActDetailById,
-          setLoading
-        );
+    if (LstRetest && LstRetest?.newSerialCode) {
+      console.log(LstRetest?.newSerialCode);
+      
+      const fetchDetails = async () => {
+        try {
+          await GetAcousticTraceDetailById(
+            "1",
+            LstRetest?.newSerialCode,
+            (res) => {
+              setActDetailById(res);
+              console.log(res);
+              
+              const uniqueSmrData = Array.from(
+                new Map(
+                  res.map((item) => [
+                    item.description,
+                    createSmrData(
+                      item.description,
+                      item.lowerValue,
+                      item.upperValue,
+                      item.result,
+                      item.status
+                    ),
+                  ])
+                ).values()
+              );
+              const currentDescp = res.find(
+                (item) => item.description === "Current"
+              );
+              console.log(currentDescp);
+              setCurrentDescp(currentDescp);
+              setSmrData(uniqueSmrData);
+              setLoading(false);
+            },
+            setLoading
+          );
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+      fetchDetails();
+    }
+  }, [LstRetest]);
 
-        const uniqueSmrData = Array.from(
-          new Map(
-            res.map((item) => [
-              item.description,
-              createSmrData(
-                item.description,
-                item.lowerValue,
-                item.upperValue,
-                item.result,
-                item.status
-              ),
-            ])
-          ).values()
-        );
+  // useEffect(() => {
+  //   const fetchDetails = async () => {
+  //     if (!LstRetest || !LstRetest.newAcousticId) return;
+  //     try {
+  //       const res = await GetAcousticTraceDetailById(
+  //         "1",
+  //         LstRetest?.newAcousticId,
+  //         setActDetailById,
+  //         setLoading
+  //       );
 
-        const currentDescp = res.find((item) => item.description === "Current");
-        setCurrentDescp(currentDescp);
-        setSmrData(uniqueSmrData);
-      } catch (error) {
-        setError(error.message);
-      }
-      // finally {
-      //   setLoading(false);
-      // }
-    };
+  //       const uniqueSmrData = Array.from(
+  //         new Map(
+  //           res.map((item) => [
+  //             item.description,
+  //             createSmrData(
+  //               item.description,
+  //               item.lowerValue,
+  //               item.upperValue,
+  //               item.result,
+  //               item.status
+  //             ),
+  //           ])
+  //         ).values()
+  //       );
+
+  //       const currentDescp = res.find((item) => item.description === "Current");
+  //       setCurrentDescp(currentDescp);
+  //       setSmrData(uniqueSmrData);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     }
+  //     // finally {
+  //     //   setLoading(false);
+  //     // }
+  //   };
 
     fetchDetails();
     const intervalId =
