@@ -217,7 +217,7 @@ const TraceabilityStatus = () => {
                 name="AcousticTest"
                 status={LstActLog?.acousticStatus}
               />
-              {LstActLog?.length > 0 || LstActLog.id? (
+              {LstActLog?.length > 0 || LstActLog?.id? (
                 <StatusBox
                   name="Current"
                   status={
