@@ -70,17 +70,17 @@ const AcousticManualRun = () => {
           setDataBySerial
         );
       console.log(dataSerial);
-      console.log(dataSerial?.newAcousticId);
+      console.log(dataSerial?.id);
       setDataBySerial(dataSerial);
       await delay(2000);
-      if (dataSerial?.newAcousticId) {
+      if (dataSerial?.id) {
         await delay(1000);
-        if (dataSerial.newAcousticId) {
-          console.log({ id: dataSerial?.newAcousticId });
+        if (dataSerial?.retestFlag === false) {
+          console.log({ id: dataSerial?.id });
           await traceabilityService.SetReTestAcousticTracLogById("1", {
-            id: dataSerial?.newAcousticId,
+            id: dataSerial?.id,
           });
-          console.log("Retest called with ID:", dataSerial?.newAcousticId);
+          console.log("Retest called with ID:", dataSerial?.id);
           await delay(500);
         } else {
           console.error("Data fetched but ID is missing.");
@@ -91,7 +91,7 @@ const AcousticManualRun = () => {
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
       }
-      console.log("Data fetched successfully:", dataBySerial?.newAcousticId);
+      console.log("Data fetched successfully:", dataBySerial);
     } catch (err) {
       setError(err.message);
       console.error("Error fetching traceability data:", err);
