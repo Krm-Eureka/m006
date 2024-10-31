@@ -243,7 +243,15 @@ const AcousticManualRun = () => {
             <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
             <StatusBox
               name="Current"
-              status={currentDescp ? currentDescp.status : 7}
+              status={ !currentDescp?.status
+                ? 0
+                : currentDescp?.status === "FAIL" ||
+                  currentDescp?.status === "fail"
+                ? 3
+                : currentDescp?.status === "PASS" ||
+                  currentDescp?.status === "pass"
+                ? 2
+                : 7}
             />
             <StatusBox name="LaserMark" status={LstRetest?.laserMarkStatus} />
             <StatusBox name="QRCode" status={LstRetest?.qrStatus} />

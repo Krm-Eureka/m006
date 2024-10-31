@@ -219,8 +219,10 @@ const TraceabilityStatus = () => {
                   <StatusBox
                     name="Current"
                     status={
-                      currentDescp?.status === "FAIL" ||
-                      currentDescp?.status === "fail"
+                      !currentDescp?.status
+                        ? 0
+                        : currentDescp?.status === "FAIL" ||
+                          currentDescp?.status === "fail"
                         ? 3
                         : currentDescp?.status === "PASS" ||
                           currentDescp?.status === "pass"
