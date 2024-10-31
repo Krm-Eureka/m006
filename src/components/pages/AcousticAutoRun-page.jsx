@@ -229,7 +229,7 @@ const TraceabilityStatus = () => {
                         currentDescp?.status === "pass" ||
                         currentDescp?.status === 2
                       ? 2
-                      : 3
+                      : 0
                   }
                 />
               ) : (
