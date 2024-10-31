@@ -61,7 +61,6 @@ const AcousticManualRun = () => {
 
   const handleRunClick = async () => {
     setSerialRun(serialNumber);
-    // setLoading(true);
     try {
       const dataSerial =
         await traceabilityService.getAcousticTraceLogBySerialNo(
@@ -69,15 +68,20 @@ const AcousticManualRun = () => {
           serialNumber,
           setDataBySerial
         );
+        console.log('Sent S/N to run');
+        
       console.log(dataSerial);
       console.log(dataSerial?.id);
       console.log(dataSerial?.reTestFlag);
-      
       setDataBySerial(dataSerial);
       await delay(2000);
       if (dataSerial?.id) {
+        console.log('chk DATA');
+        
         await delay(1000);
         if (dataSerial?.reTestFlag === false) {
+          console.log('chk reTestFlag = false');
+          
           console.log({ id: dataSerial?.id });
           await traceabilityService.SetReTestAcousticTracLogById("1", {
             id: dataSerial?.id,
@@ -134,6 +138,9 @@ const AcousticManualRun = () => {
   };
 
   useEffect(() => {
+    console.log('fetch 11111111');
+    console.log(LstRetest);
+    
     if (LstRetest && LstRetest?.newSerialCode) {
       console.log(LstRetest?.newSerialCode);
       
@@ -178,70 +185,7 @@ const AcousticManualRun = () => {
     }
   }, [LstRetest]);
 
-  // useEffect(() => {
-  //   const fetchDetails = async () => {
-  //     if (!LstRetest || !LstRetest.newAcousticId) return;
-  //     try {
-  //       const res = await GetAcousticTraceDetailById(
-  //         "1",
-  //         LstRetest?.newAcousticId,
-  //         setActDetailById,
-  //         setLoading
-  //       );
-
-  //       const uniqueSmrData = Array.from(
-  //         new Map(
-  //           res.map((item) => [
-  //             item.description,
-  //             createSmrData(
-  //               item.description,
-  //               item.lowerValue,
-  //               item.upperValue,
-  //               item.result,
-  //               item.status
-  //             ),
-  //           ])
-  //         ).values()
-  //       );
-
-  //       const currentDescp = res.find((item) => item.description === "Current");
-  //       setCurrentDescp(currentDescp);
-  //       setSmrData(uniqueSmrData);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     }
-  //     // finally {
-  //     //   setLoading(false);
-  //     // }
-  //   };
-
-    fetchDetails();
-    const intervalId =
-      LstRetest && LstRetest?.newAcousticId
-        ? setInterval(fetchDetails, 2000)
-        : null;
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [LstRetest]);
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // useEffect(() => {
-  //   if (LstRetest.NewAcousticId !== 0) {
-  //     DoGetNewRetest();
-  //   }
-  // }, [LstRetest.NewAcousticId]);
-  const DoGetNewRetest = async () => {
-    try {
-      await traceabilityService.newRetest(
-        "1",
-        LstRetest.newAcousticId,
-        setLstRetest
-      );
-    } catch (error) {
-      setError(error.message);
-    }
-  };
   const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
 
   return (

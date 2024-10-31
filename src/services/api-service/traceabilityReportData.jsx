@@ -9,11 +9,11 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
           )}`
         : `/api/v${version}/AcousticTraceLog/GetByDateRange?startDate=${start}&endDate=${end}`;
 
-    console.log(url);
+    // console.log(url);
 
     try {
       const res = await endpoint.get(url);
-      console.log("Response data:", res.data);
+      // console.log("Response data:", res.data);
       SET(res.data.data);
     } catch (error) {
       console.error("Failed to fetch Data:", error);
