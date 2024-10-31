@@ -244,11 +244,10 @@ const AcousticManualRun = () => {
             <StatusBox
               name="Current"
               status={
-                !currentDescp?.status && LstRetest !== null
+                LstRetest?.length !== 0 && currentDescp?.length !== 0
                   ? 0
                   : currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail" ||
-                    currentDescp?.status === 3
+                    currentDescp?.status === "fail"
                   ? 3
                   : currentDescp?.status === "PASS" ||
                     currentDescp?.status === "pass" ||

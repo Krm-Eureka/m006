@@ -176,13 +176,15 @@ const TraceabilityStatus = () => {
   // } else {
   //   console.error("sortedStatus array is empty.");
   // }
+  console.log(currentDescp);
+  console.log(LstActLog);
 
   return (
     <>
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          {Array.isArray(LstActLog) && LstActLog?.length <= 0 ? (
+          {/* {Array.isArray(LstActLog) && LstActLog?.length <= 0 ? (
             <>
               <div className="title bg-green-500 p-2 rounded-t-md font-bold">
                 <p>
@@ -196,57 +198,54 @@ const TraceabilityStatus = () => {
                 <Loading text="Data Not Found . . ." />
               </div>
             </>
-          ) : (
-            // : error ? (
+          ) : 
+          ( */}
+          {/* // : error ? (
             //   <p className="text-red-600">{error}</p>
-            // )
-            <>
-              <div className="title bg-green-500 p-2 rounded-t-md font-bold">
-                <p>
-                  Show Process Current of Auto EOLTStation{" "}
-                  {LstActLog?.productionLineName || ""} {">>>"}
-                  <span className="text-red-600 font-bold">
-                    {LstActLog?.serialCode}
-                  </span>
-                </p>
-              </div>
-              <div className="content flex flex-wrap flex-between p-4 items-center">
+            // ) */}
+          <>
+            <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+              <p>
+                Show Process Current of Auto EOLTStation{" "}
+                {LstActLog?.productionLineName || ""} {">>>"}
+                <span className="text-red-600 font-bold">
+                  {LstActLog?.serialCode}
+                </span>
+              </p>
+            </div>
+            <div className="content flex flex-wrap flex-between p-4 items-center">
+              <StatusBox
+                name="AcousticTest"
+                status={LstActLog?.acousticStatus}
+              />
+              {currentDescp ? (
                 <StatusBox
-                  name="AcousticTest"
-                  status={LstActLog?.acousticStatus}
+                  name="Current"
+                  status={
+                    LstActLog?.length !== 0 && currentDescp?.length !== 0
+                      ? 0
+                      : currentDescp?.status === "FAIL" ||
+                        currentDescp?.status === "fail"
+                      ? 3
+                      : currentDescp?.status === "PASS" ||
+                        currentDescp?.status === "pass" ||
+                        currentDescp?.status === 2
+                      ? 2
+                      : 7
+                  }
                 />
-                {currentDescp ? (
-                  <StatusBox
-                    name="Current"
-                    status={
-                      !currentDescp?.status
-                        ? 0
-                        : currentDescp?.status === "FAIL" ||
-                          currentDescp?.status === "fail" ||
-                          currentDescp?.status === 3
-                        ? 3
-                        : currentDescp?.status === "PASS" ||
-                          currentDescp?.status === "pass" ||
-                          currentDescp?.status === 2
-                        ? 2
-                        : 7
-                    }
-                  />
-                ) : (
-                  <StatusBox name="Current" />
-                )}
-                <StatusBox
-                  name="LaserMark"
-                  status={LstActLog?.laserMarkStatus}
-                />
-                <StatusBox name="QRCode" status={LstActLog?.qrStatus} />
-                <StatusBox
-                  name="TotalStatus"
-                  status={LstActLog?.totalJudgement}
-                />
-              </div>
-            </>
-          )}
+              ) : (
+                <StatusBox name="Current" />
+              )}
+              <StatusBox name="LaserMark" status={LstActLog?.laserMarkStatus} />
+              <StatusBox name="QRCode" status={LstActLog?.qrStatus} />
+              <StatusBox
+                name="TotalStatus"
+                status={LstActLog?.totalJudgement}
+              />
+            </div>
+          </>
+          {/* )} */}
         </div>
 
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
