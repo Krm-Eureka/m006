@@ -73,7 +73,7 @@ const newRetest = async (version, NewNo, SET) => {
   }
 };
 
-const retestById = async (version, data) => {
+const SetReTestAcousticTracLogById = async (version, data) => {
   if (data === null) {
     console.error("Data is required for retest");
     return;
@@ -95,7 +95,7 @@ const retestById = async (version, data) => {
 const traceabilityService = {
   getTraceabilityDataWithDate,
   getAcousticTraceLogBySerialNo,
-  retestById,
+  SetReTestAcousticTracLogById,
   newRetest,
 };
 

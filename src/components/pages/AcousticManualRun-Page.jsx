@@ -70,7 +70,6 @@ const AcousticManualRun = () => {
           setDataBySerial
         );
       console.log(dataSerial);
-
       console.log(dataSerial?.newAcousticId);
       setDataBySerial(dataSerial);
       await delay(2000);
@@ -78,7 +77,7 @@ const AcousticManualRun = () => {
         await delay(1000);
         if (dataSerial.newAcousticId) {
           console.log({ id: dataSerial?.newAcousticId });
-          await traceabilityService.retestById("1", {
+          await traceabilityService.SetReTestAcousticTracLogById("1", {
             id: dataSerial?.newAcousticId,
           });
           console.log("Retest called with ID:", dataSerial?.newAcousticId);
