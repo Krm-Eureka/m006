@@ -256,7 +256,7 @@ const AcousticManualRun = () => {
                     currentDescp?.status === "PASS" ||
                     currentDescp?.status === "pass" ||
                     currentDescp?.status === 2 ||
-                    currentDescp?.status === 2
+                    currentDescp?.status === 3
                   ? 0
                   : 7
               }

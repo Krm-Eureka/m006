@@ -222,15 +222,20 @@ const TraceabilityStatus = () => {
                 <StatusBox
                   name="Current"
                   status={
-                    LstActLog?.length !== 0 && currentDescp?.length !== 0
-                      ? 0
-                      : currentDescp?.status === "FAIL" ||
-                        currentDescp?.status === "fail"
+                    currentDescp?.status === "FAIL" ||
+                    currentDescp?.status === "fail"
                       ? 3
                       : currentDescp?.status === "PASS" ||
                         currentDescp?.status === "pass" ||
                         currentDescp?.status === 2
                       ? 2
+                      : currentDescp?.status === "FAIL" ||
+                        currentDescp?.status === "fail" ||
+                        currentDescp?.status === "PASS" ||
+                        currentDescp?.status === "pass" ||
+                        currentDescp?.status === 2 ||
+                        currentDescp?.status === 3
+                      ? 0
                       : 7
                   }
                 />
