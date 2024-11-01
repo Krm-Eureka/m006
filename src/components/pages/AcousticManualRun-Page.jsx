@@ -172,13 +172,13 @@ const AcousticManualRun = () => {
         // if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
         //   DoGetNewRetest();
         // }
-        // await traceabilityService.getTraceabilityDataWithDate(
-        //   "1",
-        //   startDate,
-        //   endDate,
-        //   null,
-        //   setLstStatusLog
-        // );
+        await traceabilityService.getTraceabilityDataWithDate(
+          "1",
+          startDate,
+          endDate,
+          null,
+          setLstStatusLog
+        );
       } catch (error) {
         setError(error.message);
       }
