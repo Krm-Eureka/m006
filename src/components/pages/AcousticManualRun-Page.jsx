@@ -148,6 +148,7 @@ const AcousticManualRun = () => {
         }else{
           console.log('runChk NG');
           setRunCHK('NG')
+          await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
         }
         
         // if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
