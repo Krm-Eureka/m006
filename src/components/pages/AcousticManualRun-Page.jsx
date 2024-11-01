@@ -39,7 +39,7 @@ const AcousticManualRun = () => {
   const [currentDescp, setCurrentDescp] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ActDetailById, setActDetailById] = useState([]);
-  const [runChk, setRunCHK] = useState('');
+  const [runChk, setRunCHK] = useState("");
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
@@ -82,20 +82,28 @@ const AcousticManualRun = () => {
       if (dataSerial?.id) {
         console.log("chk DATA");
         await delay(1000);
-        if (dataSerial?.reTestFlag === false && dataSerial?.newAcousticId === 0) {
-          console.log("dataSerial?.reTestFlag === false && dataSerial?.newAcousticId === 0");
-          console.log('OldDataID : ', { id: dataSerial?.id });
-          const RT =
-            await traceabilityService.SetReTestAcousticTracLogById("1", {
+        if (
+          dataSerial?.reTestFlag === false &&
+          dataSerial?.newAcousticId === 0
+        ) {
+          console.log(
+            "dataSerial?.reTestFlag === false && dataSerial?.newAcousticId === 0"
+          );
+          console.log("OldDataID : ", { id: dataSerial?.id });
+          const RT = await traceabilityService.SetReTestAcousticTracLogById(
+            "1",
+            {
               id: dataSerial?.id,
-            });
-            console.log('ReTestAcoustic : ', RT);
-            setRET(RT)
+            }
+          );
+          console.log("ReTestAcoustic : ", RT);
+          setRET(RT);
           setOldDataID(RT?.id);
           console.log("Sent S/N to run : ", RT?.serialCode);
           console.log("Retest called with ID:", RT?.id);
           await delay(500);
         } else {
+          setRunCHK("NG");
           if (dataSerial?.reTestFlag === true) {
             console.error("Data fetched but Has Retest is finished.");
             setError("Data fetched but Has Retest is finished.");
@@ -115,29 +123,39 @@ const AcousticManualRun = () => {
     // finally {
     //   setLoading(false);
     // }
-    setRunCHK('OK')
+    setRunCHK("OK");
   };
   useEffect(() => {
     const fetchData = async () => {
       // get Old DATA
       try {
-        if (runChk === 'OK') {
-          console.log('runChk OK');
-          
-          if (LstRetest?.newAcousticId !== 0 || LstRetest?.newAcousticId !== undefined) {
-            console.log('LstRetest?.newAcousticId !== 0 || LstRetest?.newAcousticId !== undefined');
-            console.log('newAcousticId : ', LstRetest?.newAcousticId);
-            console.log('LstRetest ID : ', LstRetest?.id);
-            setOldDataID(null)
+        if (runChk === "OK") {
+          console.log("runChk OK");
+
+          if (
+            LstRetest?.newAcousticId !== 0 ||
+            LstRetest?.newAcousticId !== undefined
+          ) {
+            console.log(
+              "LstRetest?.newAcousticId !== 0 || LstRetest?.newAcousticId !== undefined"
+            );
+            console.log("newAcousticId : ", LstRetest?.newAcousticId);
+            console.log("LstRetest ID : ", LstRetest?.id);
+            setOldDataID(null);
             await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
-          } else if (LstRetest?.newAcousticId === 0 || LstRetest?.newAcousticId === undefined) {
-            console.log('LstRetest?.newAcousticId === 0 || LstRetest?.newAcousticId === undefined');
-            setOldDataID(null)
-            console.log('OID : ', oldDataID);
+          } else if (
+            LstRetest?.newAcousticId === 0 ||
+            LstRetest?.newAcousticId === undefined
+          ) {
+            console.log(
+              "LstRetest?.newAcousticId === 0 || LstRetest?.newAcousticId === undefined"
+            );
+            setOldDataID(null);
+            console.log("OID : ", oldDataID);
             if (!oldDataID || oldDataID === null) {
-              console.log('!oldDataID || oldDataID === null');
-              console.log('LstRetest : ', LstRetest);
-              setLstRetest([])
+              console.log("!oldDataID || oldDataID === null");
+              console.log("LstRetest : ", LstRetest);
+              setLstRetest([]);
               await GetLastRetestAcoustic("1", setLstRetest, setLoading);
             } else {
               await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
@@ -145,12 +163,12 @@ const AcousticManualRun = () => {
             // await GetLastRetestAcoustic("1", setLstRetest, setLoading);
             // await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
           }
-        }else{
-          console.log('runChk NG');
-          setRunCHK('NG')
+        } else {
+          console.log("runChk NG");
+
           await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
         }
-        
+
         // if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
         //   DoGetNewRetest();
         // }
@@ -272,14 +290,14 @@ const AcousticManualRun = () => {
                 name="Current"
                 status={
                   currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail" ||
-                    currentDescp?.status === 3
+                  currentDescp?.status === "fail" ||
+                  currentDescp?.status === 3
                     ? 3
                     : currentDescp?.status === "PASS" ||
                       currentDescp?.status === "pass" ||
                       currentDescp?.status === 2
-                      ? 2
-                      : 0
+                    ? 2
+                    : 0
                 }
               />
             ) : (
@@ -357,14 +375,14 @@ const AcousticManualRun = () => {
                             ) : row.description.toLowerCase() ===
                               "sensitivity" ? (
                               row.result !== "" &&
-                                !isNaN(parseFloat(row.result)) &&
-                                row.lowerValue !== "" &&
-                                !isNaN(parseFloat(row.lowerValue)) &&
-                                row.upperValue !== "" &&
-                                !isNaN(parseFloat(row.upperValue)) &&
-                                parseFloat(row.result) >=
+                              !isNaN(parseFloat(row.result)) &&
+                              row.lowerValue !== "" &&
+                              !isNaN(parseFloat(row.lowerValue)) &&
+                              row.upperValue !== "" &&
+                              !isNaN(parseFloat(row.upperValue)) &&
+                              parseFloat(row.result) >=
                                 parseFloat(row.lowerValue) &&
-                                parseFloat(row.result) <=
+                              parseFloat(row.result) <=
                                 parseFloat(row.upperValue) ? (
                                 <p className="text-green-700 font-semibold">
                                   {row.result}
