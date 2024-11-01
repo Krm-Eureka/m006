@@ -267,6 +267,12 @@ const AcousticManualRun = () => {
               placeholder="Serial Number"
               value={serialNumber}
               onChange={handleInputChange}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleRunClick();
+                }
+              }}
+              tabIndex="0"
             />
             <button
               className="mx-2 my-1 py-2 px-4 font-semibold bg-blue-500 hover:bg-blue-700 text-white h-fit w-fit border rounded-btn"
