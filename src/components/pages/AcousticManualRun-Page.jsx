@@ -73,10 +73,9 @@ const AcousticManualRun = () => {
           setDataBySerial
         );
       
-      console.log(dataSerial);
+      // console.log(dataSerial);
       console.log(dataSerial?.id);
       console.log(dataSerial?.reTestFlag);
-      
       setDataBySerial(dataSerial);
       await delay(2000);
       if (dataSerial?.id) {
@@ -85,8 +84,7 @@ const AcousticManualRun = () => {
         await delay(1000);
         if (dataSerial?.reTestFlag === false) {
           console.log("chk reTestFlag = false");
-
-          console.log({ id: dataSerial?.id });
+          console.log('OldDataID : ',{ id: dataSerial?.id });
           const RT =
           await traceabilityService.SetReTestAcousticTracLogById("1", {
             id: dataSerial?.id,
@@ -118,8 +116,11 @@ const AcousticManualRun = () => {
       // get Old DATA
       try {
         if (LstRetest?.newAcousticId !== 0) {
+          console.log('LstRetest ID : ',LstRetest?.id);
+          
           await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
         } else if (LstRetest?.newAcousticId === 0) {
+          console.log('OID : ',oldDataID);
           await GetLastRetestAcoustic("1", setLstRetest, setLoading);
           await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
         }

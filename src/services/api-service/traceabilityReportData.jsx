@@ -13,7 +13,7 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
 
     try {
       const res = await endpoint.get(url);
-      // console.log("Response data:", res.data);
+      console.log("getTraceabilityDataWithDate :", res.data);
       SET(res.data.data);
     } catch (error) {
       console.error("Failed to fetch Data:", error);
@@ -41,7 +41,7 @@ const getAcousticTraceLogBySerialNo = async (version, SN, SET) => {
 
     try {
       const res = await endpoint.get(url);
-      console.log("Response Data:", [res.data.data]);
+      console.log("getAcousticTraceLogBySerialNo : ", [res.data.data]);
       SET([res.data.data]);
       return res.data.data;
     } catch (error) {
@@ -62,7 +62,7 @@ const newRetest = async (version, NewNo, SET) => {
     console.log(url);
     try {
       const res = await endpoint.get(url);
-      console.log("Response Data:", res.data.data);
+      console.log("newRetest : ", res.data.data);
 
       SET(res.data.data);
       return res.data.data;
@@ -84,7 +84,7 @@ const SetReTestAcousticTracLogById = async (version, data) => {
   try {
     console.log("Sending request to:", url);
     const res = await endpoint.put(url, data);
-    console.log(res.data.data);
+    console.log('SetReTestAcousticTracLogById : ' ,res.data.data);
 
     return res.data.data;
   } catch (error) {
