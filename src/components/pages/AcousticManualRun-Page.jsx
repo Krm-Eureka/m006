@@ -12,7 +12,8 @@ import Loading from "../loadingComponent";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
 import {
   GetAcousticTraceDetailById,
-  GetLastRetestAcoustic,GetLastRetest
+  GetLastRetestAcoustic,
+  GetLastRetest,
 } from "../../services/api-service/stationData";
 
 function createSmrData(description, lowerValue, upperValue, result, status) {
@@ -62,8 +63,8 @@ const AcousticManualRun = () => {
 
   const handleRunClick = async () => {
     setSerialRun(serialNumber);
-    setLstRetest([])
-    setSmrData([])
+    setLstRetest([]);
+    setSmrData([]);
     try {
       const dataSerial =
         await traceabilityService.getAcousticTraceLogBySerialNo(
@@ -71,30 +72,32 @@ const AcousticManualRun = () => {
           serialNumber,
           setDataBySerial
         );
-        console.log('Sent S/N to run');
-        
+      
       console.log(dataSerial);
       console.log(dataSerial?.id);
       console.log(dataSerial?.reTestFlag);
-      setOldDataID(dataSerial?.id)
+      
       setDataBySerial(dataSerial);
       await delay(2000);
       if (dataSerial?.id) {
-        console.log('chk DATA');
-        
+        console.log("chk DATA");
+
         await delay(1000);
         if (dataSerial?.reTestFlag === false) {
-          console.log('chk reTestFlag = false');
-          
+          console.log("chk reTestFlag = false");
+
           console.log({ id: dataSerial?.id });
+          const RT =
           await traceabilityService.SetReTestAcousticTracLogById("1", {
             id: dataSerial?.id,
           });
-          console.log("Retest called with ID:", dataSerial?.id);
+          setOldDataID(RT?.id);
+          console.log("Sent S/N to run : ", RT?.serialCode);
+          console.log("Retest called with ID:", RT?.id);
           await delay(500);
         } else {
-          console.error("Data fetched but ID is missing.");
-          setError("Data fetched but ID is missing.");
+          console.error("Data fetched but Has Retest is finished.");
+          setError("Data fetched but Has Retest is finished.");
           await delay(500);
         }
       } else {
@@ -114,13 +117,11 @@ const AcousticManualRun = () => {
     const fetchData = async () => {
       // get Old DATA
       try {
-        
-          if(LstRetest?.newAcousticId !== 0){
-            await GetLastRetest("1",LstRetest?.id, setLstRetest, setLoading);
-       
-        }else if (LstRetest?.newAcousticId === 0) {
+        if (LstRetest?.newAcousticId !== 0) {
+          await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
+        } else if (LstRetest?.newAcousticId === 0) {
           await GetLastRetestAcoustic("1", setLstRetest, setLoading);
-          await GetLastRetest("1",oldDataID, setLstRetest, setLoading);
+          await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
         }
         // if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
         //   DoGetNewRetest();
@@ -148,10 +149,10 @@ const AcousticManualRun = () => {
 
   useEffect(() => {
     console.log(LstRetest?.id);
-    
+
     if (LstRetest && LstRetest.id) {
       console.log(LstRetest?.newSerialCode);
-      
+
       const fetchDetails = async () => {
         try {
           await GetAcousticTraceDetailById(
@@ -159,8 +160,8 @@ const AcousticManualRun = () => {
             LstRetest.id,
             (res) => {
               setActDetailById(res);
-              console.log('1213213213213213',res);
-              
+              console.log("1213213213213213", res);
+
               const uniqueSmrData = Array.from(
                 new Map(
                   res.map((item) => [
@@ -195,7 +196,6 @@ const AcousticManualRun = () => {
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
-console.log("11111111111111111111111111",smrData);
 
   return (
     <>
@@ -241,19 +241,19 @@ console.log("11111111111111111111111111",smrData);
             <StatusBox name="AcousticTest" status={LstRetest?.acousticStatus} />
             {LstRetest?.length > 0 || LstRetest?.id ? (
               <StatusBox
-              name="Current"
-              status={
-                currentDescp?.status === "FAIL" ||
-                currentDescp?.status === "fail" ||
-                currentDescp?.status === 3
-                  ? 3
-                  : currentDescp?.status === "PASS" ||
-                    currentDescp?.status === "pass" ||
-                    currentDescp?.status === 2
-                  ? 2
-                  : 0
-              }
-            />
+                name="Current"
+                status={
+                  currentDescp?.status === "FAIL" ||
+                  currentDescp?.status === "fail" ||
+                  currentDescp?.status === 3
+                    ? 3
+                    : currentDescp?.status === "PASS" ||
+                      currentDescp?.status === "pass" ||
+                      currentDescp?.status === 2
+                    ? 2
+                    : 0
+                }
+              />
             ) : (
               <StatusBox name="Current" />
             )}
