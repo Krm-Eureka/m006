@@ -96,13 +96,13 @@ const AcousticManualRun = () => {
       if (dataSerial?.id) {
         console.log("chk DATA");
         await delay(1000);
-        if (
-          dataSerial?.reTestFlag === false &&
-          dataSerial?.newAcousticId === 0
-        ) {
-          console.log(
-            "dataSerial?.reTestFlag === false && dataSerial?.newAcousticId === 0"
-          );
+        // if (
+        //   dataSerial?.reTestFlag === false &&
+        //   dataSerial?.newAcousticId === 0
+        // ) {
+          // console.log(
+          //   "dataSerial?.reTestFlag === false && dataSerial?.newAcousticId === 0"
+          // );
           console.log("OldDataID : ", { id: dataSerial?.id });
           const RT = await traceabilityService.SetReTestAcousticTracLogById(
             "1",
@@ -116,19 +116,19 @@ const AcousticManualRun = () => {
           console.log("Sent S/N to run : ", RT?.serialCode);
           console.log("Retest called with ID:", RT?.id);
           await delay(500);
-        } else {
-          setRunCHK("NG");
-          if (dataSerial?.reTestFlag === true) {
-            console.error(
-              "Data fetched but Has Retest is finished.",
-              "RetestFlag =",
-              dataSerial?.reTestFlag === true ? 1 : 0
-            );
-            setError("Data fetched but Has Retest is finished.");
-          }
+        // } else {
+        //   setRunCHK("NG");
+        //   if (dataSerial?.reTestFlag === true) {
+        //     console.error(
+        //       "Data fetched but Has Retest is finished.",
+        //       "RetestFlag =",
+        //       dataSerial?.reTestFlag === true ? 1 : 0
+        //     );
+        //     setError("Data fetched but Has Retest is finished.");
+        //   }
 
-          await delay(500);
-        }
+        //   await delay(500);
+        // }
       } else {
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
