@@ -373,7 +373,16 @@ const AcousticManualRun = () => {
                           }}
                         >
                           <TableCell align="left" component="th" scope="row">
-                            <p className="font-semibold">{row.description}</p>
+                            <p className="font-semibold">
+                              {row.description.toLowerCase() === "current"
+                                ? "Current (mA)"
+                                : row.description.toLowerCase() ===
+                                  "sensitivity"
+                                ? "Sensitivity (dBV/Pa)"
+                                : row.description.toLowerCase() === "thd"
+                                ? "THD (%)"
+                                : row.description}
+                            </p>
                           </TableCell>
                           <TableCell align="center">
                             {row.description.toLowerCase() === "frequency" ? (

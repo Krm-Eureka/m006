@@ -63,7 +63,7 @@ const TraceabilityStatus = () => {
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
-  
+
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {
@@ -163,7 +163,9 @@ const TraceabilityStatus = () => {
   // console.log(ActDetailById);
   console.log("Lst Log : ", LstStatusLog);
 
-  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate));
+  const sortedStatus = [...(LstStatusLog || [])].sort(
+    (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
+  );
 
   // if (sortedStatus.length > 0) {
   //   const firstItem = sortedStatus[0];
@@ -200,13 +202,13 @@ const TraceabilityStatus = () => {
             </>
           ) : 
           ( */}
-           {/* : error ? (
+          {/* : error ? (
                <p className="text-red-600">{error}</p>
             ) */}
           <>
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>
-              Acoustic EOLT Station : AUTO Mode{" "}
+                Acoustic EOLT Station : AUTO Mode{" "}
                 {/* {LstActLog?.productionLineName || ""}  */}
                 {">>>"}
                 <span className="text-red-600 font-bold">
@@ -219,7 +221,7 @@ const TraceabilityStatus = () => {
                 name="AcousticTest"
                 status={LstActLog?.acousticStatus}
               />
-              {LstActLog?.length > 0 || LstActLog?.id? (
+              {LstActLog?.length > 0 || LstActLog?.id ? (
                 <StatusBox
                   name="Current"
                   status={
@@ -245,7 +247,7 @@ const TraceabilityStatus = () => {
               />
             </div>
           </>
-           {/* )}  */}
+          {/* )}  */}
         </div>
 
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
@@ -303,7 +305,16 @@ const TraceabilityStatus = () => {
                             }}
                           >
                             <TableCell align="left" component="th" scope="row">
-                              <p className="font-semibold">{row.description}</p>
+                              <p className="font-semibold">
+                                {row.description.toLowerCase() === "current"
+                                  ? "Current (mA)"
+                                  : row.description.toLowerCase() ===
+                                    "sensitivity"
+                                  ? "Sensitivity (dBV/Pa)"
+                                  : row.description.toLowerCase() === "thd"
+                                  ? "THD (%)"
+                                  : row.description}
+                              </p>
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() === "frequency" ? (
