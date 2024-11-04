@@ -60,7 +60,9 @@ const AcousticManualRun = () => {
     }
   };
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate));
+  const sortedStatus = [...(LstStatusLog || [])].sort(
+    (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
+  );
 
   const reSetInput = () => {
     setSerialNumber("");
@@ -137,7 +139,6 @@ const AcousticManualRun = () => {
       console.error("Error fetching traceability data:", err);
     }
     setRunCHK("OK");
-    
   };
 
   useEffect(() => {
@@ -254,8 +255,6 @@ const AcousticManualRun = () => {
     }
   }, [LstRetest]);
 
-  
-
   return (
     <>
       <HeaderLayout page="Acoustic Retest" />
@@ -263,10 +262,14 @@ const AcousticManualRun = () => {
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-            Acoustic EOLT Station : RETEST Mode {">>>"}{" "}
+              Acoustic EOLT Station : RETEST Mode {">>>"}{" "}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
-                {RET?.serialCode || "N/A"}
+                {RET?.serialCode
+                  ? RET?.serialCode
+                  : LstRetest?.serialCode
+                  ? LstRetest?.serialCode
+                  : "N/A"}
               </span>
             </p>
           </div>
