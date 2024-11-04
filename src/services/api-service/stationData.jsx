@@ -40,7 +40,7 @@ export async function GetLastRetestAcoustic(version, SET, LOADING) {
   }
 }
 export async function GetLastRetest(version, NID, SET, LOADING) {
-  console.log(`/api/v${version}AcousticTraceLog?id=${NID}`);
+  console.log(`/api/v${version}/AcousticTraceLog?id=${NID}`);
   try {
     const res = await endpoint.get(
       `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
