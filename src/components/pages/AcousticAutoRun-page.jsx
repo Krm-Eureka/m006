@@ -206,7 +206,7 @@ const TraceabilityStatus = () => {
           <>
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>
-                Show Process Current of Auto EOLTStation{" "}
+              Change to Acoustic EOLT Station : AUTO Mode{" "}
                 {LstActLog?.productionLineName || ""} {">>>"}
                 <span className="text-red-600 font-bold">
                   {LstActLog?.serialCode}

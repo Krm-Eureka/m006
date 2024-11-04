@@ -59,6 +59,13 @@ const AcousticManualRun = () => {
         return value;
     }
   };
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
+  const reSetInput = () => {
+    setSerialNumber("");
+    inputRef.current.focus();
+  };
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -79,6 +86,7 @@ const AcousticManualRun = () => {
       console.log(dataSerial?.reTestFlag);
       setDataBySerial(dataSerial);
       await delay(2000);
+      reSetInput();
       if (dataSerial?.id) {
         console.log("chk DATA");
         await delay(1000);
@@ -105,7 +113,11 @@ const AcousticManualRun = () => {
         } else {
           setRunCHK("NG");
           if (dataSerial?.reTestFlag === true) {
-            console.error("Data fetched but Has Retest is finished.");
+            console.error(
+              "Data fetched but Has Retest is finished.",
+              "RetestFlag =",
+              dataSerial?.reTestFlag === true ? 1 : 0
+            );
             setError("Data fetched but Has Retest is finished.");
           }
 
@@ -120,11 +132,10 @@ const AcousticManualRun = () => {
       setError(err.message);
       console.error("Error fetching traceability data:", err);
     }
-    // finally {
-    //   setLoading(false);
-    // }
     setRunCHK("OK");
+    
   };
+
   useEffect(() => {
     const fetchData = async () => {
       // get Old DATA
@@ -165,7 +176,6 @@ const AcousticManualRun = () => {
           }
         } else {
           console.log("runChk NG");
-
           await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
         }
 
@@ -240,8 +250,7 @@ const AcousticManualRun = () => {
     }
   }, [LstRetest]);
 
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
+  
 
   return (
     <>
@@ -250,7 +259,7 @@ const AcousticManualRun = () => {
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-              Show Process Current of Retest EOLTStation {">>>"}{" "}
+            Change to Acoustic EOLT Station : RETEST Mode {">>>"}{" "}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
                 {RET?.serialCode || "N/A"}
