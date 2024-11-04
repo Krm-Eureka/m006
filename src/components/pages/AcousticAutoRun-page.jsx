@@ -163,7 +163,7 @@ const TraceabilityStatus = () => {
   // console.log(ActDetailById);
   console.log("Lst Log : ", LstStatusLog);
 
-  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.lastUpdateDate - a.lastUpdateDate);
+  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate));
 
   // if (sortedStatus.length > 0) {
   //   const firstItem = sortedStatus[0];

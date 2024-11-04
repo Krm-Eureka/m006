@@ -60,14 +60,18 @@ const AcousticManualRun = () => {
     }
   };
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const sortedStatus = [...LstStatusLog].sort((a, b) => b.id - a.id);
+  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate));
+
   const reSetInput = () => {
     setSerialNumber("");
     inputRef.current.focus();
   };
 
   useEffect(() => {
-    inputRef.current.focus();
+    const interval = setInterval(() => {
+      inputRef.current.focus();
+    }, 1500);
+    return () => clearInterval(interval);
   }, []);
 
   const handleRunClick = async () => {
@@ -259,7 +263,7 @@ const AcousticManualRun = () => {
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-            Change to Acoustic EOLT Station : RETEST Mode {">>>"}{" "}
+            Acoustic EOLT Station : RETEST Mode {">>>"}{" "}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
                 {RET?.serialCode || "N/A"}
