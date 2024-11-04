@@ -1,10 +1,11 @@
 import endpoint from "../axios";
 
-const getAllUsers = async () => {
+const getAllUsers = async (SET) => {
   try {
     const url = `/api/Account/getAllUsers`;
-    const response = await endpoint.get(url);
-    return response.data;
+    const res = await endpoint.get(url);
+    SET(res.data)
+    return res.data;
   } catch (error) {
     console.error("Error fetching users:", error);
     throw error;

@@ -15,6 +15,8 @@ import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import HeaderLayout from "../Header-component";
 import TextField from "@mui/material/TextField";
+import userService from "../../services/api-service/userData";
+import { useEffect } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,24 +61,41 @@ const initialRows = [
 const UserManagement = () => {
   const [rows, setRows] = useState(initialRows);
   const [isEditing, setIsEditing] = useState(false);
+  const [user, setUser] = useState([]);
+  
   const [currentUser, setCurrentUser] = useState(null);
+  const [error, setError] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
     name: "",
     role: "",
     status: "",
   });
   const [filterUsername, setFilterUsername] = useState("");
-  const [open, setOpen] = useState(false);
-
   const filteredRows = rows.filter((row) =>
     row.name.toLowerCase().includes(filterUsername.toLowerCase())
   );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await userService.getAllUsers(setUser);
+        console.log(user);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+    fetchData();
+    const length = user?.length;
+    console.log(length);
+
+    const intervalId = setInterval(fetchData, 2000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleEditClick = (user) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
+    userService.getRoleByUserId(user?.id)
     setCurrentUser(user);
     setUpdatedUser(user);
-    setOpen(true);
   };
 
   const handleInputChange = (e) => {
@@ -95,11 +114,10 @@ const UserManagement = () => {
     setRows(updatedRows);
     setIsEditing(false);
     setCurrentUser(null);
-    setOpen(false);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setIsEditing(!isEditing);
   };
 
   return (
@@ -171,7 +189,7 @@ const UserManagement = () => {
           </div>
         </div>
 
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={isEditing} onClose={handleClose}>
           <DialogTitle>Edit User</DialogTitle>
           <DialogContent>
             <DialogContentText>
