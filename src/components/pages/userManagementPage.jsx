@@ -34,34 +34,34 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const initialRows = [
-    { id: 1, name: "สมชาย ใจดี", role: "Admin", status: "Active" },
-    { id: 2, name: "สมหญิง มีสุข", role: "User", status: "Inactive" },
-    { id: 3, name: "อภิชาติ ดีใจ", role: "Admin", status: "Active" },
-    { id: 4, name: "สุภาพร สวยงาม", role: "User", status: "Inactive" },
-    { id: 5, name: "กิตติกร มั่นคง", role: "Admin", status: "Active" },
-    { id: 6, name: "พรรณี น่ารัก", role: "User", status: "Active" },
-    { id: 7, name: "ประเสริฐ ชาญชัย", role: "Admin", status: "Inactive" },
-    { id: 8, name: "เกศรา อ่อนหวาน", role: "User", status: "Inactive" },
-    { id: 9, name: "นพดล รุ่งเรือง", role: "Admin", status: "Active" },
-    { id: 10, name: "น้องน้ำ ฟ้าสวย", role: "User", status: "Active" },
-    { id: 11, name: "ดวงดาว เกรียงไกร", role: "Admin", status: "Active" },
-    { id: 12, name: "จันทร์จิรา เศรษฐี", role: "User", status: "Inactive" },
-    { id: 13, name: "พีรพล ปิติ", role: "Admin", status: "Active" },
-    { id: 14, name: "รัตนาภรณ์ จิตใจดี", role: "User", status: "Inactive" },
-    { id: 15, name: "เศรษฐา คงมั่น", role: "Admin", status: "Active" },
-    { id: 16, name: "ทิพย์วรรณ สุขใจ", role: "User", status: "Active" },
-    { id: 17, name: "เจษฎา รุ่งเรือง", role: "Admin", status: "Inactive" },
-    { id: 18, name: "อังคณา นุ่มนวล", role: "User", status: "Inactive" },
-    { id: 19, name: "ชัชวาลย์ ทองสุก", role: "Admin", status: "Active" },
-    { id: 20, name: "สุรีย์ สง่างาม", role: "User", status: "Active" },
-];
+// const initialRows = [
+//     { id: 1, name: "สมชาย ใจดี", role: "Admin", status: "Active" },
+//     { id: 2, name: "สมหญิง มีสุข", role: "User", status: "Inactive" },
+//     { id: 3, name: "อภิชาติ ดีใจ", role: "Admin", status: "Active" },
+//     { id: 4, name: "สุภาพร สวยงาม", role: "User", status: "Inactive" },
+//     { id: 5, name: "กิตติกร มั่นคง", role: "Admin", status: "Active" },
+//     { id: 6, name: "พรรณี น่ารัก", role: "User", status: "Active" },
+//     { id: 7, name: "ประเสริฐ ชาญชัย", role: "Admin", status: "Inactive" },
+//     { id: 8, name: "เกศรา อ่อนหวาน", role: "User", status: "Inactive" },
+//     { id: 9, name: "นพดล รุ่งเรือง", role: "Admin", status: "Active" },
+//     { id: 10, name: "น้องน้ำ ฟ้าสวย", role: "User", status: "Active" },
+//     { id: 11, name: "ดวงดาว เกรียงไกร", role: "Admin", status: "Active" },
+//     { id: 12, name: "จันทร์จิรา เศรษฐี", role: "User", status: "Inactive" },
+//     { id: 13, name: "พีรพล ปิติ", role: "Admin", status: "Active" },
+//     { id: 14, name: "รัตนาภรณ์ จิตใจดี", role: "User", status: "Inactive" },
+//     { id: 15, name: "เศรษฐา คงมั่น", role: "Admin", status: "Active" },
+//     { id: 16, name: "ทิพย์วรรณ สุขใจ", role: "User", status: "Active" },
+//     { id: 17, name: "เจษฎา รุ่งเรือง", role: "Admin", status: "Inactive" },
+//     { id: 18, name: "อังคณา นุ่มนวล", role: "User", status: "Inactive" },
+//     { id: 19, name: "ชัชวาลย์ ทองสุก", role: "Admin", status: "Active" },
+//     { id: 20, name: "สุรีย์ สง่างาม", role: "User", status: "Active" },
+// ];
 
 
 const UserManagement = () => {
-  const [rows, setRows] = useState(initialRows);
+  // const [rows, setRows] = useState(initialRows);
   const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
   
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
@@ -71,20 +71,20 @@ const UserManagement = () => {
     status: "",
   });
   const [filterUsername, setFilterUsername] = useState("");
-  const filteredRows = rows.filter((row) =>
+  const filteredRows = users.filter((row) =>
     row.name.toLowerCase().includes(filterUsername.toLowerCase())
   );
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await userService.getAllUsers(setUser);
-        console.log(user);
+        await userService.getAllUsers(setUsers);
+        console.log(users);
       } catch (error) {
         setError(error.message);
       }
     };
     fetchData();
-    const length = user?.length;
+    const length = users?.length;
     console.log(length);
 
     const intervalId = setInterval(fetchData, 2000);
@@ -108,10 +108,10 @@ const UserManagement = () => {
       alert("Please fill in all fields.");
       return;
     }
-    const updatedRows = rows.map((row) =>
+    const updatedRows = users.map((row) =>
       row.id === currentUser.id ? updatedUser : row
     );
-    setRows(updatedRows);
+    setUsers(updatedRows);
     setIsEditing(false);
     setCurrentUser(null);
   };
