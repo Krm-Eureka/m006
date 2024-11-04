@@ -163,7 +163,7 @@ const TraceabilityStatus = () => {
   // console.log(ActDetailById);
   console.log("Lst Log : ", LstStatusLog);
 
-  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.id - a.id);
+  const sortedStatus = [...(LstStatusLog || [])].sort((a, b) => b.lastUpdateDate - a.lastUpdateDate);
 
   // if (sortedStatus.length > 0) {
   //   const firstItem = sortedStatus[0];
@@ -206,7 +206,7 @@ const TraceabilityStatus = () => {
           <>
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>
-              Change to Acoustic EOLT Station : AUTO Mode{" "}
+              Acoustic EOLT Station : AUTO Mode{" "}
                 {LstActLog?.productionLineName || ""} {">>>"}
                 <span className="text-red-600 font-bold">
                   {LstActLog?.serialCode}
