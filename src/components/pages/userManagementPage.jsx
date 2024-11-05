@@ -38,7 +38,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 const initialRows = [
- {
+  {
     id: 1,
     name: "สมชาย ใจดี",
     role: "Admin",
@@ -52,7 +52,7 @@ const initialRows = [
 const roles = ["Admin", "User", "Manager", "Guest"];
 const UserManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(initialRows);
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
@@ -60,11 +60,11 @@ const UserManagement = () => {
     role: "",
     status: "",
   });
-  const [filterUsername, setFilterUsername] = useState("");
+  // const [filterUsername, setFilterUsername] = useState("");
 
-  const filteredRows = users.filter((row) =>
-    row?.name.toLowerCase().includes(filterUsername.toLowerCase())
-  );
+  // const filteredRows = users.filter((row) =>
+  //   row?.name.toLowerCase().includes(filterUsername.toLowerCase())
+  // );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,8 +83,6 @@ const UserManagement = () => {
   }, []);
 
   const handleEditClick = (user) => {
-    console.log(initialRows.length);
-    
     setIsEditing(true);
     userService.getRoleByUserId(user?.id);
     setCurrentUser(user);
@@ -130,28 +128,32 @@ const UserManagement = () => {
                     <StyledTableCell sx={{ width: 300, textAlign: "center" }}>
                       <div className="flex flex-col w-fit">
                         UserName
-                        <input
+                        {/* <input
                           placeholder="username"
                           className="rounded-md px-4 py-2 text-black"
                           type="text"
                           title="Filter by Username"
-                          value={filterUsername ? filterUsername : ""}
-                          onChange={(e) => setFilterUsername(e.target.value)}
-                        />
+                          value={filterUsername || ""}
+                          onChange={(e) =>
+                            setFilterUsername(e.target.value || "")
+                          }
+                        /> */}
                       </div>
                     </StyledTableCell>
+                    <StyledTableCell>Name</StyledTableCell>
                     <StyledTableCell>Role</StyledTableCell>
                     <StyledTableCell>Status</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredRows.map((u) => (
+                  {users.map((u, idx) => (
                     <StyledTableRow key={u?.id}>
-                      <StyledTableCell>{u?.id}</StyledTableCell>
-                      <StyledTableCell>{u?.name}</StyledTableCell>
-                      <StyledTableCell>{u?.role}</StyledTableCell>
-                      <StyledTableCell>{u?.status}</StyledTableCell>
+                      <StyledTableCell>{idx + 1}</StyledTableCell>
+                      <StyledTableCell>{`${u?.userName}`}</StyledTableCell>
+                      <StyledTableCell>{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
+                      <StyledTableCell>{`${u?.role}`}</StyledTableCell>
+                      <StyledTableCell>{`${u?.isVerify}`}</StyledTableCell>
                       <StyledTableCell>
                         <button
                           className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600"
