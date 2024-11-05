@@ -204,22 +204,22 @@ const UserManagement = () => {
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>ID</StyledTableCell>
-                    <StyledTableCell>User Name</StyledTableCell>
-                    <StyledTableCell>Name</StyledTableCell>
-                    <StyledTableCell>Role</StyledTableCell>
-                    <StyledTableCell>Status</StyledTableCell>
-                    <StyledTableCell>Action</StyledTableCell>
+                    <StyledTableCell align="center">ID</StyledTableCell>
+                    <StyledTableCell align="center">User Name</StyledTableCell>
+                    <StyledTableCell align="center">Name</StyledTableCell>
+                    <StyledTableCell align="center">Role</StyledTableCell>
+                    <StyledTableCell align="center">Status</StyledTableCell>
+                    <StyledTableCell align="center">Action</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {users.map((u) => (
                     <StyledTableRow key={u?.id}>
-                      <StyledTableCell>{u?.id}</StyledTableCell>
-                      <StyledTableCell>{u?.userName}</StyledTableCell>
-                      <StyledTableCell>{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
-                      <StyledTableCell>{u?.roles}</StyledTableCell>
-                      <StyledTableCell>
+                      <StyledTableCell align="center">{u?.id}</StyledTableCell>
+                      <StyledTableCell align="center">{u?.userName}</StyledTableCell>
+                      <StyledTableCell align="center">{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
+                      <StyledTableCell align="center">{u?.roles}</StyledTableCell>
+                      <StyledTableCell align="center">
                         {u?.isVerified === true ? (
                           <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
                             Verified
