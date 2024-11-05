@@ -1,22 +1,26 @@
-import React, { useState } from "react";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import TableContainer from "@mui/material/TableContainer";
+import React, { useState, useEffect } from "react";
+import {
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  Paper,
+  TableContainer,
+  TextField,
+} from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import { tableCellClasses } from "@mui/material/TableCell";
 import HeaderLayout from "../Header-component";
-import TextField from "@mui/material/TextField";
 import userService from "../../services/api-service/userData";
-import { useEffect } from "react";
+import { Padding } from "@mui/icons-material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,36 +37,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: theme.palette.action.hover,
   },
 }));
-
-// const initialRows = [
-//     { id: 1, name: "สมชาย ใจดี", role: "Admin", status: "Active" },
-//     { id: 2, name: "สมหญิง มีสุข", role: "User", status: "Inactive" },
-//     { id: 3, name: "อภิชาติ ดีใจ", role: "Admin", status: "Active" },
-//     { id: 4, name: "สุภาพร สวยงาม", role: "User", status: "Inactive" },
-//     { id: 5, name: "กิตติกร มั่นคง", role: "Admin", status: "Active" },
-//     { id: 6, name: "พรรณี น่ารัก", role: "User", status: "Active" },
-//     { id: 7, name: "ประเสริฐ ชาญชัย", role: "Admin", status: "Inactive" },
-//     { id: 8, name: "เกศรา อ่อนหวาน", role: "User", status: "Inactive" },
-//     { id: 9, name: "นพดล รุ่งเรือง", role: "Admin", status: "Active" },
-//     { id: 10, name: "น้องน้ำ ฟ้าสวย", role: "User", status: "Active" },
-//     { id: 11, name: "ดวงดาว เกรียงไกร", role: "Admin", status: "Active" },
-//     { id: 12, name: "จันทร์จิรา เศรษฐี", role: "User", status: "Inactive" },
-//     { id: 13, name: "พีรพล ปิติ", role: "Admin", status: "Active" },
-//     { id: 14, name: "รัตนาภรณ์ จิตใจดี", role: "User", status: "Inactive" },
-//     { id: 15, name: "เศรษฐา คงมั่น", role: "Admin", status: "Active" },
-//     { id: 16, name: "ทิพย์วรรณ สุขใจ", role: "User", status: "Active" },
-//     { id: 17, name: "เจษฎา รุ่งเรือง", role: "Admin", status: "Inactive" },
-//     { id: 18, name: "อังคณา นุ่มนวล", role: "User", status: "Inactive" },
-//     { id: 19, name: "ชัชวาลย์ ทองสุก", role: "Admin", status: "Active" },
-//     { id: 20, name: "สุรีย์ สง่างาม", role: "User", status: "Active" },
-// ];
-
-
+const initialRows = [
+ {
+    id: 1,
+    name: "สมชาย ใจดี",
+    role: "Admin",
+    status: "Active",
+  },
+  { id: 2, name: "สมหญิง มีสุข", role: "User", status: "Inactive" },
+  { id: 3, name: "อภิชาติ ดีใจ", role: "Admin", status: "Active" },
+  { id: 4, name: "สุภาพร สวยงาม", role: "User", status: "Inactive" },
+  { id: 5, name: "กิตติกร มั่นคง", role: "Admin", status: "Active" },
+];
+const roles = ["Admin", "User", "Manager", "Guest"];
 const UserManagement = () => {
-  // const [rows, setRows] = useState(initialRows);
   const [isEditing, setIsEditing] = useState(false);
   const [users, setUsers] = useState([]);
-  
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
@@ -71,45 +61,48 @@ const UserManagement = () => {
     status: "",
   });
   const [filterUsername, setFilterUsername] = useState("");
+
   const filteredRows = users.filter((row) =>
-    row.name.toLowerCase().includes(filterUsername.toLowerCase())
+    row?.name.toLowerCase().includes(filterUsername.toLowerCase())
   );
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await userService.getAllUsers(setUsers);
-        console.log(users);
+        const fetchedUsers = await userService.getAllUsers(setUsers);
+        setUsers(fetchedUsers);
+        setError(null);
       } catch (error) {
         setError(error.message);
       }
     };
-    fetchData();
-    const length = users?.length;
-    console.log(length);
 
+    fetchData();
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, []);
 
   const handleEditClick = (user) => {
-    setIsEditing(!isEditing);
-    userService.getRoleByUserId(user?.id)
+    console.log(initialRows.length);
+    
+    setIsEditing(true);
+    userService.getRoleByUserId(user?.id);
     setCurrentUser(user);
     setUpdatedUser(user);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedUser({ ...updatedUser, [name]: value });
+    setUpdatedUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSave = () => {
-    if (!updatedUser.name || !updatedUser.role || !updatedUser.status) {
+    if (!updatedUser?.name || !updatedUser?.role || !updatedUser?.status) {
       alert("Please fill in all fields.");
       return;
     }
     const updatedRows = users.map((row) =>
-      row.id === currentUser.id ? updatedUser : row
+      row?.id === currentUser?.id ? updatedUser : row
     );
     setUsers(updatedRows);
     setIsEditing(false);
@@ -117,7 +110,7 @@ const UserManagement = () => {
   };
 
   const handleClose = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(false);
   };
 
   return (
@@ -126,40 +119,26 @@ const UserManagement = () => {
       <div className="content h-screen p-4 bg-gray-200">
         <div className="text-gray-700 bg-gray-400 m-4 rounded-md w-[90%] h-fit mx-auto">
           <div className="title bg-green-500 p-4 rounded-t-md font-bold">
-            <div className="justify-between rounded-sm">
-              <p>User Management</p>
-              {/* <input
-                className="rounded-md"
-                type="text"
-                title="Filter by Username"
-                value={filterUsername}
-                onChange={(e) => setFilterUsername(e.target.value)}
-              /> */}
-            </div>
+            <p>User Management</p>
           </div>
           <div className="overflow-x-auto">
-            <TableContainer
-              component={Paper}
-              sx={{
-                maxHeight: 600,
-                overflowY: "scroll",
-                overflowX: "scroll",
-              }}
-            >
+            <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>ID</StyledTableCell>
-                    <StyledTableCell sx={{ maxWidth: '100px' }}>
-                      UserName {''}
-                      <input
-                       placeholder="username"
-                        className="rounded-md px-4 py-2 text-black"
-                        type="text"
-                        title="Filter by Username"
-                        value={filterUsername}
-                        onChange={(e) => setFilterUsername(e.target.value)}
-                      />
+                    <StyledTableCell sx={{ width: 300, textAlign: "center" }}>
+                      <div className="flex flex-col w-fit">
+                        UserName
+                        <input
+                          placeholder="username"
+                          className="rounded-md px-4 py-2 text-black"
+                          type="text"
+                          title="Filter by Username"
+                          value={filterUsername ? filterUsername : ""}
+                          onChange={(e) => setFilterUsername(e.target.value)}
+                        />
+                      </div>
                     </StyledTableCell>
                     <StyledTableCell>Role</StyledTableCell>
                     <StyledTableCell>Status</StyledTableCell>
@@ -167,16 +146,16 @@ const UserManagement = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredRows.map((row) => (
-                    <StyledTableRow key={row.id}>
-                      <StyledTableCell>{row.id}</StyledTableCell>
-                      <StyledTableCell>{row.name}</StyledTableCell>
-                      <StyledTableCell>{row.role}</StyledTableCell>
-                      <StyledTableCell>{row.status}</StyledTableCell>
+                  {filteredRows.map((u) => (
+                    <StyledTableRow key={u?.id}>
+                      <StyledTableCell>{u?.id}</StyledTableCell>
+                      <StyledTableCell>{u?.name}</StyledTableCell>
+                      <StyledTableCell>{u?.role}</StyledTableCell>
+                      <StyledTableCell>{u?.status}</StyledTableCell>
                       <StyledTableCell>
                         <button
                           className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600"
-                          onClick={() => handleEditClick(row)}
+                          onClick={() => handleEditClick(u)}
                         >
                           Edit
                         </button>
@@ -203,25 +182,34 @@ const UserManagement = () => {
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="Role"
-              name="role"
-              value={updatedUser.role}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Status"
-              name="status"
-              value={updatedUser.status}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
+            <div className="w-fit flex">
+              <TextField
+                label="Role"
+                name="role"
+                value={updatedUser.role}
+                onChange={handleInputChange}
+                margin="normal"
+                sx={{ paddingRight: 2 }}
+                select
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role} value={role}>
+                    {role}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                label="Status"
+                name="status"
+                value={updatedUser.status}
+                onChange={handleInputChange}
+                sx={{ width: 200 }}
+                margin="normal"
+              />
+            </div>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleClose} color="error">
               Cancel
             </Button>
             <Button onClick={handleSave} color="primary">
@@ -233,4 +221,5 @@ const UserManagement = () => {
     </>
   );
 };
+
 export default UserManagement;

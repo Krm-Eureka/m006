@@ -4,8 +4,8 @@ const getAllUsers = async (SET) => {
   try {
     const url = `/api/Account/getAllUsers`;
     const res = await endpoint.get(url);
-    SET(res.data)
-    return res.data;
+    SET(res.data.data)
+    return res.data.data;
   } catch (error) {
     console.error("Error fetching users:", error);
     throw error;
