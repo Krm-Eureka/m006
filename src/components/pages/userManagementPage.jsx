@@ -104,7 +104,6 @@ const UserManagement = () => {
       !updatedUser.firstName ||
       !updatedUser.lastName ||
       !updatedUser.roles ||
-      !updatedUser.isVerified ||
       !updatedUser.email ||
       !updatedUser.password ||
       !updatedUser.confirmPassword
@@ -327,6 +326,15 @@ const UserManagement = () => {
                 sx={{ width: 250 }}
                 margin="normal"
               />
+               <TextField
+              label="Email"
+              name="email"
+              type="email"
+              value={updatedUser.email}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+            />
               <TextField
                 label="First Name"
                 name="firstName"
@@ -361,15 +369,6 @@ const UserManagement = () => {
                 ))}
               </TextField>
             </div>
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-              value={updatedUser.email}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
             <TextField
               label="Password"
               name="password"
