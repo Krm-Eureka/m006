@@ -52,7 +52,7 @@ const initialRows = [
 const roles = ["Admin", "User", "Manager", "Guest"];
 const UserManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [users, setUsers] = useState(initialRows);
+  const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
@@ -152,8 +152,8 @@ const UserManagement = () => {
                       <StyledTableCell>{idx + 1}</StyledTableCell>
                       <StyledTableCell>{`${u?.userName}`}</StyledTableCell>
                       <StyledTableCell>{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
-                      <StyledTableCell>{`${u?.role}`}</StyledTableCell>
-                      <StyledTableCell>{`${u?.isVerify}`}</StyledTableCell>
+                      <StyledTableCell>{`${u?.roles}`}</StyledTableCell>
+                      <StyledTableCell>{`${u?.isVerified}`}</StyledTableCell>
                       <StyledTableCell>
                         <button
                           className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600"
