@@ -41,11 +41,21 @@ const getRoleByUserId = async (UID) => {
     throw error;
   }
 };
-
+const postNewUser = async (userData) => {
+  try {
+    const url = `/api/Account/register`; 
+    const response = await endpoint.post(url, userData);
+    return response.data; 
+  } catch (error) {
+    console.error("Error posting new user:", error);
+    throw error; 
+  }
+};
 const userService = {
   getAllUsers,
   getUserById,
   getAllRoles,
   getRoleByUserId,
+  postNewUser
 };
 export default userService;
