@@ -60,7 +60,7 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedUsers = await userService.getAllUsers();
+        const fetchedUsers = await userService.getAllUsers(setUsers);
         setUsers(fetchedUsers);
         setError(null);
       } catch (error) {
