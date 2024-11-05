@@ -69,7 +69,7 @@ const UserManagement = () => {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 2000);
+    const intervalId = setInterval(fetchData, 5000);
     return () => clearInterval(intervalId);
   }, []);
 
@@ -186,6 +186,7 @@ const UserManagement = () => {
         <div className="text-gray-700 bg-gray-400 m-4 rounded-md w-[90%] h-fit mx-auto">
           <div className="title bg-green-500 p-4 rounded-t-md font-bold flex justify-between">
             <p>User Management</p>
+            {error && <div className="error">{error}</div>}
             <p
               className="flex hover:bg-blue-300 rounded-xl p-2 bg-blue-500 text-black cursor-pointer"
               onClick={handleAddClick}
@@ -212,9 +213,9 @@ const UserManagement = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {users.map((u, idx) => (
+                  {users.map((u) => (
                     <StyledTableRow key={u?.id}>
-                      <StyledTableCell>{idx + 1}</StyledTableCell>
+                      <StyledTableCell>{u?.id}</StyledTableCell>
                       <StyledTableCell>{u?.userName}</StyledTableCell>
                       <StyledTableCell>{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
                       <StyledTableCell>{u?.roles}</StyledTableCell>
@@ -257,7 +258,7 @@ const UserManagement = () => {
               name="firstName"
               value={updatedUser.firstName}
               onChange={handleInputChange}
-              sx={{ width: 250 , paddingRight: 2 }}
+              sx={{ width: 250, paddingRight: 2 }}
               margin="normal"
             />
             <TextField
@@ -265,7 +266,7 @@ const UserManagement = () => {
               name="lastName"
               value={updatedUser.lastName}
               onChange={handleInputChange}
-              sx={{ width: 250}}
+              sx={{ width: 250 }}
               margin="normal"
             />
             <TextField
