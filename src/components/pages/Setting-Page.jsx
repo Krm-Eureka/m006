@@ -24,6 +24,7 @@ const MasterSetting = () => {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   // const [minLimitCurrent, setMinLimitCurrent] = useState("");
   // const [maxLimitCurrent, setMaxLimitCurrent] = useState("");
   // const [productionLineName, setProductionLineName] = useState("");
@@ -91,7 +92,7 @@ const MasterSetting = () => {
   //     });
   //   }
   // };
-  const handleSubmit = async (e) => {
+  const handleAuth = async (e) => {
     // setIsAuthenticated(true);
     e.preventDefault();
     try {
@@ -213,6 +214,8 @@ const MasterSetting = () => {
           icon: "success",
           title: "DMC settings updated successfully!",
         });
+        delay(300)
+        navigate("/Console/Content_ACT/AutoRun");
       } catch (error) {
         Toast.fire({
           icon: "error",
@@ -239,7 +242,7 @@ const MasterSetting = () => {
           <h1 className="text-xl font-semibold text-gray-700 mb-4">
             Authorization
           </h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleAuth}>
             <input
               type="text"
               className="w-full p-2 mb-4 border rounded-lg text-gray-700"
