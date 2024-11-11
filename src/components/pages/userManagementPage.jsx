@@ -45,6 +45,7 @@ const UserManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isAddNew, setIsAddNew] = useState(false);
   const [users, setUsers] = useState([]);
+  const [roles, setRole] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
@@ -74,13 +75,23 @@ const UserManagement = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+const getRoleUser = async()=>{
+  try {
+    const fetchedRole= await userService.getAllRoles(setRole);
+    setRole(fetchedRole);
+    setError(null);
+  } catch (error) {
+    setError(error.message);
+  }
+}
   const handleEditClick = (user) => {
+    getRoleUser()
     setIsEditing(true);
     setCurrentUser(user);
     setUpdatedUser(user);
   };
-
   const handleAddClick = () => {
+    getRoleUser()
     setIsAddNew(true);
     setUpdatedUser({
       userName: "",
@@ -93,18 +104,28 @@ const UserManagement = () => {
       confirmPassword: "",
     });
   };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedUser((prev) => ({ ...prev, [name]: value }));
+  const handleInputChange = (e = {}) => {
+    const { name, value } = e.target || {};
+    if (name) {
+      setUpdatedUser((prev) => ({ ...prev, [name]: value }));
+    }
   };
-
   const handleAdd = async () => {
+    console.log("userName",updatedUser.userName);
+    console.log("firstName",updatedUser.firstName );
+    console.log("lastName",updatedUser.lastName);
+    console.log("roles",updatedUser.roles);
+    console.log("email",updatedUser.email);
+    console.log("password",updatedUser.password);
+    console.log("confirmPassword",updatedUser.confirmPassword);
+
+    
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
       !updatedUser.lastName ||
       !updatedUser.roles ||
+      !updatedUser.isVerified ||
       !updatedUser.email ||
       !updatedUser.password ||
       !updatedUser.confirmPassword
@@ -112,7 +133,6 @@ const UserManagement = () => {
       alert("Please fill in all fields.");
       return;
     }
-
     if (updatedUser.password !== updatedUser.confirmPassword) {
       alert("Passwords do not match.");
       return;
@@ -149,8 +169,7 @@ const UserManagement = () => {
       alert("An error occurred while adding the user. Please try again.");
     }
   };
-
-  const handleSave = () => {
+  const handleSave =async () => {
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
@@ -164,14 +183,16 @@ const UserManagement = () => {
       alert("Please fill in all fields.");
       return;
     }
-
-    const updatedRows = users.map((row) =>
-      row.id === currentUser.id ? { ...row, ...updatedUser } : row
-    );
-
-    setUsers(updatedRows);
+    try {
+      const response = await userService.updateUser(currentUser.id, updatedUser);
+      setUsers(users.map((u) => (u.id === currentUser.id ? response.data : u)));
+      setIsEditing(false);
+      setCurrentUser(null);
+    } catch (error) {
+      console.error("Error saving user:", error);
+      alert("An error occurred while saving the user.");
+    }
     setIsEditing(false);
-    setCurrentUser(null);
   };
 
   const handleClose = () => {
