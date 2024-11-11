@@ -21,6 +21,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import HeaderLayout from "../Header-component";
 import userService from "../../services/api-service/userData";
 import ADD from "../../assets/svg/addnew.svg";
+import Loading from "../loadingComponent";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -185,7 +186,7 @@ const UserManagement = () => {
         <div className="text-gray-700 bg-gray-400 m-4 rounded-md w-[90%] h-fit mx-auto">
           <div className="title bg-green-500 p-4 rounded-t-md font-bold flex justify-between">
             <p>User Management</p>
-            {error && <div className="error">{error}</div>}
+            {error && <div className="error text-red-700">{error}</div>}
             <p
               className="flex hover:bg-blue-300 rounded-xl p-2 bg-blue-500 text-black cursor-pointer"
               onClick={handleAddClick}
@@ -211,13 +212,30 @@ const UserManagement = () => {
                     <StyledTableCell align="center">Action</StyledTableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                {users.length <= 0 ? (
+                  <TableBody>
+                  <StyledTableRow>
+                    <TableCell colSpan={6} align="center">
+                      <div className="flex flex-col items-center justify-center text-center p-4">
+                        <p className="text-gray-600 font-semibold mb-2">No data available</p>
+                        <Loading text="Data Not Found . . ." />
+                      </div>
+                    </TableCell>
+                  </StyledTableRow>
+                </TableBody>
+                
+                      ) : (
+                        <TableBody>
                   {users.map((u) => (
                     <StyledTableRow key={u?.id}>
                       <StyledTableCell align="center">{u?.id}</StyledTableCell>
-                      <StyledTableCell align="center">{u?.userName}</StyledTableCell>
+                      <StyledTableCell align="center">
+                        {u?.userName}
+                      </StyledTableCell>
                       <StyledTableCell align="center">{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
-                      <StyledTableCell align="center">{u?.roles}</StyledTableCell>
+                      <StyledTableCell align="center">
+                        {u?.roles}
+                      </StyledTableCell>
                       <StyledTableCell align="center">
                         {u?.isVerified === true ? (
                           <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
@@ -239,7 +257,7 @@ const UserManagement = () => {
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
-                </TableBody>
+                </TableBody>)}
               </Table>
             </TableContainer>
           </div>
@@ -323,34 +341,34 @@ const UserManagement = () => {
                 name="userName"
                 value={updatedUser.userName}
                 onChange={handleInputChange}
-                sx={{ width: 250 }}
+                sx={{ width: 250, paddingRight: 2 }}
                 margin="normal"
               />
-               <TextField
-              label="Email"
-              name="email"
-              type="email"
-              value={updatedUser.email}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
               <TextField
-                label="First Name"
-                name="firstName"
-                value={updatedUser.firstName}
+                label="Email"
+                name="email"
+                type="email"
+                value={updatedUser.email}
                 onChange={handleInputChange}
-                sx={{ width: 250 }}
+                fullWidth
                 margin="normal"
               />
             </div>
             <div className=" flex justify-between">
               <TextField
+                label="First Name"
+                name="firstName"
+                value={updatedUser.firstName}
+                onChange={handleInputChange}
+                sx={{ width: 250, paddingRight: 2 }}
+                margin="normal"
+              />
+              <TextField
                 label="Last Name"
                 name="lastName"
                 value={updatedUser.lastName}
                 onChange={handleInputChange}
-                sx={{ width: 250 }}
+                sx={{ width: 250, paddingRight: 2 }}
                 margin="normal"
               />
               <TextField
@@ -384,6 +402,28 @@ const UserManagement = () => {
               type="password"
               value={updatedUser.confirmPassword}
               onChange={handleInputChange}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor:
+                      updatedUser.password === updatedUser.confirmPassword
+                        ? "green"
+                        : "red",
+                  },
+                  "&:hover fieldset": {
+                    borderColor:
+                      updatedUser.password === updatedUser.confirmPassword
+                        ? "green"
+                        : "red",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor:
+                      updatedUser.password === updatedUser.confirmPassword
+                        ? "green"
+                        : "red",
+                  },
+                },
+              }}
               fullWidth
               margin="normal"
             />
