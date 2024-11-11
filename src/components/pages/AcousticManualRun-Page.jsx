@@ -147,42 +147,42 @@ const AcousticManualRun = () => {
       try {
         if (runChk === "OK") {
           console.log("runChk OK");
-
-          if (
-            LstRetest?.newAcousticId !== 0 ||
-            LstRetest?.newAcousticId !== undefined
-          ) {
-            console.log(
-              "LstRetest?.newAcousticId !== 0 || LstRetest?.newAcousticId !== undefined"
-            );
-            console.log("newAcousticId : ", LstRetest?.newAcousticId);
-            console.log("LstRetest ID : ", LstRetest?.id);
-            setOldDataID(null);
+          // if (
+          //   LstRetest?.newAcousticId !== 0 ||
+          //   LstRetest?.newAcousticId !== undefined
+          // ) {
+          //   console.log(
+          //     "LstRetest?.newAcousticId !== 0 || LstRetest?.newAcousticId !== undefined"
+          //   );
+          //   console.log("newAcousticId : ", LstRetest?.newAcousticId);
+          //   console.log("LstRetest ID : ", LstRetest?.id);
+            // setOldDataID(null);
             await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
-          } else if (
-            LstRetest?.newAcousticId === 0 ||
-            LstRetest?.newAcousticId === undefined
-          ) {
-            console.log(
-              "LstRetest?.newAcousticId === 0 || LstRetest?.newAcousticId === undefined"
-            );
-            setOldDataID(null);
-            console.log("OID : ", oldDataID);
-            if (!oldDataID || oldDataID === null) {
-              console.log("!oldDataID || oldDataID === null");
-              console.log("LstRetest : ", LstRetest);
-              setLstRetest([]);
-              await GetLastRetestAcoustic("1", setLstRetest, setLoading);
-            } else {
-              await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
-            }
-            // await GetLastRetestAcoustic("1", setLstRetest, setLoading);
-            // await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
-          }
-        } else {
-          console.log("runChk NG");
-          await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
-        }
+          // } else if (
+          //   LstRetest?.newAcousticId === 0 ||
+          //   LstRetest?.newAcousticId === undefined
+          // ) {
+          //   console.log(
+          //     "LstRetest?.newAcousticId === 0 || LstRetest?.newAcousticId === undefined"
+          //   );
+          //   setOldDataID(null);
+          //   console.log("OID : ", oldDataID);
+          //   if (!oldDataID || oldDataID === null) {
+          //     console.log("!oldDataID || oldDataID === null");
+          //     console.log("LstRetest : ", LstRetest);
+          //     setLstRetest([]);
+          //     await GetLastRetestAcoustic("1", setLstRetest, setLoading);
+          //   } else {
+          //     await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
+          //   }
+          //   // await GetLastRetestAcoustic("1", setLstRetest, setLoading);
+          //   // await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
+          // }
+        } 
+        // else {
+        //   console.log("runChk NG");
+        //   await GetLastRetest("1", oldDataID, setLstRetest, setLoading);
+        // }
 
         // if (LstRetest.NewAcousticId && LstRetest.NewAcousticId !== 0) {
         //   DoGetNewRetest();
