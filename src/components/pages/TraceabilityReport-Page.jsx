@@ -456,6 +456,18 @@ const TraceabilityReport = () => {
           if (column.id === "lastUpdateDate" || column.id === "creationDate") {
             value = formatDateTimeSlash(value);
           }
+          if (column.id === "id") {
+            const extractedCode = row.serialCode
+              ? row.serialCode.split("-").pop()
+              : "N/A";
+
+            const number =
+              extractedCode !== "N/A"
+                ? parseInt(extractedCode, 10)
+                : "N/A";
+
+            return number;
+          }
 
           if (
             column.id === "sensitivityResult" ||
@@ -488,7 +500,7 @@ const TraceabilityReport = () => {
                     row[column.id] !== 3 ||
                     row[column.id] !== "FAIL" ||
                     row[column.id] !== "FAILED"
-                  ? null
+                  ? "NA"
                   : mapStatus(row[column.id]);
             } else {
               value = mapStatus(row[column.id]);
@@ -897,7 +909,7 @@ const TraceabilityReport = () => {
                                     row[column.id] !== 3 ||
                                     row[column.id] !== "FAIL" ||
                                     row[column.id] !== "FAILED"
-                                  ? null
+                                  ? "NA"
                                   : mapStatus(row[column.id]);
                               }
 
