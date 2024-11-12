@@ -67,6 +67,13 @@ const HeaderLayout = (props) => {
             <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-gray-700">
               Stellantis OMNI Microphone Assemblyline | {PAGE}
             </h4>
+            <p className="pl-2 text-xs pt-2">{': v1 . 0 . 0 . 1'}</p>
+            {/*
+            1 software upgrade
+            0 hardwawre upgrade
+            0 new software modules
+            1 minor software changes
+            */ }
           </div>
           <div className="r px-4 flex flew-row items-center">
             <Link
