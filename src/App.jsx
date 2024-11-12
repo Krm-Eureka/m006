@@ -23,11 +23,14 @@ function App() {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/Unauthorized" element={<UnauthorizedPage />} />
 
-        <Route element={<ProtectedRoute requiredRoles={['Admin', 'SuperAdmin']} />}>
+        <Route
+          element={<ProtectedRoute requiredRoles={["Admin", "SuperAdmin"]} />}
+        >
           <Route
             path="/Console/Content_USR/user_management"
             element={<UserManagement />}
           />
+          <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
         </Route>
 
         <Route element={<ProtectedRoute/>}>
@@ -43,9 +46,6 @@ function App() {
             path="/Console/Content_ACT/ManualRun"
             element={<AcousticManualRun />}
           />
-        </Route>
-        <Route element={<ProtectedRoute requiredRoles={['Admin']} />}>
-          <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
         </Route>
       </Routes>
     </Router>
