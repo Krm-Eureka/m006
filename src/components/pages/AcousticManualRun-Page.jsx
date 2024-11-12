@@ -165,7 +165,7 @@ const AcousticManualRun = () => {
           //   console.log("newAcousticId : ", LstRetest?.newAcousticId);
           //   console.log("LstRetest ID : ", LstRetest?.id);
             // setOldDataID(null);
-            await GetLastRetest("1", setLstRetest, setLoading);
+            await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
           // } else if (
           //   LstRetest?.newAcousticId === 0 ||
           //   LstRetest?.newAcousticId === undefined
