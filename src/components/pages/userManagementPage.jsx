@@ -175,12 +175,23 @@ const UserManagement = () => {
     }
   };
   const handleSave = async () => {
+    console.log("userName", updatedUser.userName, !updatedUser.userName);
+    console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
+    console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
+    console.log("roles", updatedUser.roles, !updatedUser.roles);
+    console.log("email", updatedUser.email, !updatedUser.email);
+    console.log("password", updatedUser.password, !updatedUser.password);
+    console.log(
+      "confirmPassword",
+      updatedUser.confirmPassword,
+      !updatedUser.confirmPassword
+    );
+    console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
       !updatedUser.lastName ||
       !updatedUser.roles ||
-      !updatedUser.isVerified ||
       !updatedUser.email ||
       !updatedUser.password ||
       !updatedUser.confirmPassword
