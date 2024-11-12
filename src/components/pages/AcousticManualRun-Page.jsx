@@ -10,6 +10,7 @@ import HeaderLayout from "../Header-component";
 import StatusBox from "../statusBox";
 import Loading from "../loadingComponent";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
+import Swal from "sweetalert2";
 import {
   GetAcousticTraceDetailById,
   GetLastRetestAcoustic,
@@ -95,7 +96,7 @@ const AcousticManualRun = () => {
       reSetInput();
       if (dataSerial?.id) {
         console.log("chk DATA");
-        await delay(1000);
+        await delay(500);
         // if (
         //   dataSerial?.reTestFlag === false &&
         //   dataSerial?.newAcousticId === 0
@@ -130,6 +131,13 @@ const AcousticManualRun = () => {
         //   await delay(500);
         // }
       } else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Failed to valid data please scan QRCode again",
+          showConfirmButton: false,
+          timer: 1500
+        });
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
       }
