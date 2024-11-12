@@ -11,7 +11,7 @@ import AcousticAutoRun from "./components/pages/AcousticAutoRun-page";
 import AcousticManualRun from "./components/pages/AcousticManualRun-Page";
 import ProtectedRoute from "./services/route-service/ProtectedRoute";
 import RedirectIfLoggedIn from "./services/route-service/RedirectIfLoggedIn";
-import UserManagement from "./components/pages/userManagementPage"; 
+import UserManagement from "./components/pages/userManagementPage";
 
 function App() {
   return (
@@ -21,14 +21,30 @@ function App() {
         <Route path="*" element={<ErrorPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>
-        {/* <Route path="/Console/Content" element={<ContentLayout />} /> */}
-        <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
-        <Route path="/Console/Content_USR/user_management" element={<UserManagement />} />
-        <Route path="/Console/Content_TRC/Report" element={<TraceabilityReport />} />
-        {/* <Route path="/Console/Content_TRC/Status" element={<TraceabilityStatus/>} /> */}
-        <Route path="/Console/Content_ACT/AutoRun" element={<AcousticAutoRun />} />
-        <Route path="/Console/Content_ACT/ManualRun" element={<AcousticManualRun />} />
-        {/* <Route path="/Console/Content_ACT/TESTReport" element={<Acoustic} /> */}
+          {/* <Route path="/Console/Content" element={<ContentLayout />} /> */}
+          <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
+          <Route
+            path="/Console/Content_USR/user_management"
+            element={
+              <ProtectedRoute requiredRoles={["admin", "superadmin"]}>
+                <UserManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/Console/Content_TRC/Report"
+            element={<TraceabilityReport />}
+          />
+          {/* <Route path="/Console/Content_TRC/Status" element={<TraceabilityStatus/>} /> */}
+          <Route
+            path="/Console/Content_ACT/AutoRun"
+            element={<AcousticAutoRun />}
+          />
+          <Route
+            path="/Console/Content_ACT/ManualRun"
+            element={<AcousticManualRun />}
+          />
+          {/* <Route path="/Console/Content_ACT/TESTReport" element={<Acoustic} /> */}
         </Route>
       </Routes>
     </Router>

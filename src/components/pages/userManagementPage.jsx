@@ -192,9 +192,9 @@ const UserManagement = () => {
       !updatedUser.firstName ||
       !updatedUser.lastName ||
       !updatedUser.roles ||
-      !updatedUser.email ||
-      !updatedUser.password ||
-      !updatedUser.confirmPassword
+      !updatedUser.email 
+      // || !updatedUser.password ||
+      // !updatedUser.confirmPassword
     ) {
       alert("Please fill in all fields.");
       return;
@@ -244,7 +244,7 @@ const UserManagement = () => {
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="center">ID</StyledTableCell>
+                    <StyledTableCell align="left">ID</StyledTableCell>
                     <StyledTableCell align="center">User Name</StyledTableCell>
                     <StyledTableCell align="center">Name</StyledTableCell>
                     <StyledTableCell align="center">Role</StyledTableCell>
@@ -269,7 +269,7 @@ const UserManagement = () => {
                   <TableBody>
                     {users.map((u) => (
                       <StyledTableRow key={u?.id}>
-                        <StyledTableCell align="center">
+                        <StyledTableCell align="left">
                           {u?.id}
                         </StyledTableCell>
                         <StyledTableCell align="center">
