@@ -21,22 +21,16 @@ function App() {
         <Route path="/" element={<RedirectIfLoggedIn />} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/auth/Unauthorized" element={<UnauthorizedPage />} />
 
-        {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
-        </Route>
-
-        {/* Role-based protected routes */}
-        <Route element={<ProtectedRoute requiredRole="Admin" />}>
+        <Route element={<ProtectedRoute requiredRoles={['Admin', 'SuperAdmin']} />}>
           <Route
             path="/Console/Content_USR/user_management"
             element={<UserManagement />}
           />
         </Route>
 
-        <Route element={<ProtectedRoute requiredRole="SuperAdmin" />}>
+        <Route element={<ProtectedRoute/>}>
           <Route
             path="/Console/Content_TRC/Report"
             element={<TraceabilityReport />}
@@ -49,6 +43,9 @@ function App() {
             path="/Console/Content_ACT/ManualRun"
             element={<AcousticManualRun />}
           />
+        </Route>
+        <Route element={<ProtectedRoute requiredRoles={['Admin']} />}>
+          <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
         </Route>
       </Routes>
     </Router>
