@@ -24,6 +24,7 @@ const HeaderLayout = (props) => {
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("USER");
+    localStorage.removeItem("userRole");
     navigate("/auth/login"); 
   };
   const toggleNav = () => {
