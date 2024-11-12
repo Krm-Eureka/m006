@@ -89,14 +89,18 @@ const AcousticManualRun = () => {
           setDataBySerial
         );
       // console.log(dataSerial);
-      console.log(dataSerial?.id);
+      console.log("121321321321",dataSerial?.id);
+      setRunCHK("OK");
       console.log(dataSerial?.reTestFlag);
       setDataBySerial(dataSerial);
-      await delay(2000);
+      await delay(1500);
       reSetInput();
+      if(dataSerial){
+        setRunCHK("OK");
+      }
       if (dataSerial?.id) {
         console.log("chk DATA");
-        await delay(500);
+        await delay(1000);
         // if (
         //   dataSerial?.reTestFlag === false &&
         //   dataSerial?.newAcousticId === 0
@@ -111,12 +115,14 @@ const AcousticManualRun = () => {
               id: dataSerial?.id,
             }
           );
+          setRunCHK("OK");
           console.log("ReTestAcoustic : ", RT);
           setRET(RT);
           setOldDataID(RT?.id);
           console.log("Sent S/N to run : ", RT?.serialCode);
           console.log("Retest called with ID:", RT?.id);
           await delay(500);
+          setRunCHK("OK");
         // } else {
         //   setRunCHK("NG");
         //   if (dataSerial?.reTestFlag === true) {
@@ -131,6 +137,7 @@ const AcousticManualRun = () => {
         //   await delay(500);
         // }
       } else {
+        setRunCHK("NG");
         Swal.fire({
           position: "center",
           icon: "error",
@@ -146,12 +153,15 @@ const AcousticManualRun = () => {
       setError(err.message);
       console.error("Error fetching traceability data:", err);
     }
+    delay(200)
     setRunCHK("OK");
   };
 
   useEffect(() => {
     const fetchData = async () => {
       // get Old DATA
+      console.log(runChk);
+      
       try {
         if (runChk === "OK") {
           console.log("runChk OK");
@@ -210,7 +220,7 @@ const AcousticManualRun = () => {
     fetchData();
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
-  }, [startDate, endDate]);
+  }, [startDate, endDate,runChk]);
 
   const handleInputChange = (e) => {
     setSerialNumber(e.target.value);
@@ -270,7 +280,7 @@ const AcousticManualRun = () => {
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-green-500 p-2 rounded-t-md font-bold">
             <p>
-              Acoustic EOLT Station : RETEST Mode {">>>"}{" "}
+              Acoustic EOLT Station : RETEST Mode {">>>"}{runChk}{" "}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
                 {RET?.serialCode
