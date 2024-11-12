@@ -1,8 +1,7 @@
-
 import { Navigate, Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const ProtectedRoute = ({ requiredRole }) => {
+const ProtectedRoute = ({ requiredRoles }) => {
   const token = localStorage.getItem("authToken");
   const userRole = localStorage.getItem("userRole");
 
@@ -10,7 +9,7 @@ const ProtectedRoute = ({ requiredRole }) => {
     return <Navigate to="/auth/login" />;
   }
 
-  if (requiredRole && !requiredRole.includes(userRole)) {
+  if (requiredRoles && !requiredRoles.includes(userRole)) {
     return <Navigate to="/" />;
   }
 
@@ -18,7 +17,11 @@ const ProtectedRoute = ({ requiredRole }) => {
 };
 
 ProtectedRoute.propTypes = {
-  requiredRole: PropTypes.arrayOf(PropTypes.string),
+  requiredRoles: PropTypes.arrayOf(PropTypes.string),
+};
+
+ProtectedRoute.defaultProps = {
+  requiredRoles: [],
 };
 
 export default ProtectedRoute;
