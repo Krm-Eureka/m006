@@ -25,7 +25,7 @@ const getAllRoles = async () => {
   try {
     const url = `/api/Account/getAllRoles`;
     const response = await endpoint.get(url);
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Error fetching users:", error);
     throw error;

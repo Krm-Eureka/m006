@@ -63,6 +63,7 @@ const UserManagement = () => {
     const fetchData = async () => {
       try {
         const fetchedUsers = await userService.getAllUsers(setUsers);
+        console.log("fetchedUsers", fetchedUsers);
         setUsers(fetchedUsers);
         setError(null);
       } catch (error) {
@@ -78,6 +79,7 @@ const UserManagement = () => {
   const getRoleUser = async () => {
     try {
       const fetchedRole = await userService.getAllRoles(setRole);
+      console.log("fetchedRole", fetchedRole);
       setRole(fetchedRole);
       setError(null);
     } catch (error) {
@@ -85,13 +87,13 @@ const UserManagement = () => {
     }
   };
   const handleEditClick = (user) => {
-    getRoleUser
+    getRoleUser();
     setIsEditing(true);
     setCurrentUser(user);
     setUpdatedUser(user);
   };
   const handleAddClick = () => {
-    getRoleUser
+    getRoleUser();
     setIsAddNew(true);
     setUpdatedUser({
       userName: "",
