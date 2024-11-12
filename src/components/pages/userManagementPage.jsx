@@ -337,10 +337,10 @@ const UserManagement = () => {
               sx={{ width: 250, paddingRight: 2 }}
             >
               {roles.map((role) => (
-                <MenuItem key={role} value={role}>
-                  {role}
-                </MenuItem>
-              ))}
+                  <MenuItem key={role.id} value={role.roleName}>
+                    {role.roleName}
+                  </MenuItem>
+                ))}
             </TextField>
             <TextField
               label="Status"
@@ -414,8 +414,8 @@ const UserManagement = () => {
                 sx={{ width: 250 }}
               >
                 {roles.map((role) => (
-                  <MenuItem key={role} value={role}>
-                    {role}
+                  <MenuItem key={role.id} value={role.roleName}>
+                    {role.roleName}
                   </MenuItem>
                 ))}
               </TextField>
