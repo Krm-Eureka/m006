@@ -12,6 +12,7 @@ import AcousticManualRun from "./components/pages/AcousticManualRun-Page";
 import ProtectedRoute from "./services/route-service/ProtectedRoute";
 import RedirectIfLoggedIn from "./services/route-service/RedirectIfLoggedIn";
 import UserManagement from "./components/pages/userManagementPage";
+import UnauthorizedPage from "./components/pages/UnauthorizedPage";
 
 function App() {
   return (
@@ -20,22 +21,26 @@ function App() {
         <Route path="/" element={<RedirectIfLoggedIn />} />
         <Route path="*" element={<ErrorPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+        {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
-          {/* <Route path="/Console/Content" element={<ContentLayout />} /> */}
           <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
+        </Route>
+
+        {/* Role-based protected routes */}
+        <Route element={<ProtectedRoute requiredRole="Admin" />}>
           <Route
             path="/Console/Content_USR/user_management"
-            element={
-              <ProtectedRoute requiredRoles={["admin", "superadmin"]}>
-                <UserManagement />
-              </ProtectedRoute>
-            }
+            element={<UserManagement />}
           />
+        </Route>
+
+        <Route element={<ProtectedRoute requiredRole="SuperAdmin" />}>
           <Route
             path="/Console/Content_TRC/Report"
             element={<TraceabilityReport />}
           />
-          {/* <Route path="/Console/Content_TRC/Status" element={<TraceabilityStatus/>} /> */}
           <Route
             path="/Console/Content_ACT/AutoRun"
             element={<AcousticAutoRun />}
@@ -44,7 +49,6 @@ function App() {
             path="/Console/Content_ACT/ManualRun"
             element={<AcousticManualRun />}
           />
-          {/* <Route path="/Console/Content_ACT/TESTReport" element={<Acoustic} /> */}
         </Route>
       </Routes>
     </Router>
