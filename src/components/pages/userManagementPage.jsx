@@ -75,23 +75,23 @@ const UserManagement = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-const getRoleUser = async()=>{
-  try {
-    const fetchedRole= await userService.getAllRoles(setRole);
-    setRole(fetchedRole);
-    setError(null);
-  } catch (error) {
-    setError(error.message);
-  }
-}
+  const getRoleUser = async () => {
+    try {
+      const fetchedRole = await userService.getAllRoles(setRole);
+      setRole(fetchedRole);
+      setError(null);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   const handleEditClick = (user) => {
-    getRoleUser()
+    getRoleUser
     setIsEditing(true);
     setCurrentUser(user);
     setUpdatedUser(user);
   };
   const handleAddClick = () => {
-    getRoleUser()
+    getRoleUser
     setIsAddNew(true);
     setUpdatedUser({
       userName: "",
@@ -111,14 +111,18 @@ const getRoleUser = async()=>{
     }
   };
   const handleAdd = async () => {
-    console.log("userName",updatedUser.userName , !updatedUser.userName);
-    console.log("firstName",updatedUser.firstName , !updatedUser.firstName);
-    console.log("lastName",updatedUser.lastName,!updatedUser.lastName);
-    console.log("roles",updatedUser.roles,!updatedUser.roles);
-    console.log("email",updatedUser.email,!updatedUser.email);
-    console.log("password",updatedUser.password,!updatedUser.password);
-    console.log("confirmPassword",updatedUser.confirmPassword,!updatedUser.confirmPassword);
-    console.log("Verified",updatedUser.isVerified,!updatedUser.isVerified);
+    console.log("userName", updatedUser.userName, !updatedUser.userName);
+    console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
+    console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
+    console.log("roles", updatedUser.roles, !updatedUser.roles);
+    console.log("email", updatedUser.email, !updatedUser.email);
+    console.log("password", updatedUser.password, !updatedUser.password);
+    console.log(
+      "confirmPassword",
+      updatedUser.confirmPassword,
+      !updatedUser.confirmPassword
+    );
+    console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
@@ -168,7 +172,7 @@ const getRoleUser = async()=>{
       alert("An error occurred while adding the user. Please try again.");
     }
   };
-  const handleSave =async () => {
+  const handleSave = async () => {
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
@@ -183,7 +187,10 @@ const getRoleUser = async()=>{
       return;
     }
     try {
-      const response = await userService.updateUser(currentUser.id, updatedUser);
+      const response = await userService.updateUser(
+        currentUser.id,
+        updatedUser
+      );
       setUsers(users.map((u) => (u.id === currentUser.id ? response.data : u)));
       setIsEditing(false);
       setCurrentUser(null);
@@ -234,50 +241,54 @@ const getRoleUser = async()=>{
                 </TableHead>
                 {users.length <= 0 ? (
                   <TableBody>
-                  <StyledTableRow>
-                    <TableCell colSpan={6} align="center">
-                      <div className="flex flex-col items-center justify-center text-center p-4">
-                        <p className="text-gray-600 font-semibold mb-2">No data available</p>
-                        <Loading text="Data Not Found . . ." />
-                      </div>
-                    </TableCell>
-                  </StyledTableRow>
-                </TableBody>
-                
-                      ) : (
-                        <TableBody>
-                  {users.map((u) => (
-                    <StyledTableRow key={u?.id}>
-                      <StyledTableCell align="center">{u?.id}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        {u?.userName}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        {u?.roles}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {u?.isVerified === true ? (
-                          <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                            Verified
-                          </span>
-                        ) : (
-                          <span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">
-                            Not Verified
-                          </span>
-                        )}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        <button
-                          className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600"
-                          onClick={() => handleEditClick(u)}
-                        >
-                          Edit
-                        </button>
-                      </StyledTableCell>
+                    <StyledTableRow>
+                      <TableCell colSpan={6} align="center">
+                        <div className="flex flex-col items-center justify-center text-center p-4">
+                          <p className="text-gray-600 font-semibold mb-2">
+                            No data available
+                          </p>
+                          <Loading text="Data Not Found . . ." />
+                        </div>
+                      </TableCell>
                     </StyledTableRow>
-                  ))}
-                </TableBody>)}
+                  </TableBody>
+                ) : (
+                  <TableBody>
+                    {users.map((u) => (
+                      <StyledTableRow key={u?.id}>
+                        <StyledTableCell align="center">
+                          {u?.id}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {u?.userName}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">{`${u?.firstName} ${u?.lastName}`}</StyledTableCell>
+                        <StyledTableCell align="center">
+                          {u?.roles}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {u?.isVerified === true ? (
+                            <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                              Verified
+                            </span>
+                          ) : (
+                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">
+                              Not Verified
+                            </span>
+                          )}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          <button
+                            className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600"
+                            onClick={() => handleEditClick(u)}
+                          >
+                            Edit
+                          </button>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                )}
               </Table>
             </TableContainer>
           </div>
