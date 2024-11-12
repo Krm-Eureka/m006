@@ -31,10 +31,11 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { success, token, login_msg } = await AuthLogin(email, password);
+      const { success, token, login_msg,role } = await AuthLogin(email, password);
       if (success) {
         localStorage.setItem("authToken", token);
         localStorage.setItem("USER", email);
+        localStorage.setItem("userRole",role);
         Toast.fire({
           icon: "success",
           title: `Logging in ${login_msg}`,
