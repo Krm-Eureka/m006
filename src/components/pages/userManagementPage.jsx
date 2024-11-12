@@ -130,7 +130,6 @@ const UserManagement = () => {
       !updatedUser.firstName ||
       !updatedUser.lastName ||
       !updatedUser.roles ||
-      !updatedUser.isVerified ||
       !updatedUser.email ||
       !updatedUser.password ||
       !updatedUser.confirmPassword
@@ -149,7 +148,7 @@ const UserManagement = () => {
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         roles: updatedUser.roles,
-        isVerified: updatedUser.isVerified,
+        isVerified: true,
         email: updatedUser.email,
         password: updatedUser.password,
       });
