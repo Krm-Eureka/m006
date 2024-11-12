@@ -151,6 +151,7 @@ const UserManagement = () => {
         isVerified: true,
         email: updatedUser.email,
         password: updatedUser.password,
+        confirmPassword: updatedUser.confirmPassword
       });
 
       // Assuming response contains the newly added user data
