@@ -91,7 +91,7 @@ const AcousticManualRun = () => {
       // console.log(dataSerial);
       setRunCHK("OK");
       setDataBySerial(dataSerial);
-      await delay(1500);
+      await delay(1000);
       reSetInput();
       if(dataSerial){
         setRunCHK("OK");
@@ -137,7 +137,6 @@ const AcousticManualRun = () => {
     const fetchData = async () => {
       // get Old DATA
       // console.log(runChk);
-      
       try {
         if (runChk === "OK") {
             await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
