@@ -159,23 +159,6 @@ const MasterSetting = () => {
     console.log("Running Min:", runningMin);
     console.log("Running Max:", runningMax);
     console.log("Enable Flag:", enableFlag);
-    // console.log(lastRunningDate);
-    // const date = new Date(manufacturingDateFormat);
-    // const date = new Date(lastRunningDate);
-    // const LastDate = date.toISOString();
-    console.log(
-      Boolean(
-        plmReference &&
-          ebomReference &&
-          // manufacturingDateFormat &&
-          lastRunningDate &&
-          // LastDate &&
-          eoltRefCode &&
-          runningMin &&
-          runningMax &&
-          enableFlag
-      )
-    );
 
     if (
       (id,
@@ -198,8 +181,6 @@ const MasterSetting = () => {
         ProductionLineName: "LINE A",
         plmReference,
         ebomReference,
-        // manufacturingDateFormat: formatDateForSetting(LastDate),
-        // lastRunningDate :formatDateToSetting(lastRunningDate),
         manufacturingDateFormat: "yyMMdd",
         eoltRefCode,
         runningNo,
@@ -208,7 +189,6 @@ const MasterSetting = () => {
         enableFlag,
       };
       try {
-        console.log("Data to be sent:", data);
         await PutSetting("1", "1", data);
         Toast.fire({
           icon: "success",
@@ -230,7 +210,6 @@ const MasterSetting = () => {
       });
     }
   };
-  console.log(masterData.lastRunningDate);
   const tst = "2024-10-23T02:26:48.622Z";
   const lastRunDate = masterData.lastRunningDate
     ? tst.split("T")[0]

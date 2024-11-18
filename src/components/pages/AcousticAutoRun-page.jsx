@@ -51,14 +51,12 @@ const TraceabilityStatus = () => {
           null,
           setLstStatusLog
         );
-        console.log(LstActLog);
+        // console.log(LstActLog);
       } catch (error) {
         setError(error.message);
       }
     };
     fetchData();
-    const length = LstActLog?.length;
-    console.log(length);
 
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
@@ -90,7 +88,7 @@ const TraceabilityStatus = () => {
               const currentDescp = res.find(
                 (item) => item.description === "Current"
               );
-              console.log(currentDescp);
+              // console.log(currentDescp);
               setCurrentDescp(currentDescp);
               setSmrData(uniqueSmrData);
               setLoading(false);
@@ -161,50 +159,17 @@ const TraceabilityStatus = () => {
   };
 
   // console.log(ActDetailById);
-  console.log("Lst Log : ", LstStatusLog);
+  // console.log("Lst Log : ", LstStatusLog);
 
   const sortedStatus = [...(LstStatusLog || [])].sort(
     (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
   );
-
-  // if (sortedStatus.length > 0) {
-  //   const firstItem = sortedStatus[0];
-  //   if (firstItem.serialCode) {
-  //     const SRC = firstItem.serialCode;
-  //     const extractedCode = SRC.split("-").pop();
-  //     // console.log(extractedCode);
-  //   } else {
-  //     console.error("serialCode is undefined on the first item.");
-  //   }
-  // } else {
-  //   console.error("sortedStatus array is empty.");
-  // }
-  console.log(LstActLog);
 
   return (
     <>
       <HeaderLayout page="Traceability Status" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          {/* {Array.isArray(LstActLog) && LstActLog?.length <= 0 ? (
-            <>
-              <div className="title bg-green-500 p-2 rounded-t-md font-bold">
-                <p>
-                  Show Process Current of Auto EOLTStation{" "}
-                  <span className="text-red-600 font-bold">X-X</span> {">>>"}
-                  <span className="text-red-600 font-bold">X-X-X-X-X</span>
-                </p>
-              </div>
-              <div className="items-center justify-center text-center p-4">
-                <p className="text-gray-600 font-semibold">No data available</p>
-                <Loading text="Data Not Found . . ." />
-              </div>
-            </>
-          ) : 
-          ( */}
-          {/* : error ? (
-               <p className="text-red-600">{error}</p>
-            ) */}
           <>
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>
@@ -446,7 +411,6 @@ const TraceabilityStatus = () => {
                               }}
                             >
                               <TableCell align="center">
-                                {/* <p className="font-semibold">{row.id}</p> */}
                                 <p className="font-semibold">{number}</p>
                               </TableCell>
                               <TableCell

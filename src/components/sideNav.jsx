@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 const SideNav = (props) => {
-  // console.log(props);
 
   return (
     <>
@@ -14,6 +13,5 @@ const SideNav = (props) => {
 SideNav.propTypes = {
   title: PropTypes.string.isRequired,
   i: PropTypes.string,
-  // type: PropTypes.string.isRequired,
 };
 export default SideNav;

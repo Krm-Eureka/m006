@@ -256,14 +256,14 @@ const TraceabilityReport = () => {
   const handleFromDateChange = (event) => {
     const inputValue = event.target.value;
     const Format = inputValue.replace("T", " ");
-    console.log(Format);
+    // console.log(Format);
     setFromDate(Format);
   };
 
   const handleToDateChange = (event) => {
     const inputValue = event.target.value;
     const Format = inputValue.replace("T", " ");
-    console.log(Format);
+    // console.log(Format);
     setToDate(Format);
   };
 
@@ -291,7 +291,7 @@ const TraceabilityReport = () => {
       //   thdJud: 1,
       //   frequencyJud: 1,
       //   reTestFlag: true,
-      //   newSerialCode: '1231213213213213213212132'
+      //   newSerialCode: "1231213213213213213212132",
       // },
       // {
       //   id: 2,
@@ -387,8 +387,8 @@ const TraceabilityReport = () => {
       // },
     ]);
     setSearchTerm("");
-    setFromDate("");
-    setToDate(today);
+    setFromDate(fromDate);
+    setToDate(toDate);
   };
   const searchWithDate = async () => {
     try {
@@ -404,7 +404,6 @@ const TraceabilityReport = () => {
     }
   };
   const handleSearchBySerial = async () => {
-
     try {
       await traceabilityService.getAcousticTraceLogBySerialNo(
         "1",
@@ -462,9 +461,7 @@ const TraceabilityReport = () => {
               : "N/A";
 
             const number =
-              extractedCode !== "N/A"
-                ? parseInt(extractedCode, 10)
-                : "N/A";
+              extractedCode !== "N/A" ? parseInt(extractedCode, 10) : "N/A";
 
             return number;
           }
@@ -592,7 +589,7 @@ const TraceabilityReport = () => {
           <div className="flex flex-col p-0">
             <button
               onClick={toggleDropdown}
-              className="w-fit text-white mt-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center"
+              className=" relative w-fit text-white mt-2 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center inline-flex items-center"
               type="button"
             >
               {dropDown === "" || null
@@ -619,11 +616,11 @@ const TraceabilityReport = () => {
               </svg>
             </button>
             {dropdownOpen && (
-              <div className=" bg-white divide-y divide-gray-100 rounded-lg shadow w-full">
-                <ul className="py-2 text-sm text-gray-700">
+              <div>
+                <ul className=" py-2 text-sm text-gray-700 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-fit mb-2">
                   <li>
                     <a
-                      className="block px-4 py-2 hover:bg-gray-100 w-fit"
+                      className="block px-4 py-2 hover:bg-gray-100 w-full cursor-pointer"
                       onClick={() => {
                         setDropDown("date");
                         toggleDropdown();
@@ -633,15 +630,15 @@ const TraceabilityReport = () => {
                     </a>
                   </li>
                   <li>
-                    {/* <a
-                      className="block px-4 py-2 hover:bg-gray-100 w-fit"
+                    <a
+                      className="block px-4 py-2 hover:bg-gray-100 w-full cursor-pointer"
                       onClick={() => {
                         setDropDown("serial");
                         toggleDropdown();
                       }}
                     >
                       By Serial Code
-                    </a> */}
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -711,7 +708,7 @@ const TraceabilityReport = () => {
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
                   placeholder="Serial Number..."
                   value={searchTerm}
-                  // onClick={handleSearchBySerial}
+                  onClick={handleSearchBySerial}
                   onChange={handleSerialChange}
                 />
               </div>
@@ -761,11 +758,12 @@ const TraceabilityReport = () => {
           </div>
         </div>
 
-        <div className="p-4">
+        <div className={dropdownOpen === true ? "p-4" : "p-4"}>
           {/* <Paper
             
           > */}
           <TablePagination
+            className={dropdownOpen === true ? "mt-12" : ""}
             rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
             component="div"
             count={sortedRows.length}
@@ -850,9 +848,6 @@ const TraceabilityReport = () => {
                               ) {
                                 return getColor(row[column.id]);
                               }
-                              // if (column.id === "reTestFlag") {
-                              //   return getColor(row[column.id]);
-                              // }
                               return "inherit";
                             })(),
                           }}
@@ -874,7 +869,6 @@ const TraceabilityReport = () => {
                             }
 
                             if (column.id === "id") {
-                              // console.log(row.serialCode);
                               const extractedCode = row.serialCode
                                 ? row.serialCode.split("-").pop()
                                 : "N/A";

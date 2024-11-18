@@ -63,7 +63,6 @@ const UserManagement = () => {
     const fetchData = async () => {
       try {
         const fetchedUsers = await userService.getAllUsers(setUsers);
-        console.log("fetchedUsers", fetchedUsers);
         setUsers(fetchedUsers);
         setError(null);
       } catch (error) {
@@ -79,7 +78,6 @@ const UserManagement = () => {
   const getRoleUser = async () => {
     try {
       const fetchedRole = await userService.getAllRoles(setRole);
-      console.log("fetchedRole", fetchedRole);
       setRole(fetchedRole);
       setError(null);
     } catch (error) {
@@ -113,18 +111,18 @@ const UserManagement = () => {
     }
   };
   const handleAdd = async () => {
-    console.log("userName", updatedUser.userName, !updatedUser.userName);
-    console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
-    console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
-    console.log("roles", updatedUser.roles, !updatedUser.roles);
-    console.log("email", updatedUser.email, !updatedUser.email);
-    console.log("password", updatedUser.password, !updatedUser.password);
-    console.log(
-      "confirmPassword",
-      updatedUser.confirmPassword,
-      !updatedUser.confirmPassword
-    );
-    console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
+    // console.log("userName", updatedUser.userName, !updatedUser.userName);
+    // console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
+    // console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
+    // console.log("roles", updatedUser.roles, !updatedUser.roles);
+    // console.log("email", updatedUser.email, !updatedUser.email);
+    // console.log("password", updatedUser.password, !updatedUser.password);
+    // console.log(
+    //   "confirmPassword",
+    //   updatedUser.confirmPassword,
+    //   !updatedUser.confirmPassword
+    // );
+    // console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
@@ -175,18 +173,18 @@ const UserManagement = () => {
     }
   };
   const handleSave = async () => {
-    console.log("userName", updatedUser.userName, !updatedUser.userName);
-    console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
-    console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
-    console.log("roles", updatedUser.roles, !updatedUser.roles);
-    console.log("email", updatedUser.email, !updatedUser.email);
-    console.log("password", updatedUser.password, !updatedUser.password);
-    console.log(
-      "confirmPassword",
-      updatedUser.confirmPassword,
-      !updatedUser.confirmPassword
-    );
-    console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
+    // console.log("userName", updatedUser.userName, !updatedUser.userName);
+    // console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
+    // console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
+    // console.log("roles", updatedUser.roles, !updatedUser.roles);
+    // console.log("email", updatedUser.email, !updatedUser.email);
+    // console.log("password", updatedUser.password, !updatedUser.password);
+    // console.log(
+    //   "confirmPassword",
+    //   updatedUser.confirmPassword,
+    //   !updatedUser.confirmPassword
+    // );
+    // console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||

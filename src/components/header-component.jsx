@@ -17,11 +17,6 @@ const HeaderLayout = (props) => {
     const storedUser = localStorage.getItem("USER");
     setUser(storedUser);
   }, []);
-  // Toggle sidebar function
-  // const toggleNav = () => {
-  //   setIsOpen(!isOpen);
-  //   setInterval(4000)
-  // };
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("USER");
