@@ -31,14 +31,13 @@ const HeaderLayout = (props) => {
         }
         timeoutRef.current = setTimeout(() => {
           setIsOpen(false);
-        }, 3000);
+        }, 4000);
       } else {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
       }
 
-      // Return the opposite of the current state to toggle it
       return !prevIsOpen;
     });
   };
