@@ -46,7 +46,7 @@ const HeaderLayout = (props) => {
       <div className="z-50 flex flex-col top-0 sticky dark:text-gray-700 bg-white shadow-md max-w-screen">
         <div className="flex justify-between items-center">
           <div className="l flex flew-row items-center">
-            <div className="logo">
+            <div className="logo cursor-pointer">
               <img
                 className="object-contain justify-center p-0 my-2 h-20 w-50"
                 src={ValeoLogo}
@@ -123,6 +123,15 @@ const HeaderLayout = (props) => {
                 <div className="items-center px-2">
                   <i className="text-xl fa-solid fa-file-contract"></i>
                   <span className="ml-2">AcousticRetest</span>
+                </div>
+              </Link>
+              <Link
+                to="/Console/Content_ACT/QMode"
+                className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
+              >
+                <div className="items-center px-2">
+                <i className="text-xl fa-solid fa-diagram-project"></i>
+                  <span className="ml-2">Quality TestMode</span>
                 </div>
               </Link>
               {/* <Link

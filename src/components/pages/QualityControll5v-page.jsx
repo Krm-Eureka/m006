@@ -169,13 +169,13 @@ const Test5voltQuality = () => {
 
   return (
     <>
-      <HeaderLayout page="Traceability Status" />
+      <HeaderLayout page="Quality Test Mode" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <>
             <div className="title bg-green-500 p-2 rounded-t-md font-bold">
               <p>
-                Acoustic EOLT Station : AUTO Mode{" "}
+                Acoustic EOLT Station : 5v Quality Test Mode{" "}
                 {/* {LstActLog?.productionLineName || ""}  */}
                 {">>>"}
                 <span className="text-red-600 font-bold">
@@ -250,7 +250,6 @@ const Test5voltQuality = () => {
                         </TableCell>
                         <TableCell align="center">
                           <p className="font-semibold">Status</p>
-                          <p className="text-red-600 font-bold">{smrData[2].result}</p>
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -285,26 +284,21 @@ const Test5voltQuality = () => {
                               </p>
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "thd" ? (
-                                row.lowerValue
-                              ) : (
-                               null
-                              )}
+                              {row.description.toLowerCase() === "thd"
+                                ? row.lowerValue
+                                : null}
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "thd" ? (
-                                row.upperValue
-                              ) : (
-                                null
-                              )}
+                              {row.description.toLowerCase() === "thd"
+                                ? row.upperValue
+                                : null}
                             </TableCell>
                             <TableCell align="center">
                               {row.result === "Fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   {row.result}
                                 </p>
-                              ) : 
-                                row.description.toLowerCase() === "thd"  ? (
+                              ) : row.description.toLowerCase() === "thd" ? (
                                 row.result !== "" &&
                                 !isNaN(parseFloat(row.result)) &&
                                 row.lowerValue !== "" &&
@@ -353,9 +347,7 @@ const Test5voltQuality = () => {
                               )}
                             </TableCell>
                           </TableRow>
-                        )
-                    
-                    )
+                        ))
                       )}
                     </TableBody>
                   </Table>
