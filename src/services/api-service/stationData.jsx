@@ -32,7 +32,7 @@ export async function GetLastRetestAcoustic(version, SET, LOADING) {
       `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
     );
 
-    console.log(`GetLastRetestAcoustic: `, res.data);
+    // console.log(`GetLastRetestAcoustic: `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {
@@ -46,7 +46,7 @@ export async function GetLastRetest(version, NID, SET, LOADING) {
       `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
     );
 
-    console.log(`GetLastRetestAcoustic: `, res.data);
+    // console.log(`GetLastRetestAcoustic: `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {
