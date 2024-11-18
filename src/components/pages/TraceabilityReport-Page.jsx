@@ -581,7 +581,7 @@ const TraceabilityReport = () => {
   return (
     <>
       <HeaderLayout page="Traceability Report" />
-      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 pb-4 rounded-md w-90% h-fit over">
+      <div className="flex flex-col text-gray-700 bg-gray-300 m-4 pb-4 rounded-md w-90% h-fit">
         <div className="title bg-green-500 p-2 rounded-t-md font-bold">
           <p>Traceability Report of EOLTStation</p>
         </div>
