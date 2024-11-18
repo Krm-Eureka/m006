@@ -84,7 +84,7 @@ const SetReTestAcousticTracLogById = async (version, data) => {
   try {
     console.log("Sending request to:", url);
     const res = await endpoint.put(url, data);
-    console.log('SetReTestAcousticTracLogById : ' ,res.data.data);
+    // console.log('SetReTestAcousticTracLogById : ' ,res.data.data);
 
     return res.data.data;
   } catch (error) {

@@ -6,7 +6,7 @@ const GetMasterSetting = async (version, productionLineID, SET, LOADING) => {
     const res = await endpoint.get(
       `/api/v${version}/ProductionLine/${productionLineID}`
     );
-    console.log(`MasterData ${productionLineID} : `, res.data);
+    // console.log(`MasterData ${productionLineID} : `, res.data);
     SET(res.data.data);
     {
       res.data.succeeded && res.data.succeeded === true
