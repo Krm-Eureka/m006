@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 import OUT from "../assets/svg/logout.svg";
+import packageJson from '../../package.json'
 
 const HeaderLayout = (props) => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const HeaderLayout = (props) => {
             <h4 className="text-gray-700 my-4 text-lg md:text-xl font-medium dark:text-gray-700">
               Stellantis OMNI Microphone Assemblyline | {PAGE}
             </h4>
-            <p className="pl-2 text-xs pt-2">{': v1 . 0 . 0 . 1'}</p>
+            <p className="pl-2 text-xs pt-2">v{packageJson.version}</p>
             {/*
             1 software upgrade
             0 hardwawre upgrade
