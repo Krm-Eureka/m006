@@ -39,7 +39,8 @@ const Test5voltQuality = () => {
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
-  const THD = smrData.find((i) => i.description === "thd");
+  const voltageType5Data = smrData.filter((item) => item.voltageType === 5);
+  const voltageType8Data = smrData.filter((item) => item.voltageType === 8);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,37 +108,59 @@ const Test5voltQuality = () => {
   const handleTEST = () => {
     setSmrData([
       {
-        description: "thd",
-        lowerValue: 10.5,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "pass",
-      },
-      {
-        description: "Sample item description",
+        voltageType: 8,
+        description: "current",
         lowerValue: 10.5,
         upperValue: 20.75,
         result: 15.25,
         status: "fail",
       },
       {
+        voltageType: 8,
         description: "thd",
         lowerValue: 10.5,
         upperValue: 20.75,
         result: 15.25,
+        status: "pass",
+      },
+
+      {
+        voltageType: 5,
+        description: "thd",
+        lowerValue: 11.233,
+        upperValue: 21.75,
+        result: 20.25,
         status: "passed",
       },
       {
-        description: "Sample item description",
+        voltageType: 8,
+        description: "sensitivity",
         lowerValue: 10.5,
         upperValue: 20.75,
         result: 15.25,
         status: "failed",
       },
+      {
+        voltageType: 8,
+        description: "frequency",
+        lowerValue: 10.5,
+        upperValue: 20.75,
+        result: 15.25,
+        status: "fail",
+      },
+      {
+        voltageType: 5,
+        description: "Current",
+        lowerValue: 10.522222,
+        upperValue: 20.75,
+        result: 15.25,
+        status: "pass",
+      },
     ]);
     setCurrentDescp([
       {
-        description: "Sample item description",
+        voltageType: 8,
+        description: "Current",
         lowerValue: 10.5,
         upperValue: 20.75,
         result: 15.25,
@@ -145,7 +168,8 @@ const Test5voltQuality = () => {
       },
     ]);
 
-    console.log(THD);
+    console.log("5V", voltageType5Data);
+    console.log("8V", voltageType8Data);
     setLoading(false);
   };
   const mapStatus = (value) => {
@@ -174,9 +198,9 @@ const Test5voltQuality = () => {
     <>
       <HeaderLayout page="Quality Test Mode" />
       <div className="content h-screen">
-        <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
+        <div className="text-gray-800 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <>
-            <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+            <div className="title bg-orange-400 p-2 rounded-t-md font-bold">
               <p>
                 Acoustic EOLT Station : 5v Quality Test Mode{" "}
                 {/* {LstActLog?.productionLineName || ""}  */}
@@ -221,13 +245,13 @@ const Test5voltQuality = () => {
         </div>
 
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
-          <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
-            <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
-              <p>Show Data Run Summary</p>
+          <div className="md:mb-4 text-gray-800 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+            <div className="title bg-orange-400 p-2 rounded-t-md text-gray-700 font-bold">
+              <p>Show Data Run Summary 8v.</p>
               <div>
-                <button onClick={handleTEST} className="text-red-500">
+                {/* <button onClick={handleTEST} className="text-red-500">
                   TEST
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="content flex flex-between p-4 items-center">
@@ -257,7 +281,7 @@ const Test5voltQuality = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {smrData.length <= 0 ? (
+                      {voltageType8Data.length <= 0 ? (
                         <TableRow>
                           {/* <div>
                             <button onClick={handleTEST}>TEST</button>
@@ -272,7 +296,7 @@ const Test5voltQuality = () => {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        smrData.map((row, idx) => (
+                        voltageType8Data.map((row, idx) => (
                           <TableRow
                             key={idx}
                             sx={{
@@ -281,27 +305,46 @@ const Test5voltQuality = () => {
                           >
                             <TableCell align="left" component="th" scope="row">
                               <p className="font-semibold">
-                                {row.description.toLowerCase() === "thd"
+                                {row.description.toLowerCase() === "current"
+                                  ? "Current (mA)"
+                                  : row.description.toLowerCase() ===
+                                    "sensitivity"
+                                  ? "Sensitivity (dBV/Pa)"
+                                  : row.description.toLowerCase() ===
+                                    "frequency"
+                                  ? "Frequency"
+                                  : row.description.toLowerCase() === "thd"
                                   ? "THD (%)"
-                                  : null}
+                                  : row.description}
                               </p>
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "thd"
-                                ? row.lowerValue
-                                : null}
+                              {row.description.toLowerCase() === "frequency" ? (
+                                "NA"
+                              ) : (
+                                <p className="font-semibold">
+                                  {row.lowerValue}
+                                </p>
+                              )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "thd"
-                                ? row.upperValue
-                                : null}
+                              {row.description.toLowerCase() === "frequency" ? (
+                                "NA"
+                              ) : (
+                                <p className="font-semibold">
+                                  {row.upperValue}
+                                </p>
+                              )}
                             </TableCell>
                             <TableCell align="center">
                               {row.result === "Fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   {row.result}
                                 </p>
-                              ) : row.description.toLowerCase() === "thd" ? (
+                              ) : row.description.toLowerCase() ===
+                                  "sensitivity" ||
+                                row.description.toLowerCase() === "thd" ||
+                                row.description.toLowerCase() === "current" ? (
                                 row.result !== "" &&
                                 !isNaN(parseFloat(row.result)) &&
                                 row.lowerValue !== "" &&
@@ -352,7 +395,148 @@ const Test5voltQuality = () => {
                           </TableRow>
                         ))
                       )}
-                      <p>{THD?.description}</p>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            </div>
+            <div className="title bg-orange-400 p-2 rounded-t-md text-gray-800 font-bold">
+              <p>Show Data Run Summary 5v.</p>
+              {/* <div>
+                <button onClick={handleTEST} className="text-red-500">
+                  TEST
+                </button>
+              </div> */}
+            </div>
+            <div className="content flex flex-between p-4 items-center">
+              <div className="flex flex-between flex-wrap justify-start">
+                <TableContainer component={Paper}>
+                  <Table
+                    sx={{ width: 800, overflowX: "auto" }}
+                    aria-label="simple table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="left">
+                          <p className="font-semibold">Name</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">Lower</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">Upper</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">Result</p>
+                        </TableCell>
+                        <TableCell align="center">
+                          <p className="font-semibold">Status</p>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {voltageType5Data.length <= 0 ? (
+                        <TableRow>
+                          {/* <div>
+                            <button onClick={handleTEST}>TEST</button>
+                          </div> */}
+                          <TableCell colSpan={3} align="center">
+                            <div className="items-center justify-center text-center p-4 pl-60">
+                              <p className="text-gray-600 font-semibold">
+                                No data available
+                              </p>
+                              <Loading text="Data Not Found . . ." />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        voltageType5Data.map((Data5v, idx) => (
+                          <TableRow
+                            key={idx}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            <TableCell align="left" component="th" scope="row">
+                              <p className="font-semibold">
+                                {Data5v.description.toLowerCase() === "thd"
+                                  ? "THD (%)"
+                                  : Data5v.description.toLowerCase() ===
+                                    "current"
+                                  ? "Current"
+                                  : null}
+                              </p>
+                            </TableCell>
+                            <TableCell align="center">
+                              {Data5v.description.toLowerCase() === "thd" ||
+                              Data5v.description.toLowerCase() === "current"
+                                ? Data5v.lowerValue
+                                : null}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Data5v.description.toLowerCase() === "thd" ||
+                              Data5v.description.toLowerCase() === "current"
+                                ? Data5v.upperValue
+                                : null}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Data5v.result === "Fail" ? (
+                                <p className="text-red-700 font-semibold">
+                                  {Data5v.result}
+                                </p>
+                              ) : Data5v.description.toLowerCase() === "thd" ||
+                                Data5v.description.toLowerCase() ===
+                                  "current" ? (
+                                Data5v.result !== "" &&
+                                !isNaN(parseFloat(Data5v.result)) &&
+                                Data5v.lowerValue !== "" &&
+                                !isNaN(parseFloat(Data5v.lowerValue)) &&
+                                Data5v.upperValue !== "" &&
+                                !isNaN(parseFloat(Data5v.upperValue)) &&
+                                parseFloat(Data5v.result) >=
+                                  parseFloat(Data5v.lowerValue) &&
+                                parseFloat(Data5v.result) <=
+                                  parseFloat(Data5v.upperValue) ? (
+                                  <p className="text-green-700 font-semibold">
+                                    {Data5v.result}
+                                  </p>
+                                ) : (
+                                  <p className="text-red-700 font-semibold">
+                                    {Data5v.result}
+                                  </p>
+                                )
+                              ) : Data5v.description.toLowerCase() ===
+                                "frequency" ? null : (
+                                Data5v.result ===
+                                (
+                                  <p className="text-green-700 font-semibold">
+                                    {Data5v.result}
+                                  </p>
+                                )
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {Data5v.status.toLowerCase() === "failed" ||
+                              Data5v.status.toLowerCase() === "fail" ? (
+                                <p className="text-red-700 font-semibold">
+                                  FAIL
+                                </p>
+                              ) : Data5v.status.toLowerCase() === "pass" ||
+                                Data5v.status.toLowerCase() === "passed" ? (
+                                <p className="text-green-700 font-semibold">
+                                  PASS
+                                </p>
+                              ) : Data5v.status.toLowerCase() === "" ? (
+                                <p className="font-semibold text-yellow-500">
+                                  Exception
+                                </p>
+                              ) : (
+                                ""
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -360,8 +544,8 @@ const Test5voltQuality = () => {
             </div>
           </div>
 
-          <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
-            <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
+          <div className="text-gray-800 bg-gray-300 mx-2 rounded-md w-90% h-fit">
+            <div className="title bg-orange-400 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
             <div className="content p-4 items-center">
