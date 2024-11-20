@@ -15,6 +15,7 @@ import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 // import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
+import { useNavigate } from 'react-router-dom';
 
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
@@ -35,6 +36,7 @@ const TraceabilityStatus = () => {
   const [ActDetailById, setActDetailById] = useState([]);
   const [currentDescp, setCurrentDescp] = useState([]);
   const [smrData, setSmrData] = useState([]);
+  const navigate = useNavigate();
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
@@ -52,6 +54,10 @@ const TraceabilityStatus = () => {
           setLstStatusLog
         );
         // console.log(LstActLog);
+        if (LstActLog?.qualityTestFlag === true) {
+          console.log(LstActLog?.qualityTestFlag);
+          navigate('/Console/Content_ACT/QMode');
+        }
       } catch (error) {
         setError(error.message);
       }

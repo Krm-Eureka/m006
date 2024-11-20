@@ -418,14 +418,12 @@ const TraceabilityReport = () => {
     const rowDate = new Date(row.lastUpdateDate);
     const from = fromDate ? new Date(fromDate) : null;
     const to = toDate ? new Date(toDate) : null;
-
     if (from) {
       from.setHours(0, 0, 0, 0);
     }
     if (to) {
       to.setHours(23, 59, 59, 999);
     }
-
     const isDateInRange = (!from || rowDate >= from) && (!to || rowDate <= to);
     const isSearchMatch =
       searchTerm === "" ||
@@ -437,13 +435,11 @@ const TraceabilityReport = () => {
       !serialNumber || row.serialCode.includes(serialNumber);
     return isDateInRange && isSearchMatch && isSerialMatch;
   });
-
   const sortedRows = sortRows(filteredRows, order, orderBy);
   const toFixedTwo = (value) => {
     const numericValue = parseFloat(value);
     return isNaN(numericValue) ? value : numericValue.toFixed(2);
   };
-
   const exportToCSV = () => {
     const headers = columns.map((column) => `"${column.label}"`).join(",");
 
@@ -554,14 +550,12 @@ const TraceabilityReport = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   const handleSerialChange = (event) => {
     setSearchTerm(event.target.value);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
