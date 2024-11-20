@@ -39,6 +39,7 @@ const Test5voltQuality = () => {
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
+  const THD = smrData.find((i) => i.description === "thd");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,6 +144,8 @@ const Test5voltQuality = () => {
         status: "pass",
       },
     ]);
+
+    console.log(THD);
     setLoading(false);
   };
   const mapStatus = (value) => {
@@ -349,6 +352,7 @@ const Test5voltQuality = () => {
                           </TableRow>
                         ))
                       )}
+                      <p>{THD?.description}</p>
                     </TableBody>
                   </Table>
                 </TableContainer>
