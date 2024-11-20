@@ -508,7 +508,7 @@ const TraceabilityReport = () => {
               ? "A"
               : row[column.id] === true
               ? "R"
-              : "unknow";
+              : "unknown";
           }
 
           return typeof value === "string"
@@ -914,7 +914,7 @@ const TraceabilityReport = () => {
                                 ? "A"
                                 : row[column.id] === true
                                 ? "R"
-                                : "unknow";
+                                : "unknown";
                             }
                             return row[column.id] || "";
                           })()}

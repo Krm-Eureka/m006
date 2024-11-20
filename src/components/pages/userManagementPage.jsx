@@ -85,6 +85,7 @@ const UserManagement = () => {
     }
   };
   const handleEditClick = (user) => {
+    console.log(user);
     getRoleUser();
     setIsEditing(true);
     setCurrentUser(user);
@@ -106,6 +107,7 @@ const UserManagement = () => {
   };
   const handleInputChange = (e = {}) => {
     const { name, value } = e.target || {};
+    console.log(name," " , value , );
     if (name) {
       setUpdatedUser((prev) => ({ ...prev, [name]: value }));
     }
@@ -154,6 +156,7 @@ const UserManagement = () => {
 
       // Assuming response contains the newly added user data
       setUsers((prevUsers) => [...prevUsers, response.data]);
+      console.log(response.data.id);
 
       // Resetting the form
       setUpdatedUser({
@@ -173,24 +176,24 @@ const UserManagement = () => {
     }
   };
   const handleSave = async () => {
-    // console.log("userName", updatedUser.userName, !updatedUser.userName);
-    // console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
-    // console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
-    // console.log("roles", updatedUser.roles, !updatedUser.roles);
-    // console.log("email", updatedUser.email, !updatedUser.email);
-    // console.log("password", updatedUser.password, !updatedUser.password);
-    // console.log(
-    //   "confirmPassword",
-    //   updatedUser.confirmPassword,
-    //   !updatedUser.confirmPassword
-    // );
-    // console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
+    console.log("userName", updatedUser.userName, !updatedUser.userName);
+    console.log("firstName", updatedUser.firstName, !updatedUser.firstName);
+    console.log("lastName", updatedUser.lastName, !updatedUser.lastName);
+    console.log("roles", updatedUser.roles, !updatedUser.roles);
+    console.log("email", updatedUser.email, !updatedUser.email);
+    console.log("password", updatedUser.password, !updatedUser.password);
+    console.log(
+      "confirmPassword",
+      updatedUser.confirmPassword,
+      !updatedUser.confirmPassword
+    );
+    console.log("Verified", updatedUser.isVerified, !updatedUser.isVerified);
     if (
       !updatedUser.userName ||
       !updatedUser.firstName ||
       !updatedUser.lastName ||
       !updatedUser.roles ||
-      !updatedUser.email 
+      !updatedUser.email
       // || !updatedUser.password ||
       // !updatedUser.confirmPassword
     ) {
@@ -346,10 +349,10 @@ const UserManagement = () => {
               sx={{ width: 250, paddingRight: 2 }}
             >
               {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.roleName}>
-                    {role.roleName}
-                  </MenuItem>
-                ))}
+                <MenuItem key={role.id} value={role.id}>
+                  {role.roleName}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               label="Status"
