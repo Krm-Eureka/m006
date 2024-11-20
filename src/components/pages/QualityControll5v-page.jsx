@@ -220,7 +220,7 @@ const Test5voltQuality = () => {
                 Acoustic EOLT Station : 5v Quality Test Mode{" "}
                 {/* {LstActLog?.productionLineName || ""}  */}
                 {">>>"}
-                <span className="text-red-600 font-bold">
+                <span className="text-white font-bold">
                   {LstActLog?.serialCode}
                 </span>
               </p>
