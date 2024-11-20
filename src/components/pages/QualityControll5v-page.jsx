@@ -16,9 +16,18 @@ import StatusBox from "../statusBox";
 // import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
 
-function createSmrData(description, lowerValue, upperValue, result, status) {
-  const formattedResult = parseFloat(result).toFixed(2);
+function createSmrData(
+  description,
+  voltageType,
+  lowerValue,
+  upperValue,
+  result,
+  status
+) {
+  
+  const formattedResult = parseFloat(parseFloat(result).toFixed(2));
   return {
+    voltageType,
     description,
     lowerValue,
     upperValue,
@@ -39,8 +48,7 @@ const Test5voltQuality = () => {
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
-  const voltageType5Data = smrData.filter((item) => item.voltageType === 5);
-  const voltageType8Data = smrData.filter((item) => item.voltageType === 8);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,18 +83,20 @@ const Test5voltQuality = () => {
               setActDetailById(res);
               const uniqueSmrData = Array.from(
                 new Map(
-                  res.map((item) => [
-                    item.description,
+                  res.map((i) => [
+                    i?.id,
                     createSmrData(
-                      item.description,
-                      item.lowerValue,
-                      item.upperValue,
-                      item.result,
-                      item.status
+                      i?.description,
+                      i?.voltageType,
+                      i?.lowerValue,
+                      i?.upperValue,
+                      i?.result,
+                      i?.status
                     ),
                   ])
                 ).values()
               );
+              
               const currentDescp = res.find(
                 (item) => item.description === "Current"
               );
@@ -107,69 +117,69 @@ const Test5voltQuality = () => {
 
   const handleTEST = () => {
     setSmrData([
-      {
-        voltageType: 8,
-        description: "current",
-        lowerValue: 10.5,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "fail",
-      },
-      {
-        voltageType: 8,
-        description: "thd",
-        lowerValue: 10.5,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "pass",
-      },
-
-      {
-        voltageType: 5,
-        description: "thd",
-        lowerValue: 11.233,
-        upperValue: 21.75,
-        result: 20.25,
-        status: "passed",
-      },
-      {
-        voltageType: 8,
-        description: "sensitivity",
-        lowerValue: 10.5,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "failed",
-      },
-      {
-        voltageType: 8,
-        description: "frequency",
-        lowerValue: 10.5,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "fail",
-      },
-      {
-        voltageType: 5,
-        description: "Current",
-        lowerValue: 10.522222,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "pass",
-      },
-    ]);
-    setCurrentDescp([
-      {
-        voltageType: 8,
-        description: "Current",
-        lowerValue: 10.5,
-        upperValue: 20.75,
-        result: 15.25,
-        status: "pass",
-      },
+      //   {
+      //     voltageType: 8,
+      //     description: "current",
+      //     lowerValue: 10.5,
+      //     upperValue: 20.755,
+      //     result: 15.25555,
+      //     status: "fail",
+      //   },
+      //   {
+      //     voltageType: 8,
+      //     description: "thd",
+      //     lowerValue: 10.5,
+      //     upperValue: 20.75,
+      //     result: 15.25,
+      //     status: "pass",
+      //   },
+      //   {
+      //     voltageType: 5,
+      //     description: "thd",
+      //     lowerValue: 11.233,
+      //     upperValue: 21.75,
+      //     result: 20.25,
+      //     status: "passed",
+      //   },
+      //   {
+      //     voltageType: 8,
+      //     description: "sensitivity",
+      //     lowerValue: 10.5,
+      //     upperValue: 20.75,
+      //     result: 15.25,
+      //     status: "failed",
+      //   },
+      //   {
+      //     voltageType: 8,
+      //     description: "frequency",
+      //     lowerValue: 10.5,
+      //     upperValue: 20.75,
+      //     result: 15.25,
+      //     status: "fail",
+      //   },
+      //   {
+      //     voltageType: 5,
+      //     description: "Current",
+      //     lowerValue: 10.522222,
+      //     upperValue: 20.75,
+      //     result: 15.25,
+      //     status: "pass",
+      //   },
+      // ]);
+      // setCurrentDescp([
+      //   {
+      //     voltageType: 8,
+      //     description: "Current",
+      //     lowerValue: 10.5,
+      //     upperValue: 20.75,
+      //     result: 15.25,
+      //     status: "pass",
+      //   },
     ]);
 
     console.log("5V", voltageType5Data);
     console.log("8V", voltageType8Data);
+    
     setLoading(false);
   };
   const mapStatus = (value) => {
@@ -193,7 +203,12 @@ const Test5voltQuality = () => {
   const sortedStatus = [...(LstStatusLog || [])].sort(
     (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
   );
-
+  const voltageType5Data = smrData.filter(
+    (item) => item?.voltageType === 5
+  );
+  const voltageType8Data = smrData.filter(
+    (item) => item?.voltageType === 8
+  ); 
   return (
     <>
       <HeaderLayout page="Quality Test Mode" />
