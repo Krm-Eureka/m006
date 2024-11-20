@@ -296,7 +296,7 @@ const Test5voltQuality = () => {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        voltageType8Data.map((row, idx) => (
+                        voltageType8Data.map((Data8v, idx) => (
                           <TableRow
                             key={idx}
                             sx={{
@@ -305,86 +305,89 @@ const Test5voltQuality = () => {
                           >
                             <TableCell align="left" component="th" scope="row">
                               <p className="font-semibold">
-                                {row.description.toLowerCase() === "current"
+                                {Data8v.description.toLowerCase() === "current"
                                   ? "Current (mA)"
-                                  : row.description.toLowerCase() ===
+                                  : Data8v.description.toLowerCase() ===
                                     "sensitivity"
                                   ? "Sensitivity (dBV/Pa)"
-                                  : row.description.toLowerCase() ===
+                                  : Data8v.description.toLowerCase() ===
                                     "frequency"
                                   ? "Frequency"
-                                  : row.description.toLowerCase() === "thd"
+                                  : Data8v.description.toLowerCase() === "thd"
                                   ? "THD (%)"
-                                  : row.description}
+                                  : Data8v.description}
                               </p>
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "frequency" ? (
+                              {Data8v.description.toLowerCase() ===
+                              "frequency" ? (
                                 "NA"
                               ) : (
                                 <p className="font-semibold">
-                                  {row.lowerValue}
+                                  {Data8v.lowerValue}
                                 </p>
                               )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.description.toLowerCase() === "frequency" ? (
+                              {Data8v.description.toLowerCase() ===
+                              "frequency" ? (
                                 "NA"
                               ) : (
                                 <p className="font-semibold">
-                                  {row.upperValue}
+                                  {Data8v.upperValue}
                                 </p>
                               )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.result === "Fail" ? (
+                              {Data8v.result === "Fail" ? (
                                 <p className="text-red-700 font-semibold">
-                                  {row.result}
+                                  {Data8v.result}
                                 </p>
-                              ) : row.description.toLowerCase() ===
+                              ) : Data8v.description.toLowerCase() ===
                                   "sensitivity" ||
-                                row.description.toLowerCase() === "thd" ||
-                                row.description.toLowerCase() === "current" ? (
-                                row.result !== "" &&
-                                !isNaN(parseFloat(row.result)) &&
-                                row.lowerValue !== "" &&
-                                !isNaN(parseFloat(row.lowerValue)) &&
-                                row.upperValue !== "" &&
-                                !isNaN(parseFloat(row.upperValue)) &&
-                                parseFloat(row.result) >=
-                                  parseFloat(row.lowerValue) &&
-                                parseFloat(row.result) <=
-                                  parseFloat(row.upperValue) ? (
+                                Data8v.description.toLowerCase() === "thd" ||
+                                Data8v.description.toLowerCase() ===
+                                  "current" ? (
+                                Data8v.result !== "" &&
+                                !isNaN(parseFloat(Data8v.result)) &&
+                                Data8v.lowerValue !== "" &&
+                                !isNaN(parseFloat(Data8v.lowerValue)) &&
+                                Data8v.upperValue !== "" &&
+                                !isNaN(parseFloat(Data8v.upperValue)) &&
+                                parseFloat(Data8v.result) >=
+                                  parseFloat(Data8v.lowerValue) &&
+                                parseFloat(Data8v.result) <=
+                                  parseFloat(Data8v.upperValue) ? (
                                   <p className="text-green-700 font-semibold">
-                                    {row.result}
+                                    {Data8v.result}
                                   </p>
                                 ) : (
                                   <p className="text-red-700 font-semibold">
-                                    {row.result}
+                                    {Data8v.result}
                                   </p>
                                 )
-                              ) : row.description.toLowerCase() ===
+                              ) : Data8v.description.toLowerCase() ===
                                 "frequency" ? null : (
-                                row.result ===
+                                Data8v.result ===
                                 (
                                   <p className="text-green-700 font-semibold">
-                                    {row.result}
+                                    {Data8v.result}
                                   </p>
                                 )
                               )}
                             </TableCell>
                             <TableCell align="center">
-                              {row.status.toLowerCase() === "failed" ||
-                              row.status.toLowerCase() === "fail" ? (
+                              {Data8v.status.toLowerCase() === "failed" ||
+                              Data8v.status.toLowerCase() === "fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   FAIL
                                 </p>
-                              ) : row.status.toLowerCase() === "pass" ||
-                                row.status.toLowerCase() === "passed" ? (
+                              ) : Data8v.status.toLowerCase() === "pass" ||
+                                Data8v.status.toLowerCase() === "passed" ? (
                                 <p className="text-green-700 font-semibold">
                                   PASS
                                 </p>
-                              ) : row.status.toLowerCase() === "" ? (
+                              ) : Data8v.status.toLowerCase() === "" ? (
                                 <p className="font-semibold text-yellow-500">
                                   Exception
                                 </p>
