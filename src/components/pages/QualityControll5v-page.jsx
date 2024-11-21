@@ -105,8 +105,8 @@ const Test5voltQuality = () => {
               setActDetailById(res);
               const uniqueSmrData = Array.from(
                 new Map(
-                  res.map((i) => [
-                    i?.description,
+                  res.map((i , idx) => [
+                    idx,
                     createSmrData(
                       i?.description,
                       i?.voltageType,
