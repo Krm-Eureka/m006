@@ -14,9 +14,9 @@ const ProtectedRoute = ({ requiredRoles }) => {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const expDate = payload.exp * 1000;
-      return expDate > Date.now(); 
+      return expDate > Date.now();
     } catch (error) {
-      return false; 
+      return false;
     }
   };
 
@@ -28,14 +28,18 @@ const ProtectedRoute = ({ requiredRoles }) => {
 
         if (!newToken || !isTokenValid(newToken)) {
           console.log("Token invalid or missing, logging out...");
+          localStorage.clear()
           navigate("/auth/login");
         }
+        console.log("newUserRole", newUserRole);
 
         if (newUserRole !== userRole) {
           console.log("User role modified, logging out...");
+          localStorage.clear()
           navigate("/auth/login");
         }
       }
+      navigate("/auth/login");
     };
 
     window.addEventListener("storage", handleStorageChange);
