@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -42,11 +43,13 @@ const AcousticManualRun = () => {
   const [loading, setLoading] = useState(false);
   const [ActDetailById, setActDetailById] = useState([]);
   const [runChk, setRunCHK] = useState("");
+  const navigate = useNavigate()
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
   const inputRef = useRef(null);
+  
   const mapStatus = (value) => {
     switch (value) {
       case 0:
@@ -79,6 +82,42 @@ const AcousticManualRun = () => {
     }, 1500);
     return () => clearInterval(interval);
   }, []);
+
+  const hasNavigated = useRef(false);
+
+  useEffect(() => {
+    if (
+      LstRetest &&
+      LstRetest.qualityTestFlag === true &&
+      LstRetest.reTestFlag === false &&
+      !hasNavigated.current
+    ) {
+      console.log("Navigating to QMode:", LstRetest?.qualityTestFlag);
+      hasNavigated.current = true;
+      try {
+        navigate("/Console/Content_ACT/QMode");
+      } catch (error) {
+        console.error("Navigation error:", error);
+      }
+    } else if (
+      LstRetest &&
+      LstRetest.reTestFlag === false &&
+      LstRetest.qualityTestFlag === false &&
+      !hasNavigated.current
+    ) {
+      console.log("Navigating to AutoMode:", LstRetest?.reTestFlag);
+      hasNavigated.current = true;
+      try {
+        navigate("/Console/Content_ACT/AutoRun");
+      } catch (error) {
+        console.error("Navigation error:", error);
+      }
+    }
+    return () => {
+      hasNavigated.current = false;
+    };
+  }, [LstRetest, navigate]);
+
 
   const handleRunClick = async () => {
     setSerialRun(serialNumber);

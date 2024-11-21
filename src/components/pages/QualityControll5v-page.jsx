@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,7 +15,7 @@ import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 // import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
-
+import { useNavigate } from "react-router-dom";
 function createSmrData(
   description,
   voltageType,
@@ -24,7 +24,6 @@ function createSmrData(
   result,
   status
 ) {
-  
   const formattedResult = parseFloat(parseFloat(result).toFixed(2));
   return {
     voltageType,
@@ -44,11 +43,11 @@ const Test5voltQuality = () => {
   const [ActDetailById, setActDetailById] = useState([]);
   const [currentDescp, setCurrentDescp] = useState([]);
   const [smrData, setSmrData] = useState([]);
+  const navigate = useNavigate();
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +71,28 @@ const Test5voltQuality = () => {
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
 
+  const hasNavigated = useRef(false);
+  useEffect(() => {
+    if (
+      LstActLog &&
+      LstActLog?.qualityTestFlag === false &&
+      LstActLog?.reTestFlag === false &&
+      !hasNavigated.current
+    ) {
+      console.log("Navigating to AutoRun:", LstActLog?.qualityTestFlag);
+      hasNavigated.current = true;
+      navigate("/Console/Content_ACT/AutoRun");
+    } else if (
+      LstActLog &&
+      LstActLog?.reTestFlag === true &&
+      LstActLog?.qualityTestFlag === false &&
+      !hasNavigated.current
+    ) {
+      console.log("Navigating to ReTest:", LstActLog?.reTestFlag);
+      hasNavigated.current = true;
+      navigate("/Console/Content_ACT/ManualRun");
+    }
+  }, [LstActLog, navigate]);
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {
@@ -84,7 +105,7 @@ const Test5voltQuality = () => {
               const uniqueSmrData = Array.from(
                 new Map(
                   res.map((i) => [
-                    i?.id,
+                    i?.description,
                     createSmrData(
                       i?.description,
                       i?.voltageType,
@@ -96,7 +117,7 @@ const Test5voltQuality = () => {
                   ])
                 ).values()
               );
-              
+
               const currentDescp = res.find(
                 (item) => item.description === "Current"
               );
@@ -179,7 +200,8 @@ const Test5voltQuality = () => {
 
     console.log("5V", voltageType5Data);
     console.log("8V", voltageType8Data);
-    
+    console.log(LstActLog);
+
     setLoading(false);
   };
   const mapStatus = (value) => {
@@ -203,12 +225,10 @@ const Test5voltQuality = () => {
   const sortedStatus = [...(LstStatusLog || [])].sort(
     (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
   );
-  const voltageType5Data = smrData.filter(
-    (item) => item?.voltageType === 5
-  );
-  const voltageType8Data = smrData.filter(
-    (item) => item?.voltageType === 8
-  ); 
+  const voltageType5Data = smrData.filter((item) => item?.voltageType === 5);
+  const voltageType8Data = smrData.filter((item) => item?.voltageType === 8);
+
+  // qualityTestFlag === true show Data === false don't show data
   return (
     <>
       <HeaderLayout page="Quality Test Mode" />
@@ -218,42 +238,61 @@ const Test5voltQuality = () => {
             <div className="title bg-orange-400 p-2 rounded-t-md font-bold">
               <p>
                 Acoustic EOLT Station : 5v Quality Test Mode{" "}
-                {/* {LstActLog?.productionLineName || ""}  */}
-                {">>>"}
-                <span className="text-white font-bold">
-                  {LstActLog?.serialCode}
-                </span>
+                {LstActLog?.qualityTestFlag === true ? (
+                  <>
+                    <span className="text-white font-bold">
+                      {LstActLog?.serialCode}
+                    </span>
+                  </>
+                ) : (
+                  ""
+                )}
               </p>
             </div>
             <div className="content flex flex-wrap flex-between p-4 items-center">
-              <StatusBox
-                name="AcousticTest"
-                status={LstActLog?.acousticStatus}
-              />
-              {LstActLog?.length > 0 || LstActLog?.id ? (
-                <StatusBox
-                  name="Current"
-                  status={
-                    currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail" ||
-                    currentDescp?.status === 3
-                      ? 3
-                      : currentDescp?.status === "PASS" ||
-                        currentDescp?.status === "pass" ||
-                        currentDescp?.status === 2
-                      ? 2
-                      : 0
-                  }
-                />
+              {LstActLog?.qualityTestFlag === true ? (
+                <>
+                  <StatusBox
+                    name="AcousticTest"
+                    status={LstActLog?.acousticStatus}
+                  />
+                  {LstActLog?.length > 0 || LstActLog?.id ? (
+                    <StatusBox
+                      name="Current"
+                      status={
+                        currentDescp?.status === "FAIL" ||
+                        currentDescp?.status === "fail" ||
+                        currentDescp?.status === 3
+                          ? 3
+                          : currentDescp?.status === "PASS" ||
+                            currentDescp?.status === "pass" ||
+                            currentDescp?.status === 2
+                          ? 2
+                          : 0
+                      }
+                    />
+                  ) : (
+                    <StatusBox name="Current" />
+                  )}
+                  <StatusBox
+                    name="LaserMark"
+                    status={LstActLog?.laserMarkStatus}
+                  />
+                  <StatusBox name="QRCode" status={LstActLog?.qrStatus} />
+                  <StatusBox
+                    name="TotalStatus"
+                    status={LstActLog?.totalJudgement}
+                  />
+                </>
               ) : (
-                <StatusBox name="Current" />
+                <>
+                  <StatusBox name="AcousticTest" />
+                  <StatusBox name="Current" />
+                  <StatusBox name="LaserMark" />
+                  <StatusBox name="QRCode" />
+                  <StatusBox name="TotalStatus" />
+                </>
               )}
-              <StatusBox name="LaserMark" status={LstActLog?.laserMarkStatus} />
-              <StatusBox name="QRCode" status={LstActLog?.qrStatus} />
-              <StatusBox
-                name="TotalStatus"
-                status={LstActLog?.totalJudgement}
-              />
             </div>
           </>
           {/* )}  */}
@@ -296,7 +335,9 @@ const Test5voltQuality = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {voltageType8Data.length <= 0 ? (
+                      {(voltageType8Data.length <= 0 &&
+                        LstActLog?.qualityTestFlag === false) ||
+                      LstActLog?.qualityTestFlag === undefined ? (
                         <TableRow>
                           {/* <div>
                             <button onClick={handleTEST}>TEST</button>
@@ -453,7 +494,9 @@ const Test5voltQuality = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {voltageType5Data.length <= 0 ? (
+                      {(voltageType5Data.length <= 0 &&
+                        LstActLog?.qualityTestFlag === false) ||
+                      LstActLog?.qualityTestFlag === undefined ? (
                         <TableRow>
                           {/* <div>
                             <button onClick={handleTEST}>TEST</button>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,7 +15,7 @@ import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
 // import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
@@ -54,19 +54,49 @@ const TraceabilityStatus = () => {
           setLstStatusLog
         );
         // console.log(LstActLog);
-        if (LstActLog?.qualityTestFlag === true) {
-          console.log(LstActLog?.qualityTestFlag);
-          navigate('/Console/Content_ACT/QMode');
-        }
       } catch (error) {
         setError(error.message);
       }
     };
     fetchData();
-
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate]);
+
+  const hasNavigated = useRef(false);
+
+  useEffect(() => {
+    if (
+      LstActLog &&
+      LstActLog.qualityTestFlag === true &&
+      LstActLog.reTestFlag === false &&
+      !hasNavigated.current
+    ) {
+      console.log("Navigating to QMode:", LstActLog?.qualityTestFlag);
+      hasNavigated.current = true;
+      try {
+        navigate("/Console/Content_ACT/QMode");
+      } catch (error) {
+        console.error("Navigation error:", error);
+      }
+    } else if (
+      LstActLog &&
+      LstActLog.reTestFlag === true &&
+      LstActLog.qualityTestFlag === false &&
+      !hasNavigated.current
+    ) {
+      console.log("Navigating to reTestMode:", LstActLog?.reTestFlag);
+      hasNavigated.current = true;
+      try {
+        navigate("/Console/Content_ACT/ManualRun");
+      } catch (error) {
+        console.error("Navigation error:", error);
+      }
+    }
+    return () => {
+      hasNavigated.current = false;
+    };
+  }, [LstActLog, navigate]);
 
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
