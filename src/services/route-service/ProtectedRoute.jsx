@@ -28,17 +28,18 @@ const ProtectedRoute = ({ requiredRoles }) => {
 
         if (!newToken || !isTokenValid(newToken)) {
           console.log("Token invalid or missing, logging out...");
-          localStorage.clear()
+          localStorage.clear();
           navigate("/auth/login");
         }
         console.log("newUserRole", newUserRole);
 
         if (newUserRole !== userRole) {
           console.log("User role modified, logging out...");
-          localStorage.clear()
+          localStorage.clear();
           navigate("/auth/login");
         }
       }
+      localStorage.clear();
       navigate("/auth/login");
     };
 
@@ -49,6 +50,7 @@ const ProtectedRoute = ({ requiredRoles }) => {
   }, [navigate, userRole]);
 
   if (!token || !isTokenValid(token)) {
+    localStorage.clear();
     return <Navigate to="/auth/login" />;
   }
 
