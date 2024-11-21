@@ -93,6 +93,7 @@ const Test5voltQuality = () => {
       navigate("/Console/Content_ACT/ManualRun");
     }
   }, [LstActLog, navigate]);
+  
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {
