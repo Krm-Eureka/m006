@@ -500,7 +500,9 @@ const TraceabilityReport = () => {
             }
           }
           if (column.id === "reTestFlag") {
-            return row[column.id] === false
+            return row["qualityTestFlag"] === true
+              ? "Q"
+              : row[column.id] === false
               ? "A"
               : row[column.id] === true
               ? "R"
@@ -623,7 +625,7 @@ const TraceabilityReport = () => {
                       By Date
                     </a>
                   </li>
-                  <li>
+                  {/* <li>
                     <a
                       className="block px-4 py-2 hover:bg-gray-100 w-full cursor-pointer"
                       onClick={() => {
@@ -633,7 +635,7 @@ const TraceabilityReport = () => {
                     >
                       By Serial Code
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             )}
@@ -837,10 +839,21 @@ const TraceabilityReport = () => {
                                 column.id === "creationDate" ||
                                 column.id === "tracReportStatus" ||
                                 column.id === "qrStatus" ||
-                                column.id === "acousticStatus" ||
-                                column.id === "reTestFlag"
+                                column.id === "acousticStatus"
+                                // ||
+                                // column.id === "reTestFlag"
                               ) {
                                 return getColor(row[column.id]);
+                              }
+                              if (column.id === "reTestFlag") {
+                                console.log(row["qualityTestFlag"] === true);
+                                return row["qualityTestFlag"] === true
+                                  ? "blue"
+                                  : row[column.id] === true
+                                  ? "red"
+                                  : row[column.id] === false
+                                  ? "green"
+                                  : "inherit";
                               }
                               return "inherit";
                             })(),
@@ -904,7 +917,9 @@ const TraceabilityReport = () => {
                               return mapStatus(row[column.id]);
                             }
                             if (column.id === "reTestFlag") {
-                              return row[column.id] === false
+                              return row["qualityTestFlag"] === true
+                                ? "Q"
+                                : row[column.id] === false
                                 ? "A"
                                 : row[column.id] === true
                                 ? "R"

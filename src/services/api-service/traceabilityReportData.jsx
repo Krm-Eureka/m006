@@ -13,7 +13,7 @@ const getTraceabilityDataWithDate = (version, start, end, SN, SET) => {
 
     try {
       const res = await endpoint.get(url);
-      console.log("getTraceabilityDataWithDate :", res.data);
+      // console.log("getTraceabilityDataWithDate :", res.data);
       SET(res.data.data);
     } catch (error) {
       console.error("Failed to fetch Data:", error);
