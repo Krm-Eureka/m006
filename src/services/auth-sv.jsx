@@ -6,9 +6,10 @@ const AuthLogin = async (email, password) => {
     const res = await endpoint.post(AUTH_API_URL, { email, password });
     // console.log(res);
     // console.log(res.data.succeeded);
+    console.log(res.data.roles);
     if (res.data.succeeded) {
       return {
-        role: res.data.data.roles[0],
+        role: res.data.data.roles,
         success: true,
         token: res.data.data.jwToken,
         login_msg: res.data.message,
