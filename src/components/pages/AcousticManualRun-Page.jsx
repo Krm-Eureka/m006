@@ -43,13 +43,13 @@ const AcousticManualRun = () => {
   const [loading, setLoading] = useState(false);
   const [ActDetailById, setActDetailById] = useState([]);
   const [runChk, setRunCHK] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const today = new Date();
   const lastWeek = new Date(today.getTime() - 86400000 * 7);
   const startDate = lastWeek.toISOString().split("T")[0] + " 00:00";
   const endDate = today.toISOString().split("T")[0] + " 23:59";
   const inputRef = useRef(null);
-  
+
   const mapStatus = (v) => {
     switch (v) {
       case 0:
@@ -69,10 +69,10 @@ const AcousticManualRun = () => {
     (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
   );
 
-  const reSetInput = async() => {
-    await delay(5000)
-    setSerialNumber(""); 
-    setInputDisable(false)
+  const reSetInput = async () => {
+    await delay(5000);
+    setSerialNumber("");
+    setInputDisable(false);
     inputRef.current.focus();
   };
 
@@ -118,10 +118,9 @@ const AcousticManualRun = () => {
   //   };
   // }, [LstRetest, navigate]);
 
-
   const handleRunClick = async () => {
     setSerialRun(serialNumber);
-    setInputDisable(true)
+    setInputDisable(true);
     setLstRetest([]);
     setSmrData([]);
     try {
@@ -142,12 +141,9 @@ const AcousticManualRun = () => {
       if (dataSerial?.id) {
         console.log("chk DATA");
         // await delay(1000);
-        const RT = await traceabilityService.SetReTestAcousticTracLogById(
-          "1",
-          {
-            id: dataSerial?.id,
-          }
-        );
+        const RT = await traceabilityService.SetReTestAcousticTracLogById("1", {
+          id: dataSerial?.id,
+        });
         console.log("00000000000000000000000", RT);
         if (RT?.id) {
           setRunCHK("OK");
@@ -161,7 +157,7 @@ const AcousticManualRun = () => {
             icon: "success",
             title: "",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
           setRunCHK("OK");
         } else {
@@ -170,10 +166,9 @@ const AcousticManualRun = () => {
             icon: "warning",
             title: RT,
             showConfirmButton: false,
-            timer: 3000
+            timer: 3000,
           });
         }
-
       } else {
         setRunCHK("NG");
         Swal.fire({
@@ -181,7 +176,7 @@ const AcousticManualRun = () => {
           icon: "error",
           title: "Failed to valid data please scan QRCode again",
           showConfirmButton: false,
-          timer: 3000
+          timer: 3000,
         });
         console.error("Failed to fetch valid data.");
         setError("Failed to fetch valid data.");
@@ -191,7 +186,7 @@ const AcousticManualRun = () => {
       setError(err.message);
       console.error("Error fetching traceability data:", err);
     }
-    delay(200)
+    delay(200);
     setRunCHK("OK");
   };
 
@@ -225,7 +220,6 @@ const AcousticManualRun = () => {
   };
 
   useEffect(() => {
-
     if (LstRetest && LstRetest.id) {
       const fetchDetails = async () => {
         try {
@@ -273,14 +267,16 @@ const AcousticManualRun = () => {
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-yellow-400 p-2 rounded-t-md font-bold">
             <p>
-              Acoustic EOLT Station : RETEST Mode {">>>"}{runChk}{" "}
+              Acoustic EOLT Station : RETEST Mode {">"}
+              {runChk}
+              {">"}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
                 {RET?.serialCode
                   ? RET?.serialCode
                   : LstRetest?.serialCode
-                    ? LstRetest?.serialCode
-                    : "N/A"}
+                  ? LstRetest?.serialCode
+                  : "N/A"}
               </span>
             </p>
           </div>
@@ -316,14 +312,14 @@ const AcousticManualRun = () => {
                 name="Current"
                 status={
                   currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail" ||
-                    currentDescp?.status === 3
+                  currentDescp?.status === "fail" ||
+                  currentDescp?.status === 3
                     ? 3
                     : currentDescp?.status === "PASS" ||
                       currentDescp?.status === "pass" ||
                       currentDescp?.status === 2
-                      ? 2
-                      : 0
+                    ? 2
+                    : 0
                 }
               />
             ) : (
@@ -381,10 +377,10 @@ const AcousticManualRun = () => {
                                 ? "Current (mA)"
                                 : row.description.toLowerCase() ===
                                   "sensitivity"
-                                  ? "Sensitivity (dBV/Pa)"
-                                  : row.description.toLowerCase() === "thd"
-                                    ? "THD (%)"
-                                    : row.description}
+                                ? "Sensitivity (dBV/Pa)"
+                                : row.description.toLowerCase() === "thd"
+                                ? "THD (%)"
+                                : row.description}
                             </p>
                           </TableCell>
                           <TableCell align="center">
@@ -409,14 +405,14 @@ const AcousticManualRun = () => {
                             ) : row.description.toLowerCase() ===
                               "sensitivity" ? (
                               row.result !== "" &&
-                                !isNaN(parseFloat(row.result)) &&
-                                row.lowerValue !== "" &&
-                                !isNaN(parseFloat(row.lowerValue)) &&
-                                row.upperValue !== "" &&
-                                !isNaN(parseFloat(row.upperValue)) &&
-                                parseFloat(row.result) >=
+                              !isNaN(parseFloat(row.result)) &&
+                              row.lowerValue !== "" &&
+                              !isNaN(parseFloat(row.lowerValue)) &&
+                              row.upperValue !== "" &&
+                              !isNaN(parseFloat(row.upperValue)) &&
+                              parseFloat(row.result) >=
                                 parseFloat(row.lowerValue) &&
-                                parseFloat(row.result) <=
+                              parseFloat(row.result) <=
                                 parseFloat(row.upperValue) ? (
                                 <p className="text-green-700 font-semibold">
                                   {row.result}
