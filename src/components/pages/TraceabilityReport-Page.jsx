@@ -1,4 +1,4 @@
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 // import { useEffect } from "react";
 import Table from "@mui/material/Table";
@@ -261,16 +261,16 @@ const TraceabilityReport = () => {
       timer = setTimeout(() => func(...args), delay);
     };
   };
-  
+
   const handleSearchChangeDebounced = debounce((v) => {
-    setSearchTerm(v); 
+    setSearchTerm(v);
     console.log("SearchTerm Updated:", v);
-    setSerialNumber(v); 
+    setSerialNumber(v);
   }, 300);
-  
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
-    handleSearchChangeDebounced(value); 
+    handleSearchChangeDebounced(value);
   };
 
   // const handleSearchChange = (event) => {
@@ -292,7 +292,7 @@ const TraceabilityReport = () => {
   };
   useEffect(() => {
     const filtered = rows.filter((row) => {
-      const isSearchMatch = 
+      const isSearchMatch =
         !searchTerm ||
         Object.values(row).some((value) =>
           String(value).toLowerCase().includes(searchTerm.toLowerCase())
@@ -300,7 +300,7 @@ const TraceabilityReport = () => {
       return isSearchMatch;
     });
     setRows(filtered);
-  }, [searchTerm, rows]);
+  }, [searchTerm]);
 
   const handleClear = async () => {
     setRows([
@@ -420,28 +420,27 @@ const TraceabilityReport = () => {
       //   frequencyJud: 0,
       //   reTestFlag: false,
       // },
-      ]);
+    ]);
     setSearchTerm("");
     setSerialNumber("");
-    filteredRows()
     console.log(searchTerm);
     console.log(sortedRows);
-    // setRows([]);
+    setRows([]);
     setFromDate(fromDate);
     setToDate(toDate);
-    // try {
-    //   await traceabilityService.getTraceabilityDataWithDate(
-    //     "1",
-    //     fromDate,
-    //     toDate,
-    //     serialNumber,
-    //     setRows
-    //   );
-    //   console.log("Filters cleared and data reloaded");
-    // } catch (err) {
-    //   setError(err);
-    //   console.error("Error reloading data:", err);
-    // }
+    try {
+      await traceabilityService.getTraceabilityDataWithDate(
+        "1",
+        fromDate,
+        toDate,
+        serialNumber,
+        setRows
+      );
+      console.log("Filters cleared and data reloaded");
+    } catch (err) {
+      setError(err);
+      console.error("Error reloading data:", err);
+    }
   };
   const searchWithDate = async () => {
     try {
@@ -493,7 +492,7 @@ const TraceabilityReport = () => {
     return isDateInRange && isSearchMatch && isSerialMatch;
   });
   console.log(filteredRows);
-  
+
   const sortedRows = sortRows(filteredRows, order, orderBy);
   console.log(rows);
 
