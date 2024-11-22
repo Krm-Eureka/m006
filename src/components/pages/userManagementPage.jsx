@@ -147,8 +147,8 @@ const UserManagement = () => {
         userName: updatedUser.userName,
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
-        roles: updatedUser.roles,
-        isVerified: true,
+        // roles: updatedUser.roles,
+        // isVerified: true,
         email: updatedUser.email,
         password: updatedUser.password,
         confirmPassword: updatedUser.confirmPassword
