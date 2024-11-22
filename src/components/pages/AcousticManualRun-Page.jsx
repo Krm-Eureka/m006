@@ -32,7 +32,7 @@ const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [dataBySerial, setDataBySerial] = useState(null);
   const [LstRetest, setLstRetest] = useState([]);
-  const [error, setError] = useState("");
+  const [err, setError] = useState("");
   const [serialRun, setSerialRun] = useState("");
   const [oldDataID, setOldDataID] = useState(null);
   const [inputDisable, setInputDisable] = useState(false);
@@ -50,8 +50,8 @@ const AcousticManualRun = () => {
   const endDate = today.toISOString().split("T")[0] + " 23:59";
   const inputRef = useRef(null);
   
-  const mapStatus = (value) => {
-    switch (value) {
+  const mapStatus = (v) => {
+    switch (v) {
       case 0:
         return null;
       case 1:
@@ -61,7 +61,7 @@ const AcousticManualRun = () => {
       case 3:
         return "Unknown";
       default:
-        return value;
+        return v;
     }
   };
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -83,40 +83,40 @@ const AcousticManualRun = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const hasNavigated = useRef(false);
+  // const hasNavigated = useRef(false);
 
-  useEffect(() => {
-    if (
-      LstRetest &&
-      LstRetest.qualityTestFlag === true &&
-      LstRetest.reTestFlag === false &&
-      !hasNavigated.current
-    ) {
-      console.log("Navigating to QMode:", LstRetest?.qualityTestFlag);
-      hasNavigated.current = true;
-      try {
-        navigate("/Console/Content_ACT/QMode");
-      } catch (error) {
-        console.error("Navigation error:", error);
-      }
-    } else if (
-      LstRetest &&
-      LstRetest.reTestFlag === false &&
-      LstRetest.qualityTestFlag === false &&
-      !hasNavigated.current
-    ) {
-      console.log("Navigating to AutoMode:", LstRetest?.reTestFlag);
-      hasNavigated.current = true;
-      try {
-        navigate("/Console/Content_ACT/AutoRun");
-      } catch (error) {
-        console.error("Navigation error:", error);
-      }
-    }
-    return () => {
-      hasNavigated.current = false;
-    };
-  }, [LstRetest, navigate]);
+  // useEffect(() => {
+  //   if (
+  //     LstRetest &&
+  //     LstRetest.qualityTestFlag === true &&
+  //     LstRetest.reTestFlag === false &&
+  //     !hasNavigated.current
+  //   ) {
+  //     console.log("Navigating to QMode:", LstRetest?.qualityTestFlag);
+  //     hasNavigated.current = true;
+  //     try {
+  //       navigate("/Console/Content_ACT/QMode");
+  //     } catch (error) {
+  //       console.error("Navigation error:", error);
+  //     }
+  //   } else if (
+  //     LstRetest &&
+  //     LstRetest.reTestFlag === false &&
+  //     LstRetest.qualityTestFlag === false &&
+  //     !hasNavigated.current
+  //   ) {
+  //     console.log("Navigating to AutoMode:", LstRetest?.reTestFlag);
+  //     hasNavigated.current = true;
+  //     try {
+  //       navigate("/Console/Content_ACT/AutoRun");
+  //     } catch (error) {
+  //       console.error("Navigation error:", error);
+  //     }
+  //   }
+  //   return () => {
+  //     hasNavigated.current = false;
+  //   };
+  // }, [LstRetest, navigate]);
 
 
   const handleRunClick = async () => {
@@ -271,7 +271,7 @@ const AcousticManualRun = () => {
       <HeaderLayout page="Acoustic Retest" />
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
-          <div className="title bg-green-500 p-2 rounded-t-md font-bold">
+          <div className="title bg-yellow-400 p-2 rounded-t-md font-bold">
             <p>
               Acoustic EOLT Station : RETEST Mode {">>>"}{runChk}{" "}
               <span className="text-red-600 font-semibold">
@@ -338,7 +338,7 @@ const AcousticManualRun = () => {
         {/* {data summary } */}
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
           <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
-            <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
+            <div className="title bg-yellow-400 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Show Data Run Summary</p>
             </div>
             <div className="content flex flex-between p-4 items-center">
@@ -471,7 +471,7 @@ const AcousticManualRun = () => {
             </div>
           </div>
           <div className="text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
-            <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
+            <div className="title bg-yellow-400 p-2 rounded-t-md text-gray-700 font-bold">
               <p>Last Data Status</p>
             </div>
             <div className="content p-4 items-center">

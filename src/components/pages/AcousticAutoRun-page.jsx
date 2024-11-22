@@ -30,7 +30,7 @@ function createSmrData(description, lowerValue, upperValue, result, status) {
 
 const TraceabilityStatus = () => {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [err, setError] = useState(null);
   const [LstActLog, setLstActLog] = useState([]);
   const [LstStatusLog, setLstStatusLog] = useState([]);
   const [ActDetailById, setActDetailById] = useState([]);
@@ -54,8 +54,8 @@ const TraceabilityStatus = () => {
           setLstStatusLog
         );
         // console.log(LstActLog);
-      } catch (error) {
-        setError(error.message);
+      } catch (err) {
+        setError(err.message);
       }
     };
     fetchData();
@@ -79,20 +79,21 @@ const TraceabilityStatus = () => {
       } catch (error) {
         console.error("Navigation error:", error);
       }
-    } else if (
-      LstActLog &&
-      LstActLog.reTestFlag === true &&
-      LstActLog.qualityTestFlag === false &&
-      !hasNavigated.current
-    ) {
-      console.log("Navigating to reTestMode:", LstActLog?.reTestFlag);
-      hasNavigated.current = true;
-      try {
-        navigate("/Console/Content_ACT/ManualRun");
-      } catch (error) {
-        console.error("Navigation error:", error);
-      }
-    }
+    } 
+    // else if (
+    //   LstActLog &&
+    //   LstActLog.reTestFlag === true &&
+    //   LstActLog.qualityTestFlag === false &&
+    //   !hasNavigated.current
+    // ) {
+    //   console.log("Navigating to reTestMode:", LstActLog?.reTestFlag);
+    //   hasNavigated.current = true;
+    //   try {
+    //     navigate("/Console/Content_ACT/ManualRun");
+    //   } catch (error) {
+    //     console.error("Navigation error:", error);
+    //   }
+    // }
     return () => {
       hasNavigated.current = false;
     };
@@ -109,14 +110,14 @@ const TraceabilityStatus = () => {
               setActDetailById(res);
               const uniqueSmrData = Array.from(
                 new Map(
-                  res.map((item) => [
-                    item.description,
+                  res.map((i) => [
+                    i.description,
                     createSmrData(
-                      item.description,
-                      item.lowerValue,
-                      item.upperValue,
-                      item.result,
-                      item.status
+                      i.description,
+                      i.lowerValue,
+                      i.upperValue,
+                      i.result,
+                      i.status
                     ),
                   ])
                 ).values()
@@ -131,8 +132,8 @@ const TraceabilityStatus = () => {
             },
             setLoading
           );
-        } catch (error) {
-          setError(error.message);
+        } catch (err) {
+          setError(err.message);
         }
       };
       fetchDetails();
@@ -179,8 +180,8 @@ const TraceabilityStatus = () => {
   //   }])
   //   setLoading(false)
   // }
-  const mapStatus = (value) => {
-    switch (value) {
+  const mapStatus = (v) => {
+    switch (v) {
       case 0:
         return null;
       case 1:
@@ -190,7 +191,7 @@ const TraceabilityStatus = () => {
       case 3:
         return "Unknown";
       default:
-        return value;
+        return v;
     }
   };
 

@@ -82,16 +82,17 @@ const Test5voltQuality = () => {
       console.log("Navigating to AutoRun:", LstActLog?.qualityTestFlag);
       hasNavigated.current = true;
       navigate("/Console/Content_ACT/AutoRun");
-    } else if (
-      LstActLog &&
-      LstActLog?.reTestFlag === true &&
-      LstActLog?.qualityTestFlag === false &&
-      !hasNavigated.current
-    ) {
-      console.log("Navigating to ReTest:", LstActLog?.reTestFlag);
-      hasNavigated.current = true;
-      navigate("/Console/Content_ACT/ManualRun");
     }
+    //  else if (
+    //   LstActLog &&
+    //   LstActLog?.reTestFlag === true &&
+    //   LstActLog?.qualityTestFlag === false &&
+    //   !hasNavigated.current
+    // ) {
+    //   console.log("Navigating to ReTest:", LstActLog?.reTestFlag);
+    //   hasNavigated.current = true;
+    //   navigate("/Console/Content_ACT/ManualRun");
+    // }
   }, [LstActLog, navigate]);
   
   useEffect(() => {
