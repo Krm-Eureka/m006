@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { styled } from "@mui/material/styles";
 // import { useEffect } from "react";
 import Table from "@mui/material/Table";
@@ -178,7 +178,6 @@ const TraceabilityReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("lastUpdateDate");
-
   const [rows, setRows] = useState([]);
   const now = new Date();
   const NOW = `${now.getFullYear()}-${(now.getMonth() + 1)
@@ -192,9 +191,16 @@ const TraceabilityReport = () => {
   const [fromDate, setFromDate] = useState(today + " 00:00");
   // const [toDate, setToDate] = useState(today + " 23:59");
   const [serialNumber, setSerialNumber] = useState("");
-  const [error, setError] = useState(null);
+  const [err, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropDown, setDropDown] = useState("");
+
+  console.log("serialNumber", serialNumber);
+  console.log("rowsPerPage", rowsPerPage);
+  console.log("searchTerm", searchTerm);
+  console.log("page", page);
+  console.log("toDate", toDate);
+  console.log("fromDate", fromDate);
 
   const toggleDropdown = () => {
     console.log(dropDown);
@@ -248,26 +254,55 @@ const TraceabilityReport = () => {
     return "inherit";
   };
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-    setSerialNumber(event.target.value);
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
+  };
+  
+  const handleSearchChangeDebounced = debounce((v) => {
+    setSearchTerm(v); 
+    console.log("SearchTerm Updated:", v);
+    setSerialNumber(v); 
+  }, 300);
+  
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    handleSearchChangeDebounced(value); 
   };
 
+  // const handleSearchChange = (event) => {
+  //   setSearchTerm(event.target.value);
+  //   console.log(event);
+  //   setSerialNumber(event.target.value);
+  // };
   const handleFromDateChange = (event) => {
     const inputValue = event.target.value;
     const Format = inputValue.replace("T", " ");
     // console.log(Format);
     setFromDate(Format);
   };
-
-  const handleToDateChange = (event) => {
-    const inputValue = event.target.value;
+  const handleToDateChange = (e) => {
+    const inputValue = e.target.value;
     const Format = inputValue.replace("T", " ");
     // console.log(Format);
     setToDate(Format);
   };
+  useEffect(() => {
+    const filtered = rows.filter((row) => {
+      const isSearchMatch = 
+        !searchTerm ||
+        Object.values(row).some((value) =>
+          String(value).toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      return isSearchMatch;
+    });
+    setRows(filtered);
+  }, [searchTerm, rows]);
 
-  const handleClear = () => {
+  const handleClear = async () => {
     setRows([
       // {
       //   id: 1,
@@ -385,10 +420,28 @@ const TraceabilityReport = () => {
       //   frequencyJud: 0,
       //   reTestFlag: false,
       // },
-    ]);
+      ]);
     setSearchTerm("");
+    setSerialNumber("");
+    filteredRows()
+    console.log(searchTerm);
+    console.log(sortedRows);
+    // setRows([]);
     setFromDate(fromDate);
     setToDate(toDate);
+    // try {
+    //   await traceabilityService.getTraceabilityDataWithDate(
+    //     "1",
+    //     fromDate,
+    //     toDate,
+    //     serialNumber,
+    //     setRows
+    //   );
+    //   console.log("Filters cleared and data reloaded");
+    // } catch (err) {
+    //   setError(err);
+    //   console.error("Error reloading data:", err);
+    // }
   };
   const searchWithDate = async () => {
     try {
@@ -426,16 +479,24 @@ const TraceabilityReport = () => {
     }
     const isDateInRange = (!from || rowDate >= from) && (!to || rowDate <= to);
     const isSearchMatch =
+      !searchTerm ||
       searchTerm === "" ||
       Object.values(row).some((value) =>
         String(value).toLowerCase().includes(searchTerm.toLowerCase())
       );
-
+    console.log(isSearchMatch);
     const isSerialMatch =
-      !serialNumber || row.serialCode.includes(serialNumber);
+      !serialNumber ||
+      serialNumber === "" ||
+      row.serialCode.includes(serialNumber);
+
     return isDateInRange && isSearchMatch && isSerialMatch;
   });
+  console.log(filteredRows);
+  
   const sortedRows = sortRows(filteredRows, order, orderBy);
+  console.log(rows);
+
   const toFixedTwo = (value) => {
     const numericValue = parseFloat(value);
     return isNaN(numericValue) ? value : numericValue.toFixed(2);
@@ -555,21 +616,21 @@ const TraceabilityReport = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const handleSerialChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSerialChange = (e) => {
+    setSearchTerm(e.target.value);
   };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(+e.target.value);
     setPage(0);
   };
   {
-    error && (
+    err && (
       <div
         className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
         role="alert"
       >
         <strong className="font-bold">Error: </strong>
-        <span className="block sm:inline">{error.message}</span>
+        <span className="block sm:inline">{err.message}</span>
       </div>
     );
   }
