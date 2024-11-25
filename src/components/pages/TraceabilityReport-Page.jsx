@@ -268,16 +268,16 @@ const TraceabilityReport = () => {
     setSerialNumber(v);
   }, 300);
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    handleSearchChangeDebounced(value);
-  };
-
-  // const handleSearchChange = (event) => {
-  //   setSearchTerm(event.target.value);
-  //   console.log(event);
-  //   setSerialNumber(event.target.value);
+  // const handleSearchChange = (e) => {
+  //   const value = e.target.value;
+  //   handleSearchChangeDebounced(value);
   // };
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    console.log(event);
+    setSerialNumber(event.target.value);
+  };
   const handleFromDateChange = (event) => {
     const inputValue = event.target.value;
     const Format = inputValue.replace("T", " ");
