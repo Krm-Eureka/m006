@@ -169,6 +169,16 @@ const columns = [
     sortable: true,
     aln: "center",
   },
+  { id: "5V_thdMin", label: "5V_THD Min(%)", sortable: true, w: 150, aln: "center" },
+  { id: "5V_thdMax", label: "5V_THD Max(%)", sortable: true, w: 150, aln: "center" },
+  {
+    id: "5V_thdResult",
+    label: "5V_THD Measured(%)",
+    sortable: true,
+    w: 200,
+    aln: "center",
+  },
+  { id: "5V_thdJud", label: "5V_THD Jud", sortable: true, w: 200, aln: "center" },
 ];
 
 const TraceabilityReport = () => {
