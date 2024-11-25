@@ -254,19 +254,19 @@ const TraceabilityReport = () => {
     return "inherit";
   };
 
-  const debounce = (func, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => func(...args), delay);
-    };
-  };
+  // const debounce = (func, delay) => {
+  //   let timer;
+  //   return (...args) => {
+  //     clearTimeout(timer);
+  //     timer = setTimeout(() => func(...args), delay);
+  //   };
+  // };
 
-  const handleSearchChangeDebounced = debounce((v) => {
-    setSearchTerm(v);
-    console.log("SearchTerm Updated:", v);
-    setSerialNumber(v);
-  }, 300);
+  // const handleSearchChangeDebounced = debounce((v) => {
+  //   setSearchTerm(v);
+  //   console.log("SearchTerm Updated:", v);
+  //   setSerialNumber(v);
+  // }, 300);
 
   // const handleSearchChange = (e) => {
   //   const value = e.target.value;
@@ -275,6 +275,10 @@ const TraceabilityReport = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    if(event.target.value === ""){
+      setSearchTerm("")
+      setSerialNumber("")
+    }
     console.log(event);
     setSerialNumber(event.target.value);
   };
