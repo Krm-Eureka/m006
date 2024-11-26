@@ -169,8 +169,20 @@ const columns = [
     sortable: true,
     aln: "center",
   },
-  { id: "5V_thdMin", label: "5V_THD Min(%)", sortable: true, w: 150, aln: "center" },
-  { id: "5V_thdMax", label: "5V_THD Max(%)", sortable: true, w: 150, aln: "center" },
+  {
+    id: "5V_thdMin",
+    label: "5V_THD Min(%)",
+    sortable: true,
+    w: 150,
+    aln: "center",
+  },
+  {
+    id: "5V_thdMax",
+    label: "5V_THD Max(%)",
+    sortable: true,
+    w: 150,
+    aln: "center",
+  },
   {
     id: "5V_thdResult",
     label: "5V_THD Measured(%)",
@@ -178,7 +190,13 @@ const columns = [
     w: 200,
     aln: "center",
   },
-  { id: "5V_thdJud", label: "5V_THD Jud", sortable: true, w: 200, aln: "center" },
+  {
+    id: "5V_thdJud",
+    label: "5V_THD Jud",
+    sortable: true,
+    w: 200,
+    aln: "center",
+  },
 ];
 
 const TraceabilityReport = () => {
@@ -285,9 +303,9 @@ const TraceabilityReport = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    if(event.target.value === ""){
-      setSearchTerm("")
-      setSerialNumber("")
+    if (event.target.value === "") {
+      setSearchTerm("");
+      setSerialNumber("");
     }
     console.log(event);
     setSerialNumber(event.target.value);
@@ -317,124 +335,124 @@ const TraceabilityReport = () => {
   }, [searchTerm]);
 
   const handleClear = async () => {
-    setRows([
-      // {
-      //   id: 1,
-      //   modelType: "Status 1",
-      //   lastUpdateDate: "2024-10-25 12:00",
-      //   totalJudgement: 1,
-      //   serialCode: "LM-12345",
-      //   qrCode: "QR-54321",
-      //   qrJudgement: 1,
-      //   currentMin: 1.2,
-      //   currentMax: 2.3,
-      //   currentMeasured: 1.9,
-      //   currentJud: 1,
-      //   sensitivityMin: -45,
-      //   sensitivityMax: -30,
-      //   sensitivityResult: -35,
-      //   sensitivityJud: 1,
-      //   thdMin: 0.5,
-      //   thdMax: 1.2,
-      //   thdResult: 0.9,
-      //   thdJud: 1,
-      //   frequencyJud: 1,
-      //   reTestFlag: true,
-      //   newSerialCode: "1231213213213213213212132",
-      // },
-      // {
-      //   id: 2,
-      //   modelType: "Status 2",
-      //   lastUpdateDate: "2024-10-25 12:05",
-      //   totalJudgement: 2,
-      //   serialCode: "LM-12346",
-      //   qrCode: "QR-54322",
-      //   qrJudgement: 2,
-      //   currentMin: 1.1,
-      //   currentMax: 2.5,
-      //   currentMeasured: 2.6,
-      //   currentJud: 2,
-      //   sensitivityMin: -42,
-      //   sensitivityMax: -28,
-      //   sensitivityResult: -30,
-      //   sensitivityJud: 2,
-      //   thdMin: 0.6,
-      //   thdMax: 1.3,
-      //   thdResult: 1.1,
-      //   thdJud: 2,
-      //   frequencyJud: 2,
-      //   reTestFlag: true,
-      // },
-      // {
-      //   id: 3,
-      //   modelType: "Status 3",
-      //   lastUpdateDate: "2024-10-25 12:10",
-      //   totalJudgement: 3,
-      //   serialCode: "LM-12347",
-      //   qrCode: "QR-54323",
-      //   qrJudgement: 3,
-      //   currentMin: 1.2,
-      //   currentMax: 2.4,
-      //   currentMeasured: 2.0,
-      //   currentJud: 3,
-      //   sensitivityMin: -47,
-      //   sensitivityMax: -29,
-      //   sensitivityResult: -32,
-      //   sensitivityJud: 3,
-      //   thdMin: 0.4,
-      //   thdMax: 1.0,
-      //   thdResult: 0.8,
-      //   thdJud: 3,
-      //   frequencyJud: 3,
-      //   reTestFlag: true,
-      // },
-      // {
-      //   id: 4,
-      //   modelType: "Status 5",
-      //   lastUpdateDate: "2024-10-25 12:15",
-      //   totalJudgement: 5,
-      //   serialCode: "LM-12348",
-      //   qrCode: "QR-54324",
-      //   qrJudgement: 5,
-      //   currentMin: 1.5,
-      //   currentMax: 2.7,
-      //   currentMeasured: 2.3,
-      //   currentJud: 5,
-      //   sensitivityMin: -40,
-      //   sensitivityMax: -26,
-      //   sensitivityResult: -36,
-      //   sensitivityJud: 5,
-      //   thdMin: 0.7,
-      //   thdMax: 1.4,
-      //   thdResult: 1.3,
-      //   thdJud: 5,
-      //   frequencyJud: 5,
-      //   reTestFlag: false,
-      // },
-      // {
-      //   id: 5,
-      //   modelType: "Status 0",
-      //   lastUpdateDate: "2024-10-25 12:15",
-      //   totalJudgement: 0,
-      //   serialCode: "LM-12348",
-      //   qrCode: "QR-54324",
-      //   qrJudgement: 0,
-      //   currentMin: 1.5,
-      //   currentMax: 2.7,
-      //   currentMeasured: 2.3,
-      //   currentJud: 0,
-      //   sensitivityMin: -40,
-      //   sensitivityMax: -26,
-      //   sensitivityResult: -36,
-      //   sensitivityJud: 0,
-      //   thdMin: 0.7,
-      //   thdMax: 1.4,
-      //   thdResult: 1.3,
-      //   thdJud: 0,
-      //   frequencyJud: 0,
-      //   reTestFlag: false,
-      // },
-    ]);
+    // setRows([
+    //   // {
+    //   //   id: 1,
+    //   //   modelType: "Status 1",
+    //   //   lastUpdateDate: "2024-10-25 12:00",
+    //   //   totalJudgement: 1,
+    //   //   serialCode: "LM-12345",
+    //   //   qrCode: "QR-54321",
+    //   //   qrJudgement: 1,
+    //   //   currentMin: 1.2,
+    //   //   currentMax: 2.3,
+    //   //   currentMeasured: 1.9,
+    //   //   currentJud: 1,
+    //   //   sensitivityMin: -45,
+    //   //   sensitivityMax: -30,
+    //   //   sensitivityResult: -35,
+    //   //   sensitivityJud: 1,
+    //   //   thdMin: 0.5,
+    //   //   thdMax: 1.2,
+    //   //   thdResult: 0.9,
+    //   //   thdJud: 1,
+    //   //   frequencyJud: 1,
+    //   //   reTestFlag: true,
+    //   //   newSerialCode: "1231213213213213213212132",
+    //   // },
+    //   // {
+    //   //   id: 2,
+    //   //   modelType: "Status 2",
+    //   //   lastUpdateDate: "2024-10-25 12:05",
+    //   //   totalJudgement: 2,
+    //   //   serialCode: "LM-12346",
+    //   //   qrCode: "QR-54322",
+    //   //   qrJudgement: 2,
+    //   //   currentMin: 1.1,
+    //   //   currentMax: 2.5,
+    //   //   currentMeasured: 2.6,
+    //   //   currentJud: 2,
+    //   //   sensitivityMin: -42,
+    //   //   sensitivityMax: -28,
+    //   //   sensitivityResult: -30,
+    //   //   sensitivityJud: 2,
+    //   //   thdMin: 0.6,
+    //   //   thdMax: 1.3,
+    //   //   thdResult: 1.1,
+    //   //   thdJud: 2,
+    //   //   frequencyJud: 2,
+    //   //   reTestFlag: true,
+    //   // },
+    //   // {
+    //   //   id: 3,
+    //   //   modelType: "Status 3",
+    //   //   lastUpdateDate: "2024-10-25 12:10",
+    //   //   totalJudgement: 3,
+    //   //   serialCode: "LM-12347",
+    //   //   qrCode: "QR-54323",
+    //   //   qrJudgement: 3,
+    //   //   currentMin: 1.2,
+    //   //   currentMax: 2.4,
+    //   //   currentMeasured: 2.0,
+    //   //   currentJud: 3,
+    //   //   sensitivityMin: -47,
+    //   //   sensitivityMax: -29,
+    //   //   sensitivityResult: -32,
+    //   //   sensitivityJud: 3,
+    //   //   thdMin: 0.4,
+    //   //   thdMax: 1.0,
+    //   //   thdResult: 0.8,
+    //   //   thdJud: 3,
+    //   //   frequencyJud: 3,
+    //   //   reTestFlag: true,
+    //   // },
+    //   // {
+    //   //   id: 4,
+    //   //   modelType: "Status 5",
+    //   //   lastUpdateDate: "2024-10-25 12:15",
+    //   //   totalJudgement: 5,
+    //   //   serialCode: "LM-12348",
+    //   //   qrCode: "QR-54324",
+    //   //   qrJudgement: 5,
+    //   //   currentMin: 1.5,
+    //   //   currentMax: 2.7,
+    //   //   currentMeasured: 2.3,
+    //   //   currentJud: 5,
+    //   //   sensitivityMin: -40,
+    //   //   sensitivityMax: -26,
+    //   //   sensitivityResult: -36,
+    //   //   sensitivityJud: 5,
+    //   //   thdMin: 0.7,
+    //   //   thdMax: 1.4,
+    //   //   thdResult: 1.3,
+    //   //   thdJud: 5,
+    //   //   frequencyJud: 5,
+    //   //   reTestFlag: false,
+    //   // },
+    //   // {
+    //   //   id: 5,
+    //   //   modelType: "Status 0",
+    //   //   lastUpdateDate: "2024-10-25 12:15",
+    //   //   totalJudgement: 0,
+    //   //   serialCode: "LM-12348",
+    //   //   qrCode: "QR-54324",
+    //   //   qrJudgement: 0,
+    //   //   currentMin: 1.5,
+    //   //   currentMax: 2.7,
+    //   //   currentMeasured: 2.3,
+    //   //   currentJud: 0,
+    //   //   sensitivityMin: -40,
+    //   //   sensitivityMax: -26,
+    //   //   sensitivityResult: -36,
+    //   //   sensitivityJud: 0,
+    //   //   thdMin: 0.7,
+    //   //   thdMax: 1.4,
+    //   //   thdResult: 1.3,
+    //   //   thdJud: 0,
+    //   //   frequencyJud: 0,
+    //   //   reTestFlag: false,
+    //   // },
+    // ]);
     setSearchTerm("");
     setSerialNumber("");
     console.log(searchTerm);
@@ -574,15 +592,39 @@ const TraceabilityReport = () => {
             }
           }
           if (column.id === "reTestFlag") {
-            return row["qualityTestFlag"] === true
+            const qualityTestFlag = row["qualityTestFlag"];
+            const reTestFlag = row[column.id];
+
+            return qualityTestFlag === true && reTestFlag === false
               ? "Q"
-              : row[column.id] === false
+              : reTestFlag === false && qualityTestFlag === false
               ? "A"
-              : row[column.id] === true
+              : reTestFlag === true && qualityTestFlag === false
               ? "R"
+              : qualityTestFlag === true && reTestFlag === true
+              ? "R/Q"
               : "unknown";
           }
-
+          if (column.id === "5V_thdMin") {
+            return row["thdDetail"]?.voltageType === 5
+              ? `${row["thdDetail"]?.lowerValue}}`
+              : "N/A";
+          }
+          if (column.id === "5V_thdMax") {
+            return row["thdDetail"]?.voltageType === 5
+              ? `${row["thdDetail"]?.upperValue}}`
+              : "N/A";
+          }
+          if (column.id === "5V_thdResult") {
+            return row["thdDetail"]?.voltageType === 5
+              ? `${toFixedTwo(row["thdDetail"]?.result)}`
+              : "N/A";
+          }
+          if (column.id === "5V_thdJud") {
+            return row["thdDetail"]?.voltageType === 5
+              ? `${row["thdDetail"]?.status}`
+              : "N/A";
+          }
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""').replace(/,/g, "\\,")}"`
             : value || "";
@@ -836,7 +878,7 @@ const TraceabilityReport = () => {
             className={dropdownOpen === true ? "mt-12" : ""}
             rowsPerPageOptions={[5, 10, 500, 1000, 5000, 10000]}
             component="div"
-            count={sortedRows.length}
+            count={sortedRows?.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -886,6 +928,34 @@ const TraceabilityReport = () => {
                           align={column.aln || "left"}
                           style={{
                             color: (() => {
+                              if (column.id === "5V_thdJud") {
+                                return row["thdDetail"]?.voltageType === 5 &&
+                                  (row["thdDetail"]?.status === "PASS" ||
+                                    row["thdDetail"]?.status === "PASSED")
+                                  ? "green"
+                                  : "red";
+                              }
+                              if (column.id === "5V_thdMin") {
+                                return row["thdDetail"]?.voltageType === 5 &&
+                                  (row["thdDetail"]?.status === "PASS" ||
+                                    row["thdDetail"]?.status === "PASSED")
+                                  ? "green"
+                                  : "red";
+                              }
+                              if (column.id === "5V_thdMax") {
+                                return row["thdDetail"]?.voltageType === 5 &&
+                                  (row["thdDetail"]?.status === "PASS" ||
+                                    row["thdDetail"]?.status === "PASSED")
+                                  ? "green"
+                                  : "red";
+                              }
+                              if (column.id === "5V_thdResult") {
+                                return row["thdDetail"]?.voltageType === 5 &&
+                                  (row["thdDetail"]?.status === "PASS" ||
+                                    row["thdDetail"]?.status === "PASSED")
+                                  ? "green"
+                                  : "red";
+                              }
                               if (
                                 column.id === "totalJudgement" ||
                                 column.id === "qrJudgement" ||
@@ -920,13 +990,21 @@ const TraceabilityReport = () => {
                                 return getColor(row[column.id]);
                               }
                               if (column.id === "reTestFlag") {
-                                console.log(row["qualityTestFlag"] === true);
-                                return row["qualityTestFlag"] === true
+                                const qualityTestFlag = row["qualityTestFlag"];
+                                const reTestFlag = row[column.id];
+
+                                return qualityTestFlag === true &&
+                                  reTestFlag === false
                                   ? "blue"
-                                  : row[column.id] === true
-                                  ? "red"
-                                  : row[column.id] === false
+                                  : reTestFlag === false &&
+                                    qualityTestFlag === false
                                   ? "green"
+                                  : reTestFlag === true &&
+                                    qualityTestFlag === false
+                                  ? "red"
+                                  : qualityTestFlag === true &&
+                                    reTestFlag === true
+                                  ? "darkorange"
                                   : "inherit";
                               }
                               return "inherit";
@@ -991,14 +1069,44 @@ const TraceabilityReport = () => {
                               return mapStatus(row[column.id]);
                             }
                             if (column.id === "reTestFlag") {
-                              return row["qualityTestFlag"] === true
+                              const qualityTestFlag = row["qualityTestFlag"];
+                              const reTestFlag = row[column.id];
+
+                              return qualityTestFlag === true &&
+                                reTestFlag === false
                                 ? "Q"
-                                : row[column.id] === false
+                                : reTestFlag === false &&
+                                  qualityTestFlag === false
                                 ? "A"
-                                : row[column.id] === true
+                                : reTestFlag === true &&
+                                  qualityTestFlag === false
                                 ? "R"
+                                : qualityTestFlag === true &&
+                                  reTestFlag === true
+                                ? "R/Q"
                                 : "unknown";
                             }
+                            if (column.id === "5V_thdMin") {
+                              return row["thdDetail"]?.voltageType === 5
+                                ? `${row["thdDetail"]?.lowerValue}`
+                                : "N/A";
+                            }
+                            if (column.id === "5V_thdMax") {
+                              return row["thdDetail"]?.voltageType === 5
+                                ? `${row["thdDetail"]?.upperValue}`
+                                : "N/A";
+                            }
+                            if (column.id === "5V_thdResult") {
+                              return row["thdDetail"]?.voltageType === 5
+                                ? `${toFixedTwo(row["thdDetail"]?.result)}`
+                                : "N/A";
+                            }
+                            if (column.id === "5V_thdJud") {
+                              return row["thdDetail"]?.voltageType === 5
+                                ? `${row["thdDetail"]?.status}`
+                                : "N/A";
+                            }
+
                             return row[column.id] || "";
                           })()}
                         </StyledTableCell>

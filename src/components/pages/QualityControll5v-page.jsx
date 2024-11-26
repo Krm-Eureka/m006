@@ -227,8 +227,8 @@ const Test5voltQuality = () => {
   const sortedStatus = [...(LstStatusLog || [])].sort(
     (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
   );
-  const voltageType5Data = smrData.filter((item) => item?.voltageType === 5);
-  const voltageType8Data = smrData.filter((item) => item?.voltageType === 8);
+  const voltageType5Data = smrData.filter((i) => i?.voltageType === 5 && i?.description === "THD");
+  const voltageType8Data = smrData.filter((i) => i?.voltageType === 8);
 
   // qualityTestFlag === true show Data === false don't show data
   return (
@@ -547,9 +547,7 @@ const Test5voltQuality = () => {
                                 <p className="text-red-700 font-semibold">
                                   {Data5v.result}
                                 </p>
-                              ) : Data5v.description.toLowerCase() === "thd" ||
-                                Data5v.description.toLowerCase() ===
-                                  "current" ? (
+                              ) : Data5v.description.toLowerCase() === "thd" ? (
                                 Data5v.result !== "" &&
                                 !isNaN(parseFloat(Data5v.result)) &&
                                 Data5v.lowerValue !== "" &&
