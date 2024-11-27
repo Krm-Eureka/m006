@@ -546,10 +546,10 @@ const TraceabilityReport = () => {
           if (column.id === "id") {
             const extractedCode = row.serialCode
               ? row.serialCode.split("-").pop()
-              : "N/A";
+              : "NA";
 
             const number =
-              extractedCode !== "N/A" ? parseInt(extractedCode, 10) : "N/A";
+              extractedCode !== "NA" ? parseInt(extractedCode, 10) : "NA";
 
             return number;
           }
@@ -607,23 +607,23 @@ const TraceabilityReport = () => {
           }
           if (column.id === "5V_thdMin") {
             return row["thdDetail"]?.voltageType === 5
-              ? `${row["thdDetail"]?.lowerValue}}`
-              : "N/A";
+              ? `${row["thdDetail"]?.lowerValue}`
+              : "NA";
           }
           if (column.id === "5V_thdMax") {
             return row["thdDetail"]?.voltageType === 5
-              ? `${row["thdDetail"]?.upperValue}}`
-              : "N/A";
+              ? `${row["thdDetail"]?.upperValue}`
+              : "NA";
           }
           if (column.id === "5V_thdResult") {
             return row["thdDetail"]?.voltageType === 5
               ? `${toFixedTwo(row["thdDetail"]?.result)}`
-              : "N/A";
+              : "NA";
           }
           if (column.id === "5V_thdJud") {
             return row["thdDetail"]?.voltageType === 5
               ? `${row["thdDetail"]?.status}`
-              : "N/A";
+              : "NA";
           }
           return typeof value === "string"
             ? `"${value.replace(/"/g, '""').replace(/,/g, "\\,")}"`
@@ -1030,12 +1030,12 @@ const TraceabilityReport = () => {
                             if (column.id === "id") {
                               const extractedCode = row.serialCode
                                 ? row.serialCode.split("-").pop()
-                                : "N/A";
+                                : "NA";
 
                               const number =
-                                extractedCode !== "N/A"
+                                extractedCode !== "NA"
                                   ? parseInt(extractedCode, 10)
-                                  : "N/A";
+                                  : "NA";
 
                               return number;
                             }
@@ -1089,22 +1089,22 @@ const TraceabilityReport = () => {
                             if (column.id === "5V_thdMin") {
                               return row["thdDetail"]?.voltageType === 5
                                 ? `${row["thdDetail"]?.lowerValue}`
-                                : "N/A";
+                                : "NA";
                             }
                             if (column.id === "5V_thdMax") {
                               return row["thdDetail"]?.voltageType === 5
                                 ? `${row["thdDetail"]?.upperValue}`
-                                : "N/A";
+                                : "NA";
                             }
                             if (column.id === "5V_thdResult") {
                               return row["thdDetail"]?.voltageType === 5
                                 ? `${toFixedTwo(row["thdDetail"]?.result)}`
-                                : "N/A";
+                                : "NA";
                             }
                             if (column.id === "5V_thdJud") {
                               return row["thdDetail"]?.voltageType === 5
                                 ? `${row["thdDetail"]?.status}`
-                                : "N/A";
+                                : "NA";
                             }
 
                             return row[column.id] || "";
