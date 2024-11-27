@@ -10,16 +10,16 @@ const ProtectedRoute = ({ requiredRoles }) => {
 
   console.log("User roles:", userRoles);
 
-  const isTokenValid = useCallback((token) => {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      const expDate = payload.exp * 1000;
-      return expDate > Date.now();
-    } catch (error) {
-      console.error("Error parsing token:", error);
-      return false;
-    }
-  }, []);
+  // const isTokenValid = useCallback((token) => {
+  //   try {
+  //     const payload = JSON.parse(atob(token.split(".")[1]));
+  //     const expDate = payload.exp * 1000;
+  //     return expDate > Date.now();
+  //   } catch (error) {
+  //     console.error("Error parsing token:", error);
+  //     return false;
+  //   }
+  // }, []);
 
   useEffect(() => {
     const handleStorageChange = (event) => {
@@ -27,7 +27,9 @@ const ProtectedRoute = ({ requiredRoles }) => {
         const newToken = localStorage.getItem("authToken");
         const newUserRole = localStorage.getItem("userRole");
 
-        if (!newToken || !isTokenValid(newToken)) {
+        if (!newToken
+          //  || !isTokenValid(newToken)
+          ) {
           console.log("Token invalid or missing, logging out...");
           localStorage.clear();
           navigate("/auth/login");
@@ -46,9 +48,13 @@ const ProtectedRoute = ({ requiredRoles }) => {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [navigate, userRole, isTokenValid]);
+  }, [navigate, userRole
+    // , isTokenValid
+  ]);
 
-  if (!token || !isTokenValid(token)) {
+  if (!token 
+    // || !isTokenValid(token)
+  ) {
     console.log("No valid token, redirecting to login...");
     localStorage.clear();
     return <Navigate to="/auth/login" />;
