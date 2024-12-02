@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { styled } from "@mui/material/styles";
 // import { useEffect } from "react";
 import Table from "@mui/material/Table";
@@ -222,6 +222,7 @@ const TraceabilityReport = () => {
   const [err, setError] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropDown, setDropDown] = useState("");
+  const inputRef = useRef(null);
 
   console.log("serialNumber", serialNumber);
   console.log("rowsPerPage", rowsPerPage);
@@ -282,32 +283,14 @@ const TraceabilityReport = () => {
     return "inherit";
   };
 
-  // const debounce = (func, delay) => {
-  //   let timer;
-  //   return (...args) => {
-  //     clearTimeout(timer);
-  //     timer = setTimeout(() => func(...args), delay);
-  //   };
-  // };
-
-  // const handleSearchChangeDebounced = debounce((v) => {
-  //   setSearchTerm(v);
-  //   console.log("SearchTerm Updated:", v);
-  //   setSerialNumber(v);
-  // }, 300);
-
-  // const handleSearchChange = (e) => {
-  //   const value = e.target.value;
-  //   handleSearchChangeDebounced(value);
-  // };
-
   const handleSearchChange = (event) => {
+    console.log(event.target.value);
     setSearchTerm(event.target.value);
     if (event.target.value === "") {
       setSearchTerm("");
       setSerialNumber("");
     }
-    console.log(event);
+    // console.log(event);
     setSerialNumber(event.target.value);
   };
   const handleFromDateChange = (event) => {
@@ -322,137 +305,23 @@ const TraceabilityReport = () => {
     // console.log(Format);
     setToDate(Format);
   };
+  // useEffect(() => {
+  //   const filtered = rows.filter((row) => {
+  //     const isSearchMatch =
+  //       !searchTerm ||
+  //       Object.values(row).some((value) =>
+  //         String(value).toLowerCase().includes(searchTerm.toLowerCase())
+  //       );
+  //     return isSearchMatch;
+  //   });
+  //   setRows(filtered);
+  // }, [searchTerm]);
   useEffect(() => {
-    const filtered = rows.filter((row) => {
-      const isSearchMatch =
-        !searchTerm ||
-        Object.values(row).some((value) =>
-          String(value).toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      return isSearchMatch;
-    });
-    setRows(filtered);
-  }, [searchTerm]);
-
+    if (rows.length > 0) {
+      inputRef.current?.focus();
+    }
+  }, [rows]);
   const handleClear = async () => {
-    // setRows([
-    //   // {
-    //   //   id: 1,
-    //   //   modelType: "Status 1",
-    //   //   lastUpdateDate: "2024-10-25 12:00",
-    //   //   totalJudgement: 1,
-    //   //   serialCode: "LM-12345",
-    //   //   qrCode: "QR-54321",
-    //   //   qrJudgement: 1,
-    //   //   currentMin: 1.2,
-    //   //   currentMax: 2.3,
-    //   //   currentMeasured: 1.9,
-    //   //   currentJud: 1,
-    //   //   sensitivityMin: -45,
-    //   //   sensitivityMax: -30,
-    //   //   sensitivityResult: -35,
-    //   //   sensitivityJud: 1,
-    //   //   thdMin: 0.5,
-    //   //   thdMax: 1.2,
-    //   //   thdResult: 0.9,
-    //   //   thdJud: 1,
-    //   //   frequencyJud: 1,
-    //   //   reTestFlag: true,
-    //   //   newSerialCode: "1231213213213213213212132",
-    //   // },
-    //   // {
-    //   //   id: 2,
-    //   //   modelType: "Status 2",
-    //   //   lastUpdateDate: "2024-10-25 12:05",
-    //   //   totalJudgement: 2,
-    //   //   serialCode: "LM-12346",
-    //   //   qrCode: "QR-54322",
-    //   //   qrJudgement: 2,
-    //   //   currentMin: 1.1,
-    //   //   currentMax: 2.5,
-    //   //   currentMeasured: 2.6,
-    //   //   currentJud: 2,
-    //   //   sensitivityMin: -42,
-    //   //   sensitivityMax: -28,
-    //   //   sensitivityResult: -30,
-    //   //   sensitivityJud: 2,
-    //   //   thdMin: 0.6,
-    //   //   thdMax: 1.3,
-    //   //   thdResult: 1.1,
-    //   //   thdJud: 2,
-    //   //   frequencyJud: 2,
-    //   //   reTestFlag: true,
-    //   // },
-    //   // {
-    //   //   id: 3,
-    //   //   modelType: "Status 3",
-    //   //   lastUpdateDate: "2024-10-25 12:10",
-    //   //   totalJudgement: 3,
-    //   //   serialCode: "LM-12347",
-    //   //   qrCode: "QR-54323",
-    //   //   qrJudgement: 3,
-    //   //   currentMin: 1.2,
-    //   //   currentMax: 2.4,
-    //   //   currentMeasured: 2.0,
-    //   //   currentJud: 3,
-    //   //   sensitivityMin: -47,
-    //   //   sensitivityMax: -29,
-    //   //   sensitivityResult: -32,
-    //   //   sensitivityJud: 3,
-    //   //   thdMin: 0.4,
-    //   //   thdMax: 1.0,
-    //   //   thdResult: 0.8,
-    //   //   thdJud: 3,
-    //   //   frequencyJud: 3,
-    //   //   reTestFlag: true,
-    //   // },
-    //   // {
-    //   //   id: 4,
-    //   //   modelType: "Status 5",
-    //   //   lastUpdateDate: "2024-10-25 12:15",
-    //   //   totalJudgement: 5,
-    //   //   serialCode: "LM-12348",
-    //   //   qrCode: "QR-54324",
-    //   //   qrJudgement: 5,
-    //   //   currentMin: 1.5,
-    //   //   currentMax: 2.7,
-    //   //   currentMeasured: 2.3,
-    //   //   currentJud: 5,
-    //   //   sensitivityMin: -40,
-    //   //   sensitivityMax: -26,
-    //   //   sensitivityResult: -36,
-    //   //   sensitivityJud: 5,
-    //   //   thdMin: 0.7,
-    //   //   thdMax: 1.4,
-    //   //   thdResult: 1.3,
-    //   //   thdJud: 5,
-    //   //   frequencyJud: 5,
-    //   //   reTestFlag: false,
-    //   // },
-    //   // {
-    //   //   id: 5,
-    //   //   modelType: "Status 0",
-    //   //   lastUpdateDate: "2024-10-25 12:15",
-    //   //   totalJudgement: 0,
-    //   //   serialCode: "LM-12348",
-    //   //   qrCode: "QR-54324",
-    //   //   qrJudgement: 0,
-    //   //   currentMin: 1.5,
-    //   //   currentMax: 2.7,
-    //   //   currentMeasured: 2.3,
-    //   //   currentJud: 0,
-    //   //   sensitivityMin: -40,
-    //   //   sensitivityMax: -26,
-    //   //   sensitivityResult: -36,
-    //   //   sensitivityJud: 0,
-    //   //   thdMin: 0.7,
-    //   //   thdMax: 1.4,
-    //   //   thdResult: 1.3,
-    //   //   thdJud: 0,
-    //   //   frequencyJud: 0,
-    //   //   reTestFlag: false,
-    //   // },
-    // ]);
     setSearchTerm("");
     setSerialNumber("");
     console.log(searchTerm);
@@ -460,6 +329,7 @@ const TraceabilityReport = () => {
     setRows([]);
     setFromDate(fromDate);
     setToDate(toDate);
+
     try {
       await traceabilityService.getTraceabilityDataWithDate(
         "1",
@@ -468,12 +338,19 @@ const TraceabilityReport = () => {
         serialNumber,
         setRows
       );
+      if (rows.length !== 0) {
+        console.log(rows.length);
+
+        inputRef.current?.focus();
+      }
       console.log("Filters cleared and data reloaded");
     } catch (err) {
       setError(err);
       console.error("Error reloading data:", err);
     }
+    inputRef.current.focus();
   };
+
   const searchWithDate = async () => {
     try {
       await traceabilityService.getTraceabilityDataWithDate(
@@ -483,6 +360,11 @@ const TraceabilityReport = () => {
         serialNumber,
         setRows
       );
+      if (rows.length !== 0) {
+        console.log(rows.length);
+
+        inputRef.current?.focus();
+      }
     } catch (err) {
       setError(err);
     }
@@ -494,6 +376,10 @@ const TraceabilityReport = () => {
         searchTerm,
         setRows
       );
+      if (rows.length !== 0) {
+        console.log(rows.length);
+        inputRef.current?.focus();
+      }
     } catch (err) {
       setError(err);
     }
@@ -767,6 +653,7 @@ const TraceabilityReport = () => {
                 </label>
                 <input
                   type="text"
+                  ref={inputRef}
                   id="serialNumber"
                   className="rounded-md h-9 text-sm border-gray-400 w-50 p-2"
                   placeholder="Serial Number..."
