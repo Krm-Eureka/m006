@@ -366,6 +366,12 @@ const AcousticManualRun = () => {
                     <TableBody>
                       {smrData.map((row, idx) => (
                         <TableRow
+                          className={
+                            row.status.toLowerCase() === "failed" ||
+                            row.status.toLowerCase() === "fail"
+                              ? "bg-red-100"
+                              : ""
+                          }
                           key={idx}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
@@ -385,14 +391,14 @@ const AcousticManualRun = () => {
                           </TableCell>
                           <TableCell align="center">
                             {row.description.toLowerCase() === "frequency" ? (
-                              "NA"
+                              <p className="font-semibold ">NA</p>
                             ) : (
                               <p className="font-semibold">{row.lowerValue}</p>
                             )}
                           </TableCell>
                           <TableCell align="center">
                             {row.description.toLowerCase() === "frequency" ? (
-                              "NA"
+                              <p className="font-semibold ">NA</p>
                             ) : (
                               <p className="font-semibold">{row.upperValue}</p>
                             )}

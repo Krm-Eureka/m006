@@ -94,7 +94,7 @@ const Test5voltQuality = () => {
     //   navigate("/Console/Content_ACT/ManualRun");
     // }
   }, [LstActLog, navigate]);
-  
+
   useEffect(() => {
     if (LstActLog && LstActLog.id) {
       const fetchDetails = async () => {
@@ -106,7 +106,7 @@ const Test5voltQuality = () => {
               setActDetailById(res);
               const uniqueSmrData = Array.from(
                 new Map(
-                  res.map((i , idx) => [
+                  res.map((i, idx) => [
                     idx,
                     createSmrData(
                       i?.description,
@@ -227,7 +227,9 @@ const Test5voltQuality = () => {
   const sortedStatus = [...(LstStatusLog || [])].sort(
     (a, b) => new Date(b.lastUpdateDate) - new Date(a.lastUpdateDate)
   );
-  const voltageType5Data = smrData.filter((i) => i?.voltageType === 5 && i?.description === "THD");
+  const voltageType5Data = smrData.filter(
+    (i) => i?.voltageType === 5 && i?.description === "THD"
+  );
   const voltageType8Data = smrData.filter((i) => i?.voltageType === 8);
 
   // qualityTestFlag === true show Data === false don't show data
@@ -356,6 +358,12 @@ const Test5voltQuality = () => {
                       ) : (
                         voltageType8Data.map((Data8v, idx) => (
                           <TableRow
+                            className={
+                              Data8v.status.toLowerCase() === "failed" ||
+                              Data8v.status.toLowerCase() === "fail"
+                                ? "bg-red-100"
+                                : ""
+                            }
                             key={idx}
                             sx={{
                               "&:last-child td, &:last-child th": { border: 0 },
@@ -379,7 +387,7 @@ const Test5voltQuality = () => {
                             <TableCell align="center">
                               {Data8v.description.toLowerCase() ===
                               "frequency" ? (
-                                "NA"
+                                <p className="font-semibold ">NA</p>
                               ) : (
                                 <p className="font-semibold">
                                   {Data8v.lowerValue}
@@ -389,7 +397,7 @@ const Test5voltQuality = () => {
                             <TableCell align="center">
                               {Data8v.description.toLowerCase() ===
                               "frequency" ? (
-                                "NA"
+                                <p className="font-semibold ">NA</p>
                               ) : (
                                 <p className="font-semibold">
                                   {Data8v.upperValue}
@@ -515,6 +523,12 @@ const Test5voltQuality = () => {
                       ) : (
                         voltageType5Data.map((Data5v, idx) => (
                           <TableRow
+                            className={
+                              Data5v.status.toLowerCase() === "failed" ||
+                              Data5v.status.toLowerCase() === "fail"
+                                ? "bg-red-100"
+                                : ""
+                            }
                             key={idx}
                             sx={{
                               "&:last-child td, &:last-child th": { border: 0 },

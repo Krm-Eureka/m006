@@ -79,7 +79,7 @@ const TraceabilityStatus = () => {
       } catch (error) {
         console.error("Navigation error:", error);
       }
-    } 
+    }
     // else if (
     //   LstActLog &&
     //   LstActLog.reTestFlag === true &&
@@ -228,14 +228,14 @@ const TraceabilityStatus = () => {
                   name="Current"
                   status={
                     currentDescp?.status === "FAIL" ||
-                    currentDescp?.status === "fail" ||
-                    currentDescp?.status === 3
+                      currentDescp?.status === "fail" ||
+                      currentDescp?.status === 3
                       ? 3
                       : currentDescp?.status === "PASS" ||
                         currentDescp?.status === "pass" ||
                         currentDescp?.status === 2
-                      ? 2
-                      : 0
+                        ? 2
+                        : 0
                   }
                 />
               ) : (
@@ -301,26 +301,34 @@ const TraceabilityStatus = () => {
                       ) : (
                         smrData.map((row, idx) => (
                           <TableRow
+                            className={
+                              row.status.toLowerCase() === "failed" ||
+                                row.status.toLowerCase() === "fail"
+                                ? "bg-red-100"
+                                : ""
+                            }
                             key={idx}
                             sx={{
                               "&:last-child td, &:last-child th": { border: 0 },
                             }}
                           >
                             <TableCell align="left" component="th" scope="row">
-                              <p className="font-semibold">
+                              <p className="font-semibold ">
                                 {row.description.toLowerCase() === "current"
                                   ? "Current (mA)"
                                   : row.description.toLowerCase() ===
                                     "sensitivity"
-                                  ? "Sensitivity (dBV/Pa)"
-                                  : row.description.toLowerCase() === "thd"
-                                  ? "THD (%)"
-                                  : row.description}
+                                    ? "Sensitivity (dBV/Pa)"
+                                    : row.description.toLowerCase() === "thd"
+                                      ? "THD (%)"
+                                      : row.description}
                               </p>
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() === "frequency" ? (
-                                "NA"
+                                <p className="font-semibold ">
+                                  NA
+                                </p>
                               ) : (
                                 <p className="font-semibold">
                                   {row.lowerValue}
@@ -329,9 +337,11 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() === "frequency" ? (
-                                "NA"
+                                <p className="font-semibold ">
+                                  NA
+                                </p>
                               ) : (
-                                <p className="font-semibold">
+                                <p className="font-semibold ">
                                   {row.upperValue}
                                 </p>
                               )}
@@ -342,18 +352,18 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               ) : row.description.toLowerCase() ===
-                                  "sensitivity" ||
+                                "sensitivity" ||
                                 row.description.toLowerCase() === "thd" ||
                                 row.description.toLowerCase() === "current" ? (
                                 row.result !== "" &&
-                                !isNaN(parseFloat(row.result)) &&
-                                row.lowerValue !== "" &&
-                                !isNaN(parseFloat(row.lowerValue)) &&
-                                row.upperValue !== "" &&
-                                !isNaN(parseFloat(row.upperValue)) &&
-                                parseFloat(row.result) >=
+                                  !isNaN(parseFloat(row.result)) &&
+                                  row.lowerValue !== "" &&
+                                  !isNaN(parseFloat(row.lowerValue)) &&
+                                  row.upperValue !== "" &&
+                                  !isNaN(parseFloat(row.upperValue)) &&
+                                  parseFloat(row.result) >=
                                   parseFloat(row.lowerValue) &&
-                                parseFloat(row.result) <=
+                                  parseFloat(row.result) <=
                                   parseFloat(row.upperValue) ? (
                                   <p className="text-green-700 font-semibold">
                                     {row.result}
@@ -375,7 +385,7 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.status.toLowerCase() === "failed" ||
-                              row.status.toLowerCase() === "fail" ? (
+                                row.status.toLowerCase() === "fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   FAIL
                                 </p>
@@ -428,7 +438,7 @@ const TraceabilityStatus = () => {
                     </TableHead>
                     <TableBody>
                       {Array.isArray(LstStatusLog) &&
-                      LstStatusLog?.length > 0 ? (
+                        LstStatusLog?.length > 0 ? (
                         sortedStatus.slice(1, 6).map((row) => {
                           const extractedCode = row.serialCode
                             ? row.serialCode.split("-").pop()
