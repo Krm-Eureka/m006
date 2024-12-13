@@ -24,17 +24,17 @@ function App() {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/Unauthorized" element={<UnauthorizedPage />} />
 
-        <Route
+        {/* <Route
           element={<ProtectedRoute requiredRoles={["Admin", "SuperAdmin"]} />}
-        >
+        > */}
           <Route
             path="/Console/Content_USR/user_management"
             element={<UserManagement />}
           />
           <Route path="/Console/Content_EOLT/Setting" element={<Setting />} />
-        </Route>
+        {/* </Route> */}
 
-        <Route element={<ProtectedRoute/>}>
+        {/* <Route element={<ProtectedRoute/>}> */}
           <Route
             path="/Console/Content_TRC/Report"
             element={<TraceabilityReport />}
@@ -51,7 +51,7 @@ function App() {
             path="/Console/Content_ACT/QMode"
             element={<AcousticQMode />}
           />
-        </Route>
+        {/* </Route> */}
       </Routes>
     </Router>
   );

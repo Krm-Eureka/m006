@@ -119,7 +119,7 @@ const AcousticManualRun = () => {
   // }, [LstRetest, navigate]);
 
   const handleRunClick = async () => {
-    setSerialRun(serialNumber);
+    // setSerialRun(serialNumber);
     setInputDisable(true);
     setLstRetest([]);
     setSmrData([]);
@@ -266,17 +266,19 @@ const AcousticManualRun = () => {
       <div className="content h-screen">
         <div className="text-gray-700 bg-gray-300 m-4 rounded-md w-90% h-fit">
           <div className="title bg-yellow-400 p-2 rounded-t-md font-bold">
+            {/* {LstRetest?.length > 0 || LstRetest?.id ? LstRetest?.serialCode : RET?.serialCode? RET?.serialCode : 'N/A'} */}
             <p>
               Acoustic EOLT Station : RETEST Mode {">"}
               {runChk}
               {">"}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
-                {RET?.serialCode
+                 {LstRetest?.length > 0 || LstRetest?.id ? LstRetest?.serialCode : RET?.serialCode? RET?.serialCode : 'N/A'}
+                {/* {RET?.serialCode
                   ? RET?.serialCode
                   : LstRetest?.serialCode
                   ? LstRetest?.serialCode
-                  : "N/A"}
+                  : "N/A"} */}
               </span>
             </p>
           </div>
