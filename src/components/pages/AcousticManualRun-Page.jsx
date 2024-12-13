@@ -273,7 +273,11 @@ const AcousticManualRun = () => {
               {">"}
               <span className="text-red-600 font-semibold">
                 {/* {dataBySerial?.serialCode || "N/A"} */}
-                 {LstRetest?.length > 0 || LstRetest?.id ? LstRetest?.serialCode : RET?.serialCode? RET?.serialCode : 'N/A'}
+                {LstRetest?.length > 0 || LstRetest?.id
+                  ? LstRetest?.serialCode
+                  : RET?.serialCode
+                  ? RET?.serialCode
+                  : "N/A"}
                 {/* {RET?.serialCode
                   ? RET?.serialCode
                   : LstRetest?.serialCode
