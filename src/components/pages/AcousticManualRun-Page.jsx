@@ -168,6 +168,7 @@ const AcousticManualRun = () => {
             showConfirmButton: false,
             timer: 3000,
           });
+          setRunCHK("NG");
         }
       } else {
         setRunCHK("NG");
@@ -187,7 +188,6 @@ const AcousticManualRun = () => {
       console.error("Error fetching traceability data:", err);
     }
     delay(200);
-    setRunCHK("OK");
   };
 
   useEffect(() => {
