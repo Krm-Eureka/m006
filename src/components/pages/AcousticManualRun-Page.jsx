@@ -144,13 +144,11 @@ const AcousticManualRun = () => {
         const RT = await traceabilityService.SetReTestAcousticTracLogById("1", {
           id: dataSerial?.id,
         });
-        console.log("00000000000000000000000", RT);
         if (RT?.id) {
           setRunCHK("OK");
           setRET(RT);
           setOldDataID(RT?.id);
           console.log("Sent S/N to run : ", RT?.serialCode);
-          // console.log("Retest called with ID:", RT?.id);
           await delay(500);
           Swal.fire({
             position: "center",
@@ -209,8 +207,11 @@ const AcousticManualRun = () => {
         setError(error.message);
       }
     };
-
     fetchData();
+    // console.log(smrData?.length > 0);
+    // console.log(LstRetest);
+    // console.log(smrData?.length > 0 || LstRetest?.data !== undefined);
+    
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate, runChk]);
@@ -275,9 +276,9 @@ const AcousticManualRun = () => {
                 {/* {dataBySerial?.serialCode || "N/A"} */}
                 {LstRetest?.length > 0 || LstRetest?.id
                   ? LstRetest?.serialCode
-                  : RET?.serialCode
-                  ? RET?.serialCode
-                  : "N/A"}
+                  : LstRetest === null
+                  ? "N/A"
+                  : RET?.serialCode}
                 {/* {RET?.serialCode
                   ? RET?.serialCode
                   : LstRetest?.serialCode
@@ -368,7 +369,7 @@ const AcousticManualRun = () => {
                       </TableCell>
                     </TableRow>
                   </TableHead>
-                  {smrData?.length > 0 ? (
+                  {smrData?.length > 0 && LstRetest !== null ? (
                     <TableBody>
                       {smrData.map((row, idx) => (
                         <TableRow
