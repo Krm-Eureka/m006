@@ -16,6 +16,7 @@ import StatusBox from "../statusBox";
 // import getTraceabilityDataWithDate from "../../services/api-service/traceabilityReportData";
 import traceabilityService from "../../services/api-service/traceabilityReportData";
 import { useNavigate } from "react-router-dom";
+import GraphContain from "../graph";
 
 function createSmrData(description, lowerValue, upperValue, result, status) {
   const formattedResult = parseFloat(result).toFixed(2);
@@ -228,14 +229,14 @@ const TraceabilityStatus = () => {
                   name="Current"
                   status={
                     currentDescp?.status === "FAIL" ||
-                      currentDescp?.status === "fail" ||
-                      currentDescp?.status === 3
+                    currentDescp?.status === "fail" ||
+                    currentDescp?.status === 3
                       ? 3
                       : currentDescp?.status === "PASS" ||
                         currentDescp?.status === "pass" ||
                         currentDescp?.status === 2
-                        ? 2
-                        : 0
+                      ? 2
+                      : 0
                   }
                 />
               ) : (
@@ -251,7 +252,7 @@ const TraceabilityStatus = () => {
           </>
           {/* )}  */}
         </div>
-
+        {/* <GraphContain /> */}
         <div className="flex mx-2 sm:flex-wrap lg:flex-wrap">
           <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
             <div className="title bg-green-500 p-2 rounded-t-md text-gray-700 font-bold">
@@ -303,7 +304,7 @@ const TraceabilityStatus = () => {
                           <TableRow
                             className={
                               row.status.toLowerCase() === "failed" ||
-                                row.status.toLowerCase() === "fail"
+                              row.status.toLowerCase() === "fail"
                                 ? "bg-red-100"
                                 : ""
                             }
@@ -318,17 +319,15 @@ const TraceabilityStatus = () => {
                                   ? "Current (mA)"
                                   : row.description.toLowerCase() ===
                                     "sensitivity"
-                                    ? "Sensitivity (dBV/Pa)"
-                                    : row.description.toLowerCase() === "thd"
-                                      ? "THD (%)"
-                                      : row.description}
+                                  ? "Sensitivity (dBV/Pa)"
+                                  : row.description.toLowerCase() === "thd"
+                                  ? "THD (%)"
+                                  : row.description}
                               </p>
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() === "frequency" ? (
-                                <p className="font-semibold ">
-                                  NA
-                                </p>
+                                <p className="font-semibold ">NA</p>
                               ) : (
                                 <p className="font-semibold">
                                   {row.lowerValue}
@@ -337,9 +336,7 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.description.toLowerCase() === "frequency" ? (
-                                <p className="font-semibold ">
-                                  NA
-                                </p>
+                                <p className="font-semibold ">NA</p>
                               ) : (
                                 <p className="font-semibold ">
                                   {row.upperValue}
@@ -352,18 +349,18 @@ const TraceabilityStatus = () => {
                                   {row.result}
                                 </p>
                               ) : row.description.toLowerCase() ===
-                                "sensitivity" ||
+                                  "sensitivity" ||
                                 row.description.toLowerCase() === "thd" ||
                                 row.description.toLowerCase() === "current" ? (
                                 row.result !== "" &&
-                                  !isNaN(parseFloat(row.result)) &&
-                                  row.lowerValue !== "" &&
-                                  !isNaN(parseFloat(row.lowerValue)) &&
-                                  row.upperValue !== "" &&
-                                  !isNaN(parseFloat(row.upperValue)) &&
-                                  parseFloat(row.result) >=
+                                !isNaN(parseFloat(row.result)) &&
+                                row.lowerValue !== "" &&
+                                !isNaN(parseFloat(row.lowerValue)) &&
+                                row.upperValue !== "" &&
+                                !isNaN(parseFloat(row.upperValue)) &&
+                                parseFloat(row.result) >=
                                   parseFloat(row.lowerValue) &&
-                                  parseFloat(row.result) <=
+                                parseFloat(row.result) <=
                                   parseFloat(row.upperValue) ? (
                                   <p className="text-green-700 font-semibold">
                                     {row.result}
@@ -385,7 +382,7 @@ const TraceabilityStatus = () => {
                             </TableCell>
                             <TableCell align="center">
                               {row.status.toLowerCase() === "failed" ||
-                                row.status.toLowerCase() === "fail" ? (
+                              row.status.toLowerCase() === "fail" ? (
                                 <p className="text-red-700 font-semibold">
                                   FAIL
                                 </p>
@@ -438,7 +435,7 @@ const TraceabilityStatus = () => {
                     </TableHead>
                     <TableBody>
                       {Array.isArray(LstStatusLog) &&
-                        LstStatusLog?.length > 0 ? (
+                      LstStatusLog?.length > 0 ? (
                         sortedStatus.slice(1, 6).map((row) => {
                           const extractedCode = row.serialCode
                             ? row.serialCode.split("-").pop()
