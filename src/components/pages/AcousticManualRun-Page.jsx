@@ -193,9 +193,9 @@ const AcousticManualRun = () => {
       // get Old DATA
       // console.log(runChk);
       try {
-        if (runChk === "OK") {
+        // if (runChk === "OK") {
           await GetLastRetest("1", setLstRetest, setLoading);
-        }
+        // }
         await traceabilityService.getTraceabilityDataWithDate(
           "1",
           startDate,
@@ -211,7 +211,7 @@ const AcousticManualRun = () => {
     // console.log(smrData?.length > 0);
     // console.log(LstRetest);
     // console.log(smrData?.length > 0 || LstRetest?.data !== undefined);
-    
+
     const intervalId = setInterval(fetchData, 2000);
     return () => clearInterval(intervalId);
   }, [startDate, endDate, runChk]);
@@ -277,8 +277,8 @@ const AcousticManualRun = () => {
                 {LstRetest?.length > 0 || LstRetest?.id
                   ? LstRetest?.serialCode
                   : LstRetest === null
-                  ? "N/A"
-                  : RET?.serialCode}
+                    ? "N/A"
+                    : RET?.serialCode}
                 {/* {RET?.serialCode
                   ? RET?.serialCode
                   : LstRetest?.serialCode
@@ -319,14 +319,14 @@ const AcousticManualRun = () => {
                 name="Current"
                 status={
                   currentDescp?.status === "FAIL" ||
-                  currentDescp?.status === "fail" ||
-                  currentDescp?.status === 3
+                    currentDescp?.status === "fail" ||
+                    currentDescp?.status === 3
                     ? 3
                     : currentDescp?.status === "PASS" ||
                       currentDescp?.status === "pass" ||
                       currentDescp?.status === 2
-                    ? 2
-                    : 0
+                      ? 2
+                      : 0
                 }
               />
             ) : (
@@ -375,7 +375,7 @@ const AcousticManualRun = () => {
                         <TableRow
                           className={
                             row.status.toLowerCase() === "failed" ||
-                            row.status.toLowerCase() === "fail"
+                              row.status.toLowerCase() === "fail"
                               ? "bg-red-100"
                               : ""
                           }
@@ -390,10 +390,10 @@ const AcousticManualRun = () => {
                                 ? "Current (mA)"
                                 : row.description.toLowerCase() ===
                                   "sensitivity"
-                                ? "Sensitivity (dBV/Pa)"
-                                : row.description.toLowerCase() === "thd"
-                                ? "THD (%)"
-                                : row.description}
+                                  ? "Sensitivity (dBV/Pa)"
+                                  : row.description.toLowerCase() === "thd"
+                                    ? "THD (%)"
+                                    : row.description}
                             </p>
                           </TableCell>
                           <TableCell align="center">
@@ -416,16 +416,18 @@ const AcousticManualRun = () => {
                                 {row.result}
                               </p>
                             ) : row.description.toLowerCase() ===
-                              "sensitivity" ? (
+                              "sensitivity" || row.description.toLowerCase() ===
+                              "current"|| row.description.toLowerCase() ===
+                              "thd" ? (
                               row.result !== "" &&
-                              !isNaN(parseFloat(row.result)) &&
-                              row.lowerValue !== "" &&
-                              !isNaN(parseFloat(row.lowerValue)) &&
-                              row.upperValue !== "" &&
-                              !isNaN(parseFloat(row.upperValue)) &&
-                              parseFloat(row.result) >=
+                                !isNaN(parseFloat(row.result)) &&
+                                row.lowerValue !== "" &&
+                                !isNaN(parseFloat(row.lowerValue)) &&
+                                row.upperValue !== "" &&
+                                !isNaN(parseFloat(row.upperValue)) &&
+                                parseFloat(row.result) >=
                                 parseFloat(row.lowerValue) &&
-                              parseFloat(row.result) <=
+                                parseFloat(row.result) <=
                                 parseFloat(row.upperValue) ? (
                                 <p className="text-green-700 font-semibold">
                                   {row.result}
