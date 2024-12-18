@@ -194,7 +194,7 @@ const AcousticManualRun = () => {
       // console.log(runChk);
       try {
         if (runChk === "OK") {
-          await GetLastRetest("1", LstRetest?.id, setLstRetest, setLoading);
+          await GetLastRetest("1", setLstRetest, setLoading);
         }
         await traceabilityService.getTraceabilityDataWithDate(
           "1",

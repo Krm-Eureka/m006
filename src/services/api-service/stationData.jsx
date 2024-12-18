@@ -39,14 +39,20 @@ export async function GetLastRetestAcoustic(version, SET, LOADING) {
     console.error("Failed to fetch Data:", error);
   }
 }
-export async function GetLastRetest(version, NID, SET, LOADING) {
-  console.log(`/api/v${version}/AcousticTraceLog?id=${NID}`);
+export async function GetLastRetest(version, SET, LOADING) {
+  console.log(
+    `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLogV2`
+  );
   try {
     const res = await endpoint.get(
-      `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
+      `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLogV2`
     );
+    // console.log(`/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`);
+    // try {
+    //   const res = await endpoint.get(
+    //     `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
+    //   );
 
-    // console.log(`GetLastRetestAcoustic: `, res.data);
     SET(res.data.data);
     LOADING(!res.data.succeeded);
   } catch (error) {
