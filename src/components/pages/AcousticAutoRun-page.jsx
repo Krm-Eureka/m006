@@ -10,6 +10,7 @@ import HeaderLayout from "../header-component/";
 import {
   GetLastAcousticTraceLog,
   GetAcousticTraceDetailById,
+  GetFrequencyResult,
 } from "../../services/api-service/stationData";
 import Loading from "../loadingComponent";
 import StatusBox from "../statusBox";
@@ -36,6 +37,7 @@ const TraceabilityStatus = () => {
   const [LstStatusLog, setLstStatusLog] = useState([]);
   const [ActDetailById, setActDetailById] = useState([]);
   const [currentDescp, setCurrentDescp] = useState([]);
+  const [frequencyResult, setFrequencyResult] = useState([]);
   const [smrData, setSmrData] = useState([]);
   const navigate = useNavigate();
   const today = new Date();
@@ -51,6 +53,7 @@ const TraceabilityStatus = () => {
       // }
       try {
         await GetLastAcousticTraceLog("1", "1", setLstActLog, setLoading);
+        await GetFrequencyResult('1',LstActLog?.serialCode,endDate,setFrequencyResult, setLoading)
         await traceabilityService.getTraceabilityDataWithDate(
           "1",
           startDate,

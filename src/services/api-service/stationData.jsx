@@ -23,6 +23,29 @@ export async function GetLastAcousticTraceLog(
     console.error("Failed to fetch Data:", error);
   }
 }
+export async function GetFrequencyResult(
+  version,
+  SerialCode,
+  ProductionDate,
+  SET,
+  LOADING
+) {
+  console.log(
+    `/api/v${version}AcousticTraceLog/GetFrequencyFromFile?serialNo=${SerialCode}&productionDate=${ProductionDate}`
+  );
+
+  try {
+    const res = await endpoint.get(
+      `/api/v${version}AcousticTraceLog/GetFrequencyFromFile?serialNo=${SerialCode}&productionDate=${ProductionDate}`
+    );
+
+    console.log(`GetFrequencyResult ${SerialCode} : `, res.data);
+    SET(res.data.data);
+    LOADING(!res.data.succeeded);
+  } catch (error) {
+    console.error("Failed to fetch Data:", error);
+  }
+}
 export async function GetLastRetestAcoustic(version, SET, LOADING) {
   console.log(
     `/api/v${version}/AcousticTraceLog/GetLastRetestAcousticTraceLog`
