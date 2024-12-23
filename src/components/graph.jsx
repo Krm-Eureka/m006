@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -20,30 +20,102 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-import html2canvas from "html2canvas";
+import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
+import PropTypes from "prop-types";
 
-const GraphContain = () => {
+const GraphContain = (p) => {
   const chartRef = useRef();
+  const containerRef = useRef();
+  const [isChartReady, setIsChartReady] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
+  const [count, setCount] = useState(0);
+  // console.log(p.saveTrick);
+
   const saveChartAsPDF = () => {
-    const chartContainer = chartRef.current;
+    console.log("save");
+    const chartContainer = containerRef.current;
+    // console.log(!containerRef.current);
+    // console.log(!isChartReady);
+    // console.log(p.SC === localStorage.getItem("rendered"));
+    if (
+      // !isChartReady ||
+      // !chartContainer ||
+      p.SC === localStorage.getItem("rendered")
+    ) {
+      console.log(
+        "Chart is not ready , chart container is missing or this Serial is save. Exiting..."
+      );
+      return;
+    }
+    console.log("test");
 
-    if (!chartContainer) return;
+    domtoimage
+      .toPng(chartContainer)
+      .then((dataUrl) => {
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pageWidth = 290;
+        const pageHeight = 297;
+        console.log(dataUrl);
 
-    html2canvas(chartContainer)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("l", "mm", "a4");
-        const imgWidth = 297;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        // เพิ่มหัวข้อ
+        pdf.setFontSize(16);
+        pdf.text(`Test Result`, 15, 20);
+        pdf.setFontSize(8);
+        pdf.text(`${p.SC}`, 15, 25);
 
-        pdf.addImage(imgData, "PNG", 0, 10, imgWidth, imgHeight);
-        pdf.save("chart.pdf");
+        // เพิ่มรายละเอียด
+        pdf.setFontSize(8);
+        pdf.text(`CurrentMin : ${p.lCurrent} mA`, 15, 35);
+        pdf.text(`CurrentMax : ${p.uCurrent} mA`, 55, 35);
+        pdf.text(`CurrentResult : ${p.rCurrent} mA`, 95, 35);
+        pdf.text(`SensitivityMin : ${p.lSensitivity} dBV/Pa`, 15, 40);
+        pdf.text(`SensitivityMax : ${p.uSensitivity} dBV/Pa`, 55, 40);
+        pdf.text(`SensitivityResult : ${p.rSensitivity} dBV/Pa`, 95, 40);
+        pdf.text(`THD Min: ${p.lThd106} %`, 15, 45);
+        pdf.text(`THD Max: ${p.uThd106} %`, 55, 45);
+        pdf.text(`THD Result: ${p.rThd106} %`, 95, 45);
+        function setTextColorBasedOnValue(value) {
+          if (value.toUpperCase() === "FAIL") {
+            pdf.setTextColor(255, 0, 0);
+          } else if (value.toUpperCase() === "PASS") {
+            pdf.setTextColor(39, 161, 20);
+          } else {
+            pdf.setTextColor(0, 0, 0);
+          }
+        }
+        setTextColorBasedOnValue(p.sCurrent);
+        pdf.text(`${p.sCurrent.toUpperCase()}`, 150, 35);
+
+        setTextColorBasedOnValue(p.sSensitivity);
+        pdf.text(`${p.sSensitivity.toUpperCase()}`, 150, 40);
+        setTextColorBasedOnValue(p.sThd106);
+        pdf.text(`${p.sThd106.toUpperCase()}`, 150, 45);
+        setTextColorBasedOnValue(p.Frequency);
+        pdf.text(`${p.Frequency.toUpperCase()}`, 45, 50);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(`Frequency Response :`, 15, 50);
+        // เพิ่มกราฟ
+        const imgWidth = 150;
+        const imgHeight =
+          (chartContainer.offsetHeight * imgWidth) / chartContainer.offsetWidth;
+        pdf.addImage(dataUrl, "PNG", 30, 60, imgWidth, imgHeight);
+
+        // เพิ่ม Footer
+        pdf.setFontSize(10);
+        pdf.text("19122024", 10, pageHeight - 20);
+        pdf.text("v.1.0.3.3", pageWidth - 50, pageHeight - 20);
+        // บันทึกไฟล์
+        // pdf.addImage(dataUrl, "PNG", 0, 10, imgWidth, imgHeight);
+        pdf.save(`_${p.SC}.pdf`);
+        localStorage.setItem("rendered", p.SC);
+        localStorage.setItem("fResult", p.result);
       })
       .catch((error) => {
         console.error("Failed to generate PDF:", error);
       });
   };
+
   const Frequency = [
     78.125, 78.99801204, 79.8807796, 80.7734117, 81.67601856, 82.58871165,
     83.51160367, 84.44480861, 85.38844169, 86.34261945, 87.30745973,
@@ -139,115 +211,17 @@ const GraphContain = () => {
     19778.97873, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000,
     1000000,
   ];
+  // console.log(p);
+
+  const Labels = Frequency.map((num) => Math.floor(num));
   const data = {
-    labels: Frequency,
+    labels: Labels,
     datasets: [
       {
-        label: "THD (%)",
-        data: [
-          -10.3120571, -10.23270532, -10.14777614, -10.05719525, -9.957284485,
-          -9.842363637, -9.709273952, -9.559206462, -9.394110928, -9.213097298,
-          -9.015972201, -8.809570503, -8.606173112, -8.413661071, -8.229009239,
-          -8.044109234, -7.857006259, -7.673252482, -7.495743157, -7.31850152,
-          -7.133480961, -6.940688601, -6.74742263, -6.558156359, -6.370520177,
-          -6.181686502, -5.994082549, -5.81296166, -5.640905878, -5.476801054,
-          -5.318314818, -5.163644636, -5.011984746, -4.862784548, -4.714114214,
-          -4.563039504, -4.408894584, -4.25405553, -4.099802729, -3.944752685,
-          -3.789390794, -3.638073822, -3.494133496, -3.357028265, -3.22582593,
-          -3.101455697, -2.984449512, -2.873564648, -2.767232542, -2.664603105,
-          -2.565097793, -2.467931084, -2.372512517, -2.279009855, -2.187711769,
-          -2.098206609, -2.010121021, -1.923584065, -1.838212472, -1.753108548,
-          -1.667849789, -1.582399333, -1.496966538, -1.412465578, -1.330252483,
-          -1.25153227, -1.177284517, -1.108168188, -1.044158411, -0.984593796,
-          -0.928625155, -0.875385568, -0.82422546, -0.775025926, -0.727966041,
-          -0.683250747, -0.641061384, -0.601476361, -0.564512427, -0.530075872,
-          -0.497853554, -0.467518441, -0.438919159, -0.411976971, -0.386597131,
-          -0.362574791, -0.339488868, -0.316838895, -0.294349365, -0.272138268,
-          -0.25054505, -0.229865134, -0.210258294, -0.191729017, -0.174118674,
-          -0.15713024, -0.140400751, -0.12362996, -0.106710866, -0.089786988,
-          -0.073149666, -0.057006468, -0.041321882, -0.025918786, -0.010724339,
-          0.004099306, 0.018230589, 0.031365927, 0.043378426, 0.054419381,
-          0.064878092, 0.075123694, 0.085191472, 0.094717299, 0.103168476,
-          0.11011671, 0.11534833, 0.118871266, 0.120899751, 0.121740097,
-          0.121592078, 0.120493112, 0.118462339, 0.115609882, 0.112127656,
-          0.108273623, 0.104335579, 0.100514131, 0.096784397, 0.092862896,
-          0.088353057, 0.082996034, 0.076818345, 0.070043356, 0.062915658,
-          0.055621513, 0.048284889, 0.040996668, 0.033882929, 0.027115542,
-          0.02079088, 0.0148411, 0.009110346, 0.003440698, -0.002318112,
-          -0.00827488, -0.014460656, -0.020856196, -0.027401042, -0.033955728,
-          -0.040329319, -0.046365767, -0.051973928, -0.057114747, -0.06180751,
-          -0.066137172, -0.070246416, -0.074302884, -0.078441442, -0.082723062,
-          -0.087134509, -0.091583679, -0.09589613, -0.099886806, -0.103471801,
-          -0.106668129, -0.109474167, -0.11182205, -0.11367369, -0.115104371,
-          -0.116248662, -0.117180673, -0.117830226, -0.117976487, -0.117325407,
-          -0.115661461, -0.112981364, -0.109475834, -0.105367657, -0.100766512,
-          -0.095651705, -0.089924128, -0.083477516, -0.076285589, -0.068474865,
-          -0.06031366, -0.052084701, -0.043938284, -0.035853873, -0.027727414,
-          -0.019505223, -0.011277529, -0.00328516, 0.004172184, 0.010884467,
-          0.016843605, 0.02225189, 0.02740073, 0.0324852, 0.037471381,
-          0.042084036, 0.045941307, 0.048782408, 0.050618133, 0.051678614,
-          0.052250887, 0.052546599, 0.052626061, 0.052411384, 0.051806533,
-          0.050814503, 0.049527552, 0.048035082, 0.046388019, 0.044616959,
-          0.04270864, 0.040564356, 0.038033523, 0.035038316, 0.03170792,
-          0.028387415, 0.025489604, 0.023330483, 0.022058257, 0.021664556,
-          0.022059831, 0.023177039, 0.025004965, 0.027524021, 0.030649214,
-          0.034252185, 0.038204644, 0.042374904, 0.046616992, 0.050820783,
-          0.054992695, 0.059272908, 0.06385421, 0.068865093, 0.07429899,
-          0.080018727, 0.085822222, 0.091530521, 0.097041532, 0.102314918,
-          0.107315568, 0.111985132, 0.116273427, 0.120196987, 0.123887127,
-          0.127616766, 0.131782902, 0.136817236, 0.143054809, 0.15063151,
-          0.159460118, 0.169283229, 0.179771696, 0.190644642, 0.201779179,
-          0.213259476, 0.225349925, 0.238441156, 0.253023005, 0.269685081,
-          0.289109389, 0.312039707, 0.339232209, 0.37137599, 0.408993586,
-          0.452372203, 0.501533962, 0.556198273, 0.615717202, 0.679017713,
-          0.744595076, 0.810572233, 0.874814753, 0.935087416, 0.989242646,
-          1.035428571, 1.072281759, 1.099047303, 1.115590337, 1.122306691,
-          1.119960827, 1.109494846, 1.091856048, 1.067859464, 1.038094788,
-          1.002920675, 0.96257315, 0.917337072, 0.867699334, 0.814453815,
-          0.758771619, 0.702247767, 0.646914832, 0.595181327, 0.549650692,
-          0.512851644, 0.486984978, 0.4737544, 0.474257236, 0.488901198,
-          0.517364414, 0.558629064, 0.611096623, 0.672772761, 0.741482386,
-          0.815051036, 0.891404692, 0.968584721, 1.044721562, 1.118038741,
-          1.186930001, 1.250105111, 1.306791966, 1.356945464, 1.401311506,
-          1.441177013, 1.477854674, 1.512218368, 1.544549304, 1.574643498,
-          1.601967754, 1.625737374, 1.644940152, 1.658371926, 1.664677788,
-          1.662366196, 1.649824705, 1.625373131, 1.587317649, 1.533953731,
-          1.463533632, 1.374383848, 1.265712133, 1.13975257, 1.004676211,
-          0.875594259, 0.771417312, 0.709153016, 0.699451719, 0.745160936,
-          0.841990156, 0.980258912, 1.147468135, 1.331112135, 1.520369203,
-          1.705883735, 1.878920986, 2.031741322, 2.159095558, 2.258933468,
-          2.331354384, 2.37699523, 2.39618944, 2.389310139, 2.35810682,
-          2.307216465, 2.24413564, 2.17702829, 2.11239479, 2.054553997,
-          2.006545491, 1.970914538, 1.949580726, 1.943265683, 1.951611225,
-          1.974288321, 2.011828155, 2.064965202, 2.132980135, 2.212401611,
-          2.296956239, 2.379055024, 2.452294055, 2.513446364, 2.562637463,
-          2.601965045, 2.633796296, 2.659690772, 2.680348539, 2.696321313,
-          2.708661263, 2.719096243, 2.729863521, 2.743159216, 2.7602571,
-          2.780872386, 2.803366385, 2.825652835, 2.846106648, 2.864187862,
-          2.880850732, 2.89845672, 2.920015088, 2.948243661, 2.985008447,
-          3.031392398, 3.088497151, 3.158579598, 3.245831575, 3.356611847,
-          3.499148105, 3.682720504, 3.916391723, 4.20674732, 4.55364911,
-          4.944168388, 5.348977152, 5.729128163, 6.052829223, 6.307597082,
-          6.49807706, 6.636270595, 6.734174803, 6.801738342, 6.847747778,
-          6.88064988, 6.908157352, 6.936135959, 6.968003524, 7.005590325,
-          7.050966977, 7.107593312, 7.179718235, 7.270630064, 7.381377133,
-          7.510721973, 7.655502354, 7.810855421, 7.971082041, 8.131481825,
-          8.289970199, 8.447109909, 8.604253438, 8.760571032, 8.911079092,
-          9.048161541, 9.166053942, 9.264032548, 9.344995359, 9.411028205,
-          9.460570754, 9.489851228, 9.496766272, 9.483154751, 9.453787852,
-          9.414079809, 9.368793899, 9.321725705, 9.275113326, 9.228435795,
-          9.177840553, 9.117568305, 9.042911096, 8.95233901, 8.847168444,
-          8.729779699, 8.602639002, 8.469099645, 8.334413779, 8.204804378,
-          8.085041324, 7.976609529, 7.877698892, 7.784923944, 7.695290963,
-          7.60658282, 7.516031287, 7.419239433, 7.311115401, 7.187724344,
-          7.046490926, 6.885306827, 6.703705172, 6.505845355, 6.301244969,
-          6.101506504, 5.916674761, 5.756959225, 5.638772055, 5.585115021,
-          5.615579089, 5.734126745, 5.924045404, 6.152283141, 6.380727084,
-          6.579054898, 6.73295529, 6.843928936, 6.923074474, 6.986109674,
-          7.051872469, 7.140135963, 7.267457602, 7.444331859, 7.674483499,
-        ],
+        label: "Result",
+        data: p.result,
         borderColor: "blue",
-        tension: 0.4,
+        tension: 0.2,
       },
       {
         label: "Lower",
@@ -322,23 +296,44 @@ const GraphContain = () => {
       },
     ],
   };
-  const options = {
+  const cfg = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: "bottom",
       },
       title: {
         display: true,
         text: "Frequency Response",
       },
     },
+    tooltip: {
+      enabled: true,
+    },
+    animation: {
+      duration: 0,
+      onComplete: () => {
+        console.log(`Chart ${p.SC} render complete!`);
+        setIsChartReady(true);
+      },
+    },
     scales: {
       x: {
         beginAtZero: true,
+        title: {
+          display: true,
+          text: "Frequency (Hz)",
+        },
       },
       y: {
         beginAtZero: true,
+        ticks: {
+          stepSize: 2.5,
+        },
+        title: {
+          display: true,
+          text: "Amplitude (dB)",
+        },
       },
     },
     elements: {
@@ -347,16 +342,66 @@ const GraphContain = () => {
       },
     },
   };
+  useEffect(() => {
+    setCount((prev) => prev + 1);
+    console.log(count);
+  }, []);
 
+  useEffect(() => {
+    console.log(chartRef.current);
+    console.log(p.result.length);
+
+    if (
+      p.SC !== localStorage.getItem("rendered") &&
+      p.result.length > 0 &&
+      p.result !== localStorage.getItem("fResult")
+    ) {
+      console.log("rendering chart");
+    }
+    if (chartRef.current) {
+      console.log(isChartReady);
+      if (!isChartReady) {
+        return;
+      } else {
+        saveChartAsPDF();
+      }
+    }
+  }, [isChartReady, p.SC, p.result]);
+  // console.log(p.saveTrick);
+  // console.log(p.saveTrick === true);
+  // console.log(isChartReady);
+  // console.log(p.saveTrick === true && isChartReady === true);
+
+  // if (p.saveTrick === true&& isChartReady === true) {
+  //   console.log(123);
+  //   saveChartAsPDF();
+  // }
   return (
-    <div
-      ref={chartRef}
-      style={{ width: "800px", height: "500px", margin: "0 auto" }}
-    >
-      <Line options={options} data={data} />
-      {/* <button onClick={saveChartAsPDF}>Save as PDF</button> */}
-    </div>
+    <>
+      <div
+        ref={containerRef}
+        style={{ width: "800px", height: "500px", background: "white" }}
+      >
+        <Line ref={chartRef} options={cfg} data={data} />
+      </div>
+      <button onClick={saveChartAsPDF}>Save as PDF</button>
+    </>
   );
+};
+GraphContain.propTypes = {
+  p: PropTypes.shape({
+    SC: PropTypes.string,
+    lCurrent: PropTypes.string,
+    uCurrent: PropTypes.string,
+    rCurrent: PropTypes.string,
+    lSensitivity: PropTypes.string,
+    uSensitivity: PropTypes.string,
+    rSensitivity: PropTypes.string,
+    lThd106: PropTypes.string,
+    uThd106: PropTypes.string,
+    rThd106: PropTypes.string,
+    Frequency: PropTypes.string,
+  }),
 };
 
 export default GraphContain;
