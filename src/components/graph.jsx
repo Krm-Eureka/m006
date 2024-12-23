@@ -314,7 +314,10 @@ const GraphContain = (p) => {
       duration: 0,
       onComplete: () => {
         console.log(`Chart ${p.SC} render complete!`);
-        setIsChartReady(true);
+        {
+          p.SC !== localStorage.getItem('rendered') ?
+          setIsChartReady(true) : setIsChartReady(false)
+        }
       },
     },
     scales: {
@@ -348,22 +351,21 @@ const GraphContain = (p) => {
   }, []);
 
   useEffect(() => {
-    console.log(chartRef.current);
-    console.log(p.result.length);
-
+    // console.log(chartRef.current);
+    console.log(p.result?.length);
     if (
       p.SC !== localStorage.getItem("rendered") &&
-      p.result.length > 0 &&
+      p.result?.length > 0 &&
       p.result !== localStorage.getItem("fResult")
     ) {
       console.log("rendering chart");
-    }
-    if (chartRef.current) {
-      console.log(isChartReady);
-      if (!isChartReady) {
-        return;
-      } else {
-        saveChartAsPDF();
+      if (chartRef.current) {
+        console.log(isChartReady);
+        if (!isChartReady) {
+          return;
+        } else {
+          saveChartAsPDF();
+        }
       }
     }
   }, [isChartReady, p.SC, p.result]);
@@ -384,7 +386,7 @@ const GraphContain = (p) => {
       >
         <Line ref={chartRef} options={cfg} data={data} />
       </div>
-      <button onClick={saveChartAsPDF}>Save as PDF</button>
+      {/* <button onClick={saveChartAsPDF}>Save as PDF</button> */}
     </>
   );
 };

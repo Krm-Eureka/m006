@@ -31,12 +31,12 @@ export async function GetFrequencyResult(
   LOADING
 ) {
   console.log(
-    `/api/v${version}AcousticTraceLog/GetFrequencyFromFile?serialNo=${SerialCode}&productionDate=${ProductionDate}`
+    `/api/v${version}/AcousticTraceLog/GetFrequencyFromFile?serialNo=${SerialCode}&productionDate=${ProductionDate}`
   );
 
   try {
     const res = await endpoint.get(
-      `/api/v${version}AcousticTraceLog/GetFrequencyFromFile?serialNo=${SerialCode}&productionDate=${ProductionDate}`
+      `/api/v${version}/AcousticTraceLog/GetFrequencyFromFile?serialNo=${SerialCode}&productionDate=${ProductionDate}`
     );
 
     console.log(`GetFrequencyResult ${SerialCode} : `, res.data);
