@@ -265,7 +265,7 @@ const TraceabilityStatus = () => {
         </div>
 
         <div className="flex flex-row ">
-          {Array.isArray(smrData) && smrData?.length > 0 ? <div className="mr-20">
+          {Array.isArray(smrData) && smrData?.length >= 0 ? <div className="mr-4">
             <GraphContain
               // saveTrick={save}
               result={frequencyResult?.frequencies}
