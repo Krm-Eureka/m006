@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import endpoint from "../services/axios";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -24,7 +23,6 @@ ChartJS.register(
 import domtoimage from "dom-to-image";
 import jsPDF from "jspdf";
 import PropTypes from "prop-types";
-import axios from "../services/axios";
 
 const GraphContain = (p) => {
   const chartRef = useRef();
@@ -69,31 +67,32 @@ const GraphContain = (p) => {
         // เพิ่มรายละเอียด
         pdf.setFontSize(8);
         pdf.text(`CurrentMin : ${p.lCurrent} mA`, 15, 35);
-        pdf.text(`CurrentMax : ${p.uCurrent} mA`, 60, 35);
-        pdf.text(`CurrentResult : ${p.rCurrent} mA`, 105, 35);
+        pdf.text(`CurrentMax : ${p.uCurrent} mA`, 55, 35);
+        pdf.text(`CurrentResult : ${p.rCurrent} mA`, 95, 35);
         pdf.text(`SensitivityMin : ${p.lSensitivity} dBV/Pa`, 15, 40);
-        pdf.text(`SensitivityMax : ${p.uSensitivity} dBV/Pa`, 60, 40);
-        pdf.text(`SensitivityResult : ${p.rSensitivity} dBV/Pa`, 105, 40);
+        pdf.text(`SensitivityMax : ${p.uSensitivity} dBV/Pa`, 55, 40);
+        pdf.text(`SensitivityResult : ${p.rSensitivity} dBV/Pa`, 95, 40);
         pdf.text(`THD Min: ${p.lThd106} %`, 15, 45);
-        pdf.text(`THD Max: ${p.uThd106} %`, 60, 45);
-        pdf.text(`THD Result: ${p.rThd106} %`, 105, 45);
+        pdf.text(`THD Max: ${p.uThd106} %`, 55, 45);
+        pdf.text(`THD Result: ${p.rThd106} %`, 95, 45);
         function setTextColorBasedOnValue(value) {
-          if (value?.toUpperCase() === "FAIL") {
+          if (value.toUpperCase() === "FAIL") {
             pdf.setTextColor(255, 0, 0);
-          } else if (value?.toUpperCase() === "PASS") {
+          } else if (value.toUpperCase() === "PASS") {
             pdf.setTextColor(39, 161, 20);
           } else {
             pdf.setTextColor(0, 0, 0);
           }
         }
         setTextColorBasedOnValue(p.sCurrent);
-        pdf.text(`${p.sCurrent?.toUpperCase()}`, 155, 35);
+        pdf.text(`${p.sCurrent.toUpperCase()}`, 150, 35);
+
         setTextColorBasedOnValue(p.sSensitivity);
-        pdf.text(`${p.sSensitivity?.toUpperCase()}`, 155, 40);
+        pdf.text(`${p.sSensitivity.toUpperCase()}`, 150, 40);
         setTextColorBasedOnValue(p.sThd106);
-        pdf.text(`${p.sThd106?.toUpperCase()}`, 155, 45);
-        setTextColorBasedOnValue(p?.Frequency);
-        pdf.text(`${p.Frequency?.toUpperCase()}`, 45, 50);
+        pdf.text(`${p.sThd106.toUpperCase()}`, 150, 45);
+        setTextColorBasedOnValue(p.Frequency);
+        pdf.text(`${p.Frequency.toUpperCase()}`, 45, 50);
         pdf.setTextColor(0, 0, 0);
         pdf.text(`Frequency Response :`, 15, 50);
         // เพิ่มกราฟ
@@ -108,48 +107,42 @@ const GraphContain = (p) => {
         pdf.text("v.1.0.3.3", pageWidth - 50, pageHeight - 20);
         // บันทึกไฟล์
         // pdf.addImage(dataUrl, "PNG", 0, 10, imgWidth, imgHeight);
-        pdf.save(`_${p?.SC}.pdf`);
-        // Send PDF to Backend
-        const pdfData = pdf.output("blob"); // Get the generated PDF as a Blob
-        const formData = new FormData();
-        formData.append("pdfFile", pdfData, `_${p?.SC}.pdf`);
+        // pdf.save(`_${p.SC}.pdf`);
+        const pdfData = pdf.output("blob");
+        localStorage.setItem("rendered", p.SC);
+        localStorage.setItem("fResult", p.result);
         savePDFToBackend(pdfData);
-
-        // Sending the PDF to backend using fetch
-        // fetch(`${endpoint}upload-pdf`, {
-        //   method: "POST",
-        //   body: formData,
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //   console.log("PDF successfully uploaded:", data);
-        // })
-        // .catch(error => {
-        //   console.error("Error uploading PDF:", error);
-        // });
-        localStorage.setItem("rendered", p?.SC);
-        localStorage.setItem("fResult", p?.result);
       })
       .catch((error) => {
         console.error("Failed to generate PDF:", error);
       });
   };
   const savePDFToBackend = (pdfBlob) => {
-    const formData = new FormData();
-    formData.append("file", pdfBlob, `${p?.SC}.pdf`);
+    console.log(pdfBlob);
 
-    fetch(`${endpoint}api/upload-pdf`, {
-      method: "POST",
-      body: formData,
+    const formData = new FormData();
+    formData.append("imageFile", pdfBlob, `${p?.SC}.pdf`);
+
+    fetch("http://192.168.10.19:9001/api/v1/AcousticTraceLog/UploadFile", {
+        method: "POST",
+        body: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("PDF uploaded successfully:", data);
-      })
-      .catch((error) => {
-        console.error("Error uploading PDF:", error);
-      });
-  };
+        .then((response) => {
+            if (!response.ok) {
+                if (response.status === 400) {
+                    throw new Error("Bad Request: Please check the data you are sending.");
+                }
+                throw new Error("Failed to upload PDF");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("Upload successful:", data);
+        })
+        .catch((error) => {
+            console.error("Error uploading PDF:", error);
+        });
+};
   const Frequency = [
     78.125, 78.99801204, 79.8807796, 80.7734117, 81.67601856, 82.58871165,
     83.51160367, 84.44480861, 85.38844169, 86.34261945, 87.30745973,
@@ -245,15 +238,14 @@ const GraphContain = (p) => {
     19778.97873, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000,
     1000000,
   ];
-  // console.log(p);
 
   const Labels = Frequency.map((num) => Math.floor(num));
   const data = {
     labels: Labels,
     datasets: [
       {
-        label: "Line",
-        data: p?.result,
+        label: "Result",
+        data: p.result,
         borderColor: "green",
         tension: 0.2,
       },
@@ -349,9 +341,8 @@ const GraphContain = (p) => {
       onComplete: () => {
         console.log(`Chart ${p.SC} render complete!`);
         {
-          p.SC !== localStorage.getItem("rendered")
-            ? setIsChartReady(true)
-            : setIsChartReady(false);
+          p.SC !== localStorage.getItem('rendered') ?
+          setIsChartReady(true) : setIsChartReady(false)
         }
       },
     },
@@ -389,7 +380,6 @@ const GraphContain = (p) => {
     // console.log(chartRef.current);
     console.log(p.result?.length);
     if (
-      p.mode === "PRODUCTION" &&
       p.SC !== localStorage.getItem("rendered") &&
       p.result?.length > 0 &&
       p.result !== localStorage.getItem("fResult")
@@ -403,22 +393,6 @@ const GraphContain = (p) => {
           saveChartAsPDF();
         }
       }
-    } else if (
-      p.mode === "RETEST" &&
-      p.SC !== localStorage.getItem("rendered") &&
-      p.result?.length > 0
-    ) {
-      console.log("rendering chart RETEST");
-      if (chartRef.current) {
-        console.log(isChartReady);
-        if (!isChartReady) {
-          return;
-        } else {
-          saveChartAsPDF();
-        }
-      }
-    } else {
-      return;
     }
   }, [isChartReady, p.SC, p.result]);
   // console.log(p.saveTrick);
@@ -439,7 +413,6 @@ const GraphContain = (p) => {
         <Line ref={chartRef} options={cfg} data={data} />
       </div>
       {/* <button onClick={saveChartAsPDF}>Save as PDF</button> */}
-      <button onClick={saveChartAsPDF}>Generate PDF</button>
     </>
   );
 };
@@ -458,5 +431,5 @@ GraphContain.propTypes = {
     Frequency: PropTypes.string,
   }),
 };
-// chrome://flags/#block-insecure-downloads
+
 export default GraphContain;
