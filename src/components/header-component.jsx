@@ -1,9 +1,15 @@
 import PropTypes from "prop-types";
-import { useState, useRef ,useEffect} from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlay, faDiagramProject, faFileContract, faFolderTree, faGears } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCirclePlay,
+  faDiagramProject,
+  faFileContract,
+  faFolderTree,
+  faGears,
+} from "@fortawesome/free-solid-svg-icons";
 import ValeoLogo from "../assets/Valeo_Logo.png";
 import OUT from "../assets/svg/logout.svg";
 import BAR from "../assets/svg/barssolid.svg";
@@ -12,7 +18,7 @@ import RTS from "../assets/svg/fileContractSolid.svg";
 import RPT from "../assets/svg/folderTreeSolid.svg";
 import STG from "../assets/svg/gears-solid.svg";
 import QMD from "../assets/svg/diagram-project-solid.svg";
-import packageJson from '../../package.json'
+import packageJson from "../../package.json";
 
 const HeaderLayout = (props) => {
   const navigate = useNavigate();
@@ -29,7 +35,7 @@ const HeaderLayout = (props) => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("USER");
     localStorage.removeItem("userRole");
-    navigate("/auth/login"); 
+    navigate("/auth/login");
   };
   const toggleNav = () => {
     setIsOpen((prevIsOpen) => {
@@ -56,9 +62,10 @@ const HeaderLayout = (props) => {
           <div className="l flex flew-row items-center">
             <div className="logo cursor-pointer">
               <img
-                className="object-contain justify-center p-0 my-2 h-20 w-50"
+                className="object-contain justify-center p-0 my-2 h-20 w-50 hover:pointer"
                 src={ValeoLogo}
                 alt="Valeo_Logo_VCDA-M006"
+                onClick={() => navigate("/Console/content_ACT/autorun")}
               />
             </div>
             <button
@@ -77,7 +84,7 @@ const HeaderLayout = (props) => {
             0 hardwawre upgrade
             0 new software modules
             1 minor software changes
-            */ }
+            */}
           </div>
           <div className="r px-4 flex flew-row items-center">
             <Link
@@ -86,7 +93,9 @@ const HeaderLayout = (props) => {
               onClick={handleLogout}
             >
               <div className="flex items-center">
-              <p className="flex items-center text-lg align-baseline">{user}</p>
+                <p className="flex items-center text-lg align-baseline">
+                  {user}
+                </p>
                 <img
                   src={OUT}
                   alt={"Logout"}
@@ -143,9 +152,12 @@ const HeaderLayout = (props) => {
                 className="bg-gray-400 hover:bg-gray-500  px-2 py-2 rounded-md block text-sm font-medium text-gray-700 hover:text-white "
               >
                 <div className="items-center px-2 flex">
-                {/* <i className="text-xl fa-solid fa-diagram-project"></i> */}
-                <FontAwesomeIcon className="text-xl" icon={faDiagramProject} />
-                {/* <img className="w-5 h-5" src={QMD} alt="QualityMode" /> */}
+                  {/* <i className="text-xl fa-solid fa-diagram-project"></i> */}
+                  <FontAwesomeIcon
+                    className="text-xl"
+                    icon={faDiagramProject}
+                  />
+                  {/* <img className="w-5 h-5" src={QMD} alt="QualityMode" /> */}
                   <span className="ml-2">Quality TestMode</span>
                 </div>
               </Link>
