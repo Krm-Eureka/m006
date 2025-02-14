@@ -25,13 +25,14 @@ function createSmrData(description, lowerValue, upperValue, result, status) {
     description,
     lowerValue,
     upperValue,
-    result: parseFloat(result).toFixed(2),
+    result: parseFloat(result).toFixed(4),
     status,
   };
 }
 
 const AcousticManualRun = () => {
   const [serialNumber, setSerialNumber] = useState("");
+  const [serialRetest, setSerialRetest] = useState("");
   const [dataBySerial, setDataBySerial] = useState(null);
   const [LstRetest, setLstRetest] = useState([]);
   const [err, setError] = useState("");
@@ -86,43 +87,8 @@ const AcousticManualRun = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // const hasNavigated = useRef(false);
-
-  // useEffect(() => {
-  //   if (
-  //     LstRetest &&
-  //     LstRetest.qualityTestFlag === true &&
-  //     LstRetest.reTestFlag === false &&
-  //     !hasNavigated.current
-  //   ) {
-  //     console.log("Navigating to QMode:", LstRetest?.qualityTestFlag);
-  //     hasNavigated.current = true;
-  //     try {
-  //       navigate("/Console/Content_ACT/QMode");
-  //     } catch (error) {
-  //       console.error("Navigation error:", error);
-  //     }
-  //   } else if (
-  //     LstRetest &&
-  //     LstRetest.reTestFlag === false &&
-  //     LstRetest.qualityTestFlag === false &&
-  //     !hasNavigated.current
-  //   ) {
-  //     console.log("Navigating to AutoMode:", LstRetest?.reTestFlag);
-  //     hasNavigated.current = true;
-  //     try {
-  //       navigate("/Console/Content_ACT/AutoRun");
-  //     } catch (error) {
-  //       console.error("Navigation error:", error);
-  //     }
-  //   }
-  //   return () => {
-  //     hasNavigated.current = false;
-  //   };
-  // }, [LstRetest, navigate]);
-
   const handleRunClick = async () => {
-    // setSerialRun(serialNumber);
+    setSerialRetest(serialNumber);
     setInputDisable(true);
     setLstRetest([]);
     setSmrData([]);
@@ -256,13 +222,17 @@ const AcousticManualRun = () => {
             },
             setLoading
           );
-          await GetFrequencyResult(
-            "1",
-            RET?.serialCode,
-            today.toISOString().split("T")[0],
-            setFrequencyResult,
-            setLoading
-          );
+          {
+            currentDescp?.status !== undefined 
+              ? await GetFrequencyResult(
+                  "1",
+                  RET?.serialCode,
+                  today.toISOString().split("T")[0],
+                  setFrequencyResult,
+                  setLoading
+                )
+              : "";
+          }
         } catch (error) {
           setError(error.message);
         }
@@ -289,11 +259,6 @@ const AcousticManualRun = () => {
                   : LstRetest === null
                   ? "N/A"
                   : RET?.serialCode}
-                {/* {RET?.serialCode
-                  ? RET?.serialCode
-                  : LstRetest?.serialCode
-                  ? LstRetest?.serialCode
-                  : "N/A"} */}
               </span>
             </p>
           </div>
@@ -348,12 +313,15 @@ const AcousticManualRun = () => {
           </div>
         </div>
         <div className="flex flex-row ">
-          {Array.isArray(smrData) && smrData?.length > 0 ? (
+          {Array.isArray(smrData) &&
+          smrData?.length > 0 &&
+          frequencyResult?.frequencies ? (
             <div className="mr-4">
               <GraphContain
                 // saveTrick={save}
                 result={frequencyResult?.frequencies}
-                SC={RET?.serialCode}
+                RSC={serialRetest}
+                SC={LstRetest?.serialCode}
                 lCurrent={smrData?.[0]?.lowerValue}
                 uCurrent={smrData?.[0]?.upperValue}
                 rCurrent={smrData?.[0]?.result}
@@ -367,6 +335,8 @@ const AcousticManualRun = () => {
                 rThd106={smrData?.[2]?.result}
                 sThd106={smrData?.[2]?.status}
                 Frequency={smrData?.[3]?.status}
+                Mode="RETEST"
+                Total = {LstRetest?.totalJudgement}
               />
             </div>
           ) : (

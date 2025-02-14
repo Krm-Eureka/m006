@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import GraphContain from "../graph";
 
 function createSmrData(description, lowerValue, upperValue, result, status) {
-  const formattedResult = parseFloat(result).toFixed(2);
+  const formattedResult = parseFloat(result).toFixed(4);
   return {
     description,
     lowerValue,
@@ -138,13 +138,15 @@ const TraceabilityStatus = () => {
             },
             setLoading
           );
-          await GetFrequencyResult(
-            "1",
-            LstActLog?.serialCode,
-            today.toISOString().split("T")[0],
-            setFrequencyResult,
-            setLoading
-          );
+          {currentDescp?.status !== undefined
+            ? await GetFrequencyResult(
+                "1",
+                LstActLog?.serialCode,
+                today.toISOString().split("T")[0],
+                setFrequencyResult,
+                setLoading
+              )
+            : "";}
         } catch (err) {
           setError(err.message);
         }
@@ -154,45 +156,17 @@ const TraceabilityStatus = () => {
   }, [LstActLog]);
 
   // const handleTEST = () => {
-  //   setSmrData([
-  //     {
-  //     description: "Sample item description",
-  //     lowerValue: 10.5,
-  //     upperValue: 20.75,
-  //     result: 15.25,
-  //     status: 'pass'
-  //   },
-  //     {
-  //     description: "Sample item description",
-  //     lowerValue: 10.5,
-  //     upperValue: 20.75,
-  //     result: 15.25,
-  //     status: 'fail'
-  //   },
-  //     {
-  //     description: "Sample item description",
-  //     lowerValue: 10.5,
-  //     upperValue: 20.75,
-  //     result: 15.25,
-  //     status: 'passed'
-  //   },
-  //     {
-  //     description: "Sample item description",
-  //     lowerValue: 10.5,
-  //     upperValue: 20.75,
-  //     result: 15.25,
-  //     status: 'failed'
-  //   },
-  // ])
-  //   setCurrentDescp([{
-  //     description: "Sample item description",
-  //     lowerValue: 10.5,
-  //     upperValue: 20.75,
-  //     result: 15.25,
-  //     status: 'pass'
-  //   }])
-  //   setLoading(false)
-  // }
+  //   const sampleData = [
+  //     { description: "Sample item description", lowerValue: 10.5, upperValue: 20.75, result: 15.25, status: 'pass' },
+  //     { description: "Sample item description", lowerValue: 10.5, upperValue: 20.75, result: 15.25, status: 'fail' },
+  //     { description: "Sample item description", lowerValue: 10.5, upperValue: 20.75, result: 15.25, status: 'passed' },
+  //     { description: "Sample item description", lowerValue: 10.5, upperValue: 20.75, result: 15.25, status: 'failed' },
+  //   ];
+  
+  //   setSmrData(sampleData);
+  //   setCurrentDescp([sampleData[0]]);
+  //   setLoading(false);
+  // };
   const mapStatus = (v) => {
     switch (v) {
       case 0:
@@ -240,14 +214,14 @@ const TraceabilityStatus = () => {
                   name="Current"
                   status={
                     currentDescp?.status === "FAIL" ||
-                      currentDescp?.status === "fail" ||
-                      currentDescp?.status === 3
+                    currentDescp?.status === "fail" ||
+                    currentDescp?.status === 3
                       ? 3
                       : currentDescp?.status === "PASS" ||
                         currentDescp?.status === "pass" ||
                         currentDescp?.status === 2
-                        ? 2
-                        : 0
+                      ? 2
+                      : 0
                   }
                 />
               ) : (
@@ -265,26 +239,34 @@ const TraceabilityStatus = () => {
         </div>
 
         <div className="flex flex-row ">
-          {Array.isArray(smrData) && smrData?.length > 0 ? <div className="mr-4">
-            <GraphContain
-              // saveTrick={save}
-              result={frequencyResult?.frequencies}
-              SC={LstActLog?.serialCode}
-              lCurrent={smrData?.[0]?.lowerValue}
-              uCurrent={smrData?.[0]?.upperValue}
-              rCurrent={smrData?.[0]?.result}
-              sCurrent={smrData?.[0]?.status}
-              lSensitivity={smrData?.[1]?.lowerValue}
-              uSensitivity={smrData?.[1]?.upperValue}
-              rSensitivity={smrData?.[1]?.result}
-              sSensitivity={smrData?.[1]?.status}
-              lThd106={smrData?.[2]?.lowerValue}
-              uThd106={smrData?.[2]?.upperValue}
-              rThd106={smrData?.[2]?.result}
-              sThd106={smrData?.[2]?.status}
-              Frequency={smrData?.[3]?.status}
-            />
-          </div> : ""}
+          {Array.isArray(smrData) &&
+          smrData?.length > 0 &&
+          frequencyResult?.frequencies ? (
+            <div className="mr-4">
+              <GraphContain
+                // saveTrick={save}
+                result={frequencyResult?.frequencies}
+                SC={LstActLog?.serialCode}
+                lCurrent={smrData?.[0]?.lowerValue}
+                uCurrent={smrData?.[0]?.upperValue}
+                rCurrent={smrData?.[0]?.result}
+                sCurrent={smrData?.[0]?.status}
+                lSensitivity={smrData?.[1]?.lowerValue}
+                uSensitivity={smrData?.[1]?.upperValue}
+                rSensitivity={smrData?.[1]?.result}
+                sSensitivity={smrData?.[1]?.status}
+                lThd106={smrData?.[2]?.lowerValue}
+                uThd106={smrData?.[2]?.upperValue}
+                rThd106={smrData?.[2]?.result}
+                sThd106={smrData?.[2]?.status}
+                Frequency={smrData?.[3]?.status}
+                Mode="AUTO"
+                Total = {LstActLog?.totalJudgement}
+              />
+            </div>
+          ) : (
+            ""
+          )}
 
           <div className="flex float-start mx-2 sm:flex-wrap lg:flex-wrap">
             <div className="md:mb-4 text-gray-700 bg-gray-300 mx-2 rounded-md w-90% h-fit">
@@ -337,7 +319,7 @@ const TraceabilityStatus = () => {
                             <TableRow
                               className={
                                 row.status.toLowerCase() === "failed" ||
-                                  row.status.toLowerCase() === "fail"
+                                row.status.toLowerCase() === "fail"
                                   ? "bg-red-100"
                                   : ""
                               }
@@ -348,6 +330,7 @@ const TraceabilityStatus = () => {
                                 },
                               }}
                             >
+                              {/* DescripTion */}
                               <TableCell
                                 align="left"
                                 component="th"
@@ -358,15 +341,16 @@ const TraceabilityStatus = () => {
                                     ? "Current (mA)"
                                     : row.description.toLowerCase() ===
                                       "sensitivity"
-                                      ? "Sensitivity (dBV/Pa)"
-                                      : row.description.toLowerCase() === "thd"
-                                        ? "THD (%)"
-                                        : row.description}
+                                    ? "Sensitivity (dBV/Pa)"
+                                    : row.description.toLowerCase() === "thd"
+                                    ? "THD (%)"
+                                    : row.description}
                                 </p>
                               </TableCell>
+                              {/* LowerValue */}
                               <TableCell align="center">
                                 {row.description.toLowerCase() ===
-                                  "frequency" ? (
+                                "frequency" ? (
                                   <p className="font-semibold ">NA</p>
                                 ) : (
                                   <p className="font-semibold">
@@ -374,9 +358,10 @@ const TraceabilityStatus = () => {
                                   </p>
                                 )}
                               </TableCell>
+                              {/* UpperValue */}
                               <TableCell align="center">
                                 {row.description.toLowerCase() ===
-                                  "frequency" ? (
+                                "frequency" ? (
                                   <p className="font-semibold ">NA</p>
                                 ) : (
                                   <p className="font-semibold ">
@@ -384,25 +369,26 @@ const TraceabilityStatus = () => {
                                   </p>
                                 )}
                               </TableCell>
+                              {/* ResultValue */}
                               <TableCell align="center">
                                 {row.result === "Fail" ? (
                                   <p className="text-red-700 font-semibold">
                                     {row.result}
                                   </p>
                                 ) : row.description.toLowerCase() ===
-                                  "sensitivity" ||
+                                    "sensitivity" ||
                                   row.description.toLowerCase() === "thd" ||
                                   row.description.toLowerCase() ===
-                                  "current" ? (
+                                    "current" ? (
                                   row.result !== "" &&
-                                    !isNaN(parseFloat(row.result)) &&
-                                    row.lowerValue !== "" &&
-                                    !isNaN(parseFloat(row.lowerValue)) &&
-                                    row.upperValue !== "" &&
-                                    !isNaN(parseFloat(row.upperValue)) &&
-                                    parseFloat(row.result) >=
+                                  !isNaN(parseFloat(row.result)) &&
+                                  row.lowerValue !== "" &&
+                                  !isNaN(parseFloat(row.lowerValue)) &&
+                                  row.upperValue !== "" &&
+                                  !isNaN(parseFloat(row.upperValue)) &&
+                                  parseFloat(row.result) >=
                                     parseFloat(row.lowerValue) &&
-                                    parseFloat(row.result) <=
+                                  parseFloat(row.result) <=
                                     parseFloat(row.upperValue) ? (
                                     <p className="text-green-700 font-semibold">
                                       {row.result}
@@ -422,9 +408,10 @@ const TraceabilityStatus = () => {
                                   )
                                 )}
                               </TableCell>
+                              {/* StatusData */}
                               <TableCell align="center">
                                 {row.status.toLowerCase() === "failed" ||
-                                  row.status.toLowerCase() === "fail" ? (
+                                row.status.toLowerCase() === "fail" ? (
                                   <p className="text-red-700 font-semibold">
                                     FAIL
                                   </p>
@@ -476,7 +463,7 @@ const TraceabilityStatus = () => {
                       </TableHead>
                       <TableBody>
                         {Array.isArray(LstStatusLog) &&
-                          LstStatusLog?.length > 0 ? (
+                        LstStatusLog?.length > 0 ? (
                           sortedStatus.slice(1, 6).map((row) => {
                             const extractedCode = row.serialCode
                               ? row.serialCode.split("-").pop()

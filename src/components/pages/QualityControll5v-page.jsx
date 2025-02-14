@@ -24,7 +24,7 @@ function createSmrData(
   result,
   status
 ) {
-  const formattedResult = parseFloat(parseFloat(result).toFixed(2));
+  const formattedResult = parseFloat(parseFloat(result).toFixed(4));
   return {
     voltageType,
     description,

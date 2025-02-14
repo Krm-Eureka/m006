@@ -26,7 +26,7 @@ import StatusBox from "../statusBox";
 //   createLstStatus("EOLT-A-529520075944", "PASS"),
 // ];
 function createSmrData(description, lowerValue, upperValue, result, status) {
-  const formattedResult = parseFloat(result).toFixed(2);
+  const formattedResult = parseFloat(result).toFixed(4);
   return {
     description,
     lowerValue,

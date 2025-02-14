@@ -414,9 +414,9 @@ const TraceabilityReport = () => {
   const sortedRows = sortRows(filteredRows, order, orderBy);
   console.log(rows);
 
-  const toFixedTwo = (value) => {
+  const toFixedDigit = (value) => {
     const numericValue = parseFloat(value);
-    return isNaN(numericValue) ? value : numericValue.toFixed(2);
+    return isNaN(numericValue) ? value : numericValue.toFixed(4);
   };
   const exportToCSV = () => {
     const headers = columns.map((column) => `"${column.label}"`).join(",");
@@ -445,7 +445,7 @@ const TraceabilityReport = () => {
             column.id === "thdResult" ||
             column.id === "currentMeasured"
           ) {
-            value = toFixedTwo(value);
+            value = toFixedDigit(value);
           }
 
           if (
@@ -503,7 +503,7 @@ const TraceabilityReport = () => {
           }
           if (column.id === "5V_thdResult") {
             return row["thdDetail"]?.voltageType === 5
-              ? `${toFixedTwo(row["thdDetail"]?.result)}`
+              ? `${toFixedDigit(row["thdDetail"]?.result)}`
               : "NA";
           }
           if (column.id === "5V_thdJud") {
@@ -911,7 +911,7 @@ const TraceabilityReport = () => {
                               column.id === "thdResult" ||
                               column.id === "currentMeasured"
                             ) {
-                              return toFixedTwo(row[column.id]);
+                              return toFixedDigit(row[column.id]);
                             }
 
                             if (column.id === "id") {
@@ -985,7 +985,7 @@ const TraceabilityReport = () => {
                             }
                             if (column.id === "5V_thdResult") {
                               return row["thdDetail"]?.voltageType === 5
-                                ? `${toFixedTwo(row["thdDetail"]?.result)}`
+                                ? `${toFixedDigit(row["thdDetail"]?.result)}`
                                 : "NA";
                             }
                             if (column.id === "5V_thdJud") {

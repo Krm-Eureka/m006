@@ -1,3 +1,4 @@
+import endpoint from "../services/axios";
 import React, { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -30,25 +31,18 @@ const GraphContain = (p) => {
   const [isChartReady, setIsChartReady] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
   const [count, setCount] = useState(0);
-  // console.log(p.saveTrick);
+  const today = new Date();
+  const dateStampPdf = today.toISOString();
 
   const saveChartAsPDF = () => {
     console.log("save");
     const chartContainer = containerRef.current;
-    // console.log(!containerRef.current);
-    // console.log(!isChartReady);
-    // console.log(p.SC === localStorage.getItem("rendered"));
-    if (
-      // !isChartReady ||
-      // !chartContainer ||
-      p.SC === localStorage.getItem("rendered")
-    ) {
+    if (p.SC === localStorage.getItem("rendered")) {
       console.log(
         "Chart is not ready , chart container is missing or this Serial is save. Exiting..."
       );
       return;
     }
-    console.log("test");
 
     domtoimage
       .toPng(chartContainer)
@@ -56,13 +50,18 @@ const GraphContain = (p) => {
         const pdf = new jsPDF("p", "mm", "a4");
         const pageWidth = 290;
         const pageHeight = 297;
-        console.log(dataUrl);
+        // console.log(dataUrl);
 
         // เพิ่มหัวข้อ
         pdf.setFontSize(16);
         pdf.text(`Test Result`, 15, 20);
         pdf.setFontSize(8);
-        pdf.text(`${p.SC}`, 15, 25);
+        if (p.RSC && p.Mode === "RETEST") {
+          pdf.text(`RetestCode : ${p.RSC}`, 15, 25);
+          pdf.text(`NewSerialCode : ${p.SC}`, 15, 30);
+        } else {
+          pdf.text(`NewSerialCode : ${p.SC}`, 15, 25);
+        }
 
         // เพิ่มรายละเอียด
         pdf.setFontSize(8);
@@ -103,7 +102,7 @@ const GraphContain = (p) => {
 
         // เพิ่ม Footer
         pdf.setFontSize(10);
-        pdf.text("19122024", 10, pageHeight - 20);
+        pdf.text(dateStampPdf, 10, pageHeight - 20);
         pdf.text("v.1.0.3.3", pageWidth - 50, pageHeight - 20);
         // บันทึกไฟล์
         // pdf.addImage(dataUrl, "PNG", 0, 10, imgWidth, imgHeight);
@@ -122,27 +121,30 @@ const GraphContain = (p) => {
 
     const formData = new FormData();
     formData.append("imageFile", pdfBlob, `${p?.SC}.pdf`);
+    formData.append("SerialCode", p?.SC);
 
     fetch("http://192.168.10.19:9001/api/v1/AcousticTraceLog/UploadFile", {
-        method: "POST",
-        body: formData,
+      method: "POST",
+      body: formData,
     })
-        .then((response) => {
-            if (!response.ok) {
-                if (response.status === 400) {
-                    throw new Error("Bad Request: Please check the data you are sending.");
-                }
-                throw new Error("Failed to upload PDF");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log("Upload successful:", data);
-        })
-        .catch((error) => {
-            console.error("Error uploading PDF:", error);
-        });
-};
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400) {
+            throw new Error(
+              "Bad Request: Please check the data you are sending."
+            );
+          }
+          throw new Error("Failed to upload PDF");
+        }
+        return response;
+      })
+      .then((data) => {
+        console.log("Upload successful:", data);
+      })
+      .catch((error) => {
+        console.error("Error uploading PDF:", error);
+      });
+  };
   const Frequency = [
     78.125, 78.99801204, 79.8807796, 80.7734117, 81.67601856, 82.58871165,
     83.51160367, 84.44480861, 85.38844169, 86.34261945, 87.30745973,
@@ -246,7 +248,7 @@ const GraphContain = (p) => {
       {
         label: "Result",
         data: p.result,
-        borderColor: "green",
+        borderColor: "blue",
         tension: 0.2,
       },
       {
@@ -286,7 +288,7 @@ const GraphContain = (p) => {
           -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6,
           -6,
         ],
-        borderColor: "blue",
+        borderColor: "orange",
       },
       {
         label: "Upper",
@@ -339,10 +341,11 @@ const GraphContain = (p) => {
     animation: {
       duration: 0,
       onComplete: () => {
-        console.log(`Chart ${p.SC} render complete!`);
+        // console.log(`Chart ${p.SC} render complete!`)
         {
-          p.SC !== localStorage.getItem('rendered') ?
-          setIsChartReady(true) : setIsChartReady(false)
+          p.SC !== localStorage.getItem("rendered")
+            ? setIsChartReady(true)
+            : setIsChartReady(false);
         }
       },
     },
@@ -373,7 +376,6 @@ const GraphContain = (p) => {
   };
   useEffect(() => {
     setCount((prev) => prev + 1);
-    console.log(count);
   }, []);
 
   useEffect(() => {
@@ -390,20 +392,16 @@ const GraphContain = (p) => {
         if (!isChartReady) {
           return;
         } else {
-          saveChartAsPDF();
+          if (p.Mode === "RETEST" && p.Total !== 0) {
+            saveChartAsPDF();
+          } else if (p.Mode === undefined) {
+            saveChartAsPDF();
+          }
         }
       }
     }
   }, [isChartReady, p.SC, p.result]);
-  // console.log(p.saveTrick);
-  // console.log(p.saveTrick === true);
-  // console.log(isChartReady);
-  // console.log(p.saveTrick === true && isChartReady === true);
 
-  // if (p.saveTrick === true&& isChartReady === true) {
-  //   console.log(123);
-  //   saveChartAsPDF();
-  // }
   return (
     <>
       <div
@@ -412,7 +410,7 @@ const GraphContain = (p) => {
       >
         <Line ref={chartRef} options={cfg} data={data} />
       </div>
-      {/* <button onClick={saveChartAsPDF}>Save as PDF</button> */}
+      <button onClick={saveChartAsPDF}>Save as PDF</button>
     </>
   );
 };
